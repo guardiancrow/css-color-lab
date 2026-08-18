@@ -52,6 +52,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Gamut' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Modern CSS Color' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

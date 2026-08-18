@@ -100,6 +100,14 @@ Color.js 0.7のrange APIは補間前にendpointへgamut処理を行うため、�
 
 補間APIはraw intermediateを返し、clipもgamut mappingも行わない。教材のswatchとEngine-sampled gradient stopだけが、表示境界で必要に応じて`mapColorToGamut(..., 'srgb')`を明示する。`color-mix()` generatorはEngineのserializationからCSSを作り、browser-native previewと`CSS.supports()`は参考表示に限定する。
 
+Phase 11のRelative Color実験は共有Current Colorを読み取り専用のbaseとし、Lightness / Chroma / Hue offsetだけを教材local stateにする。`deriveRelativeOklch`はbaseをOkLChへ変換し、L / C / hをraw coordinateとして操作する。Lは1.0 = 100%、Cは0.4 = 100%、Hueはdegree相当のnumberというCSS relative component semanticsをserializationとUIの両方で維持する。resultは暗黙にclipまたはmappingせず、previewだけを必要に応じて明示的にsRGB mappingする。
+
+`serializeRelativeOklch`はCSS構文生成だけを担当し、browser computed styleをEngineのexpected値として読み戻さない。browser-native relative color、`light-dark()`、`contrast-color()`のpreviewはCSS engineによる独立した実装確認である。未対応時はnative previewだけをfallback表示へ切り替え、Engine計算、simulation、説明、code outputは維持する。
+
+`calculateContrastRatio`は既存`getRelativeLuminance`からWCAG 2.x ratioを導出し、`analyzeBlackWhiteContrast`は教材用にblack / whiteの大きいratioを選ぶ。現行`contrast-color()`もblack / whiteの最大contrastを選ぶが、厳密なalgorithmはUA定義であるため、Engine選択をnative resultの再実装やexpected値とは扱わない。ratioだけでfont、size、周辺色を含むaccessibilityを保証しない。
+
+runtime feature detectionは`modernCssSupport`へ隔離し、`CSS.supports('color', value)`で7つの構文を判定する。状態は`Supported`、`Unsupported`、`Detection unavailable`を文字で表示する。この判定はsyntax supportだけを対象とし、display gamut、OS color management、描画精度は判定しない。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

@@ -4,9 +4,9 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 10では、Chapter 1〜8に続き、Chapter 9「Color interpolation」をインタラクティブ教材として実装しています。
+Phase 11では、Learn最後のChapter 10「Modern CSS Color」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜9の教材と、Chapter 10のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜10を縦に読む、完成したLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
@@ -31,10 +31,16 @@ Phase 10では、Chapter 1〜8に続き、Chapter 9「Color interpolation」を�
 - shorter / longer / increasing / decreasing hueの経路比較
 - Engine sampleによるgradient、premultiplied alpha、raw中間色のgamut判定
 - CSS `color-mix()` generatorとbrowser-native support preview
+- Current ColorをbaseにしたOkLCh relative color syntaxとL / C / h操作
+- Relative ColorのEngine計算、browser-native preview、3 gamut判定
+- `light-dark()`のscheme simulationとnative preview
+- `contrast-color()`のblack / white比較とcontrast ratio
+- Modern CSS Color 7機能のruntime detectionと`@supports`例
+- Chapter 10からPlaygroundへの明確な導線
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut statusがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。本格的な2D / 3D gamut可視化とChapter 10の教材本文はまだ実装していません。
+RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut status、Chapter 10のrelative color baseがColor Engine経由で再計算されます。各章の固定比較実験とrelative offsetは教材ローカルstateです。Playgroundの本格実装と全章横断のlayout polishは後続Phaseに分離しています。
 
 ## 技術構成
 
@@ -151,6 +157,14 @@ Chapter 9では同じ2色をsRGB、Linear sRGB、Oklab、OkLChで補間します
 `interpolateColors`はCSSのmissing component carry-forward、OkLChのpowerless Hue、4つのHue interpolation method、alpha premultiplicationを扱います。補間中のcanonical valueはclipもmappingもしません。従来の`interpolateRgbColors`は互換wrapperとして残します。
 
 generatorはEngineでserializeした端点から、interpolation spaceと必要なHue methodを明示する`color-mix()`を作ります。`CSS.supports()`とbrowser-native previewは実装確認用で、Engineの計算結果を置き換えるものではありません。
+
+## Modern CSS Color
+
+Chapter 10ではCurrent Colorをoriginとして`oklch(from var(--base) l c h)`を作り、L / C / h offsetを同時操作します。Relative OkLCh内のcomponent keywordはnumberで、Lは1.0が100%、Cは0.4が100%、Hueはdegree相当です。EngineはbaseをOkLChへ変換して同じ操作を再現し、raw resultを保持します。browser-native relative syntaxは独立したpreviewとして扱い、対応しなくてもEngine結果、gamut状態、generated CSSは残ります。
+
+`color-mix()`は複数色の補間、relative colorは一つのoriginのchannel操作として整理します。`light-dark()`は`color-scheme`に応じたvalue選択を教材simulationとnative CSSで比較します。`contrast-color()`はblack / whiteを返す現行定義を紹介し、Engine欄ではWCAG 2.x contrast ratioを表示します。厳密なnative選択algorithmはUA定義なので、両結果を同一視しません。
+
+`CSS.supports()`でrelative colors、`color-mix()`、`light-dark()`、`contrast-color()`、Oklab、OkLCh、Display P3 syntaxをruntime判定します。未対応時も教材を無効化せず、native previewだけをfallback表示にします。CSS側のprogressive enhancementとしてfallback declarationと`@supports`を併記しています。
 
 ## 対象ブラウザ
 

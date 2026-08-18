@@ -2411,6 +2411,304 @@ h1 {
   font-size: 1.1rem;
 }
 
+.modern-experiment,
+.modern-support-panel {
+  margin-top: 1.75rem;
+  padding: 1.1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--surface-muted);
+}
+
+.modern-experiment pre,
+.modern-support-panel pre,
+.modern-details pre,
+.modern-choice-comparison pre {
+  overflow-x: auto;
+  margin: 1rem 0 0;
+  padding: 0.85rem;
+  border-radius: 0.6rem;
+  color: #f8f7ff;
+  background: #262431;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.modern-experiment code,
+.modern-choice-comparison code,
+.relative-base-summary dd {
+  overflow-wrap: anywhere;
+}
+
+.relative-base-summary {
+  display: grid;
+  grid-template-columns: 4.5rem minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface);
+}
+
+.modern-color-swatch {
+  width: 4.5rem;
+  height: 4.5rem;
+  border: 1px solid rgb(32 32 42 / 25%);
+  border-radius: 0.7rem;
+}
+
+.relative-base-summary dl,
+.relative-base-summary dd {
+  margin: 0;
+}
+
+.relative-base-summary dl > div {
+  display: grid;
+  grid-template-columns: 8rem minmax(0, 1fr);
+  gap: 0.6rem;
+}
+
+.relative-base-summary dt {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.modern-slider-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.modern-slider-grid .scalar-control {
+  margin: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface);
+}
+
+.modern-slider-grid .scalar-control-input {
+  grid-template-columns: 1fr;
+}
+
+.modern-slider-grid .scalar-control-input > span {
+  display: none;
+}
+
+.native-engine-comparison,
+.modern-choice-comparison,
+.modern-level-summary,
+.scheme-source-grid,
+.contrast-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.85rem;
+  margin-top: 1rem;
+}
+
+.native-engine-comparison article,
+.modern-choice-comparison article,
+.modern-level-summary article {
+  min-width: 0;
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface);
+}
+
+.native-engine-comparison h4,
+.native-engine-comparison p,
+.modern-choice-comparison h3,
+.modern-choice-comparison p,
+.modern-level-summary h3,
+.modern-level-summary p {
+  margin-top: 0;
+}
+
+.modern-result-preview {
+  display: block;
+  height: 4.5rem;
+  margin-bottom: 0.7rem;
+  border: 1px solid rgb(32 32 42 / 25%);
+  border-radius: 0.6rem;
+  background: repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 0 / 1rem 1rem;
+}
+
+.feature-result {
+  font-weight: 700;
+}
+
+.feature-result[data-state='supported'] {
+  color: #12623a;
+}
+
+.feature-result[data-state='unsupported'],
+.feature-result[data-state='unavailable'] {
+  color: #8b2424;
+}
+
+.relative-color-experiment .gamut-status-grid {
+  margin-top: 1rem;
+}
+
+.modern-details {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.6rem;
+  background: var(--surface);
+}
+
+.modern-details summary {
+  font-weight: 750;
+  cursor: pointer;
+}
+
+.scheme-source-grid article,
+.scheme-result-preview,
+.contrast-preview-grid article {
+  min-height: 5.5rem;
+  padding: 0.9rem;
+  border: 1px solid rgb(32 32 42 / 20%);
+  border-radius: 0.65rem;
+}
+
+.scheme-source-grid strong,
+.scheme-source-grid code {
+  display: block;
+}
+
+.compact-radio-group,
+.modern-preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.compact-radio-group legend,
+.modern-preset-buttons legend {
+  width: 100%;
+  font-weight: 750;
+}
+
+.compact-radio-group label {
+  display: flex;
+  gap: 0.35rem;
+  align-items: center;
+  padding: 0.45rem 0.7rem;
+  border: 1px solid #b9b6ca;
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.modern-preset-buttons button {
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #b9b6ca;
+  border-radius: 0.5rem;
+  color: inherit;
+  background: var(--surface);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.modern-preset-buttons button:hover,
+.modern-preset-buttons button[aria-pressed='true'] {
+  color: var(--accent-dark);
+  border-color: var(--accent);
+  background: #eeecff;
+}
+
+.contrast-preview-grid article {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.contrast-preview-grid p {
+  margin: 0;
+}
+
+.contrast-ratio-list {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1px;
+  margin: 1rem 0 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--border);
+}
+
+.contrast-ratio-list > div {
+  padding: 0.65rem;
+  background: var(--surface);
+}
+
+.contrast-ratio-list dt {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.contrast-ratio-list dd {
+  margin: 0;
+  font-weight: 750;
+}
+
+.modern-support-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modern-support-list li {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid var(--border);
+  border-left: 0.3rem solid #9a3434;
+  border-radius: 0.45rem;
+  background: var(--surface);
+}
+
+.modern-support-list li[data-state='supported'] {
+  border-left-color: #227248;
+}
+
+.modern-support-list strong {
+  text-align: right;
+}
+
+.modern-playground-callout {
+  display: block;
+}
+
+.playground-link {
+  display: inline-block;
+  margin-top: 0.85rem;
+  padding: 0.55rem 0.85rem;
+  border-radius: 0.5rem;
+  color: #fff;
+  background: var(--accent-dark);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.playground-link:hover {
+  background: var(--accent);
+}
+
 @media (max-width: 1100px) {
   .learn-layout {
     grid-template-columns: minmax(180px, 220px) minmax(0, 720px);
@@ -2573,6 +2871,21 @@ h1 {
   .mapping-original,
   .interpolation-endpoints,
   .interpolation-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modern-slider-grid,
+  .native-engine-comparison,
+  .modern-choice-comparison,
+  .modern-level-summary,
+  .scheme-source-grid,
+  .contrast-preview-grid,
+  .contrast-ratio-list,
+  .modern-support-list {
+    grid-template-columns: 1fr;
+  }
+
+  .relative-base-summary dl > div {
     grid-template-columns: 1fr;
   }
 
