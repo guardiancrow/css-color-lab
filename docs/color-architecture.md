@@ -42,6 +42,7 @@ Color Engineの公開責務は次に限定する。
 
 - `createColor`: 検証済みcanonical valueを作る
 - `convertColor` / `getColorCoordinates`: 丸めずに別空間へ変換する
+- `getRelativeLuminance`: gamut mappingせずXYZ D65のYを取得する
 - `isInColorGamut`: 元の値を変更せずgamutを判定する
 - `mapColorToGamut`: 呼び出し側が明示した場合だけlossy mappingする
 - `serializeColor`: Color Engineの値をCSS境界へ渡す
@@ -60,6 +61,12 @@ Phase 5のXYZ教材は既存の`convertColor`を順に呼び、encoded sRGB → 
 XYZ D65は特定ディスプレイのRGB channelではなく、異なる色空間間の共通基盤として扱う。D65はsRGBとDisplay P3のwhite pointである。Current Color pipelineだけが共有canonical stateを参照し、RGB primaries、neutral gray、sRGB／Display P3比較は教材ローカルstateまたは固定値とする。Display P3をCurrent Colorへ設定するeditorはPhase 5に含めない。
 
 sRGB／Display P3比較では同じcoordinatesからそれぞれ直接XYZ D65を計算し、暗黙のclipやgamut mappingを行わない。previewだけは元のRGB空間のCSS serializationをブラウザへ渡す。したがって計算値はdisplay gamutに依存しない一方、実際のpreviewはブラウザ・ディスプレイ環境に依存する。
+
+Phase 6のHSL ControlsはRGB Controlsと同様に、canonical colorから毎renderでHSL座標を導出する。H／S／Lを別の永続stateとして保持しない。操作すると既存alphaを保った`hsl` tagged canonical valueを作るため、RGB Controls、Inspector、XYZ pipelineも同じ色から再計算される。number inputの入力途中に限り、各channel component内で一時的な文字列stateを持つ。
+
+Hueはcommit時に剰余で`[0, 360)`へnormalizeし、SaturationとLightnessは`[0, 100]`へclampする。RGB等から無彩色をHSLへ変換してHueがmissingになった場合、editorは追加のhidden Hue stateを作らず`0°`をfallback表示する。ユーザーがgray上でHueを編集した場合は、明示されたpowerless Hueをcanonical HSL coordinateとして保持するため、その後Saturationを上げても選択したHueを利用できる。
+
+HSL Lightness固定Hue比較とSaturation比較は教材ローカルstateであり、Current Colorを変更しない。relative luminanceはColor Engineの`getRelativeLuminance`がXYZ D65のYを返す。HSL UIや教材内に輝度式を重複実装せず、clipやgamut mappingも行わない。Hue stripのCSS gradientは操作補助であり、色変換計算の情報源にはしない。
 
 ## Numeric and gamut policy
 

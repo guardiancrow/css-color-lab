@@ -1,13 +1,10 @@
 import { chapters } from '../../lib/chapters';
+import { HslChapter } from './HslChapter';
 import { LinearRgbChapter } from './LinearRgbChapter';
 import { LearnChapter } from './LearnChapter';
 import { RgbChapter } from './RgbChapter';
 import { SrgbChapter } from './SrgbChapter';
 import { XyzChapter } from './XyzChapter';
-
-export function HslChapter() {
-  return <LearnChapter chapter={chapters[4]} />;
-}
 
 export function LabChapter() {
   return <LearnChapter chapter={chapters[5]} />;

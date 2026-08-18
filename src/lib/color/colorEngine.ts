@@ -117,6 +117,17 @@ export function getColorCoordinates(
   return convertColor(color, targetSpace).coordinates;
 }
 
+/** Return XYZ D65 Y without clipping or gamut mapping. */
+export function getRelativeLuminance(color: CanonicalColor): number {
+  const y = getColorCoordinates(color, 'xyz-d65')[1];
+
+  if (y === null) {
+    throw new TypeError('XYZ D65 Y must be a numeric coordinate.');
+  }
+
+  return y;
+}
+
 function interpolateChannel(
   start: ColorChannel,
   end: ColorChannel,

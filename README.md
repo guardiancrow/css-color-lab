@@ -4,9 +4,9 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 5では、Chapter 1〜3に続き、Chapter 4「XYZ」をインタラクティブ教材として実装しています。
+Phase 6では、Chapter 1〜4に続き、Chapter 5「HSL」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜4の教材と、後続6章のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜5の教材と、後続5章のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3の変換
@@ -16,10 +16,12 @@ Phase 5では、Chapter 1〜3に続き、Chapter 4「XYZ」をインタラクテ
 - sRGB／Linear sRGBにおけるblack–white補間の比較
 - Current ColorのsRGB → Linear sRGB → XYZ D65変換パイプライン
 - RGB原色、relative luminance、sRGB／Display P3のXYZ比較
+- Current Colorと双方向同期するHue／Saturation／Lightness editor
+- HSL Lightness固定Hue比較とSaturation実験
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB Controlsからcanonical stateを更新すると、Current Color InspectorとChapter 4の変換パイプラインがColor Engine経由で再計算されます。Chapter 2・3およびChapter 4内の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。HSLなどほかの編集UI、色空間の可視化、Chapter 5以降の教材本文はまだ実装していません。
+RGB ControlsまたはHSL Controlsからcanonical stateを更新すると、もう一方のeditor、Current Color Inspector、Chapter 4の変換パイプラインがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。Labなど後続色空間の編集UI、色空間の可視化、Chapter 6以降の教材本文はまだ実装していません。
 
 ## 技術構成
 
@@ -90,6 +92,14 @@ Chapter 2・3の数値変換はUI内の近似式ではなく、Color Engineに�
 Chapter 4ではXYZ D65を、異なる色空間をつなぐ共通基盤として正式に扱います。Current Colorはencoded sRGBからLinear sRGBへdecodeされ、sRGBのprimariesとD65 white pointに基づく行列変換でXYZ D65になります。D65はsRGBとDisplay P3が採用する標準的な基準白です。
 
 同じ`[1, 0.5, 0]`というcoordinatesをsRGBとDisplay P3として解釈し、それぞれのXYZ値が異なることを比較できます。Display P3比較は教材用のローカル実験であり、Current Colorをwide-gamutで編集する機能ではありません。XYZ計算には元の値を使い、clipやgamut mappingを行いません。previewには各RGB空間のCSS表現を渡すため、見た目の差はブラウザとディスプレイの対応色域に依存します。
+
+## HSL editorと教材実験
+
+Chapter 5ではHSLを、sRGBのRGB値をHue／Saturation／Lightnessとして操作しやすく再構成した表現として扱います。HSL Controlsは独立した永続stateを持たず、単一のCurrent Colorから値を導出し、編集時には同じcanonical stateを更新します。
+
+Hueはcommit時に`[0, 360)`へnormalizeします。例えば`360° → 0°`、`-30° → 330°`、`390° → 30°`です。sRGBから変換した無彩色でHueがmissingの場合、UIでは編集開始値として`0°`を表示します。無彩色上で明示的に編集されたHueはhidden stateではなくcanonical HSL coordinateとして保持され、Saturationを上げるとそのHueが使われます。
+
+Lightness固定Hue比較とSaturation実験はCurrent Colorから分離した教材ローカルstateです。HSL Lightnessはencoded sRGBのmax/minから得る計算上の座標であり、XYZ D65のYで確認するrelative luminanceや知覚的lightnessとは区別します。
 
 ## 対象ブラウザ
 

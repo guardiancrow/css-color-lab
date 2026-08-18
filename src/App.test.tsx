@@ -40,6 +40,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'XYZ' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'HSL' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {
