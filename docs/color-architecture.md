@@ -120,6 +120,14 @@ Phase 14のGamut ExplorerもColor Converterと同じColorProviderへ接続する
 
 clipping / mapping比較は既存sRGB互換wrapperを維持しつつ、`compareClippingAndMapping(original, target)`へ共通化する。raw target RGB、simple clipping、CSS mapping、resulting OkLCh、元OkLChとの差を返すが、いずれも新しい派生canonical valueでありOriginalを変更しない。PlaygroundにApply操作は設けず、target変更や比較renderが共有Current Colorを書き換えないことをテストする。
 
+Phase 15のInterpolation Explorerは共有Current Colorとは別に、Start / Endの2つのserializable `CanonicalColor`、mix amount、OkLCh Hue methodをcomponent local stateとして持つ。Color ConverterやGamut ExplorerによるCurrent Color変更には追随せず、`Use Current Color as Start / End`でのみimmutable canonical valueをendpointへcopyする。selected resultをCurrent Colorへ送る場合も各spaceの明示buttonを必要とし、endpoint stateは維持する。
+
+補間計算はPhase 10の`interpolateColors`を唯一の正とし、sRGB、Linear sRGB、Oklab、OkLChの4方式を同時に導出する。gradientは既存`sampleInterpolation`の25点raw sampleから作り、`createPreviewGradient`が表示境界でだけ各sampleをsRGB mappingする。selected intermediateのraw coordinates、alpha、3 gamut statusはmapping前のcanonical valueから求める。
+
+performance上、gradient samplesはStart / End / Hue methodをdependencyとするmemoへ分離する。mix amount変更では4 selected resultsとgenerated `color-mix()`だけを再計算し、25点×4空間のstripは再計算しない。endpoint変更またはHue method変更時だけsampleを更新する。複雑なcache layerは追加しない。
+
+CSS `color-mix()`は既存serializerでStart `100 - amount`%、End `amount`%を生成し、OkLChだけにHue method clauseを付ける。runtime support判定とbrowser-native previewは独立した実装確認であり、computed styleをEngine expected valueには使用しない。powerless OkLCh Hueの判定はColor Engineの共通helperを使用し、UI独自のthresholdを追加しない。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

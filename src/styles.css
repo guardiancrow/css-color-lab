@@ -2185,7 +2185,8 @@ h1 {
 
 .playground-summary,
 .playground-converter,
-.playground-gamut-explorer {
+.playground-gamut-explorer,
+.playground-interpolation-explorer {
   min-width: 0;
 }
 
@@ -2488,11 +2489,13 @@ h1 {
 }
 
 .playground-converter,
-.playground-gamut-explorer {
+.playground-gamut-explorer,
+.playground-interpolation-explorer {
   scroll-margin-top: 2rem;
 }
 
-.playground-gamut-explorer {
+.playground-gamut-explorer,
+.playground-interpolation-explorer {
   margin-top: 4rem;
   padding-top: 3rem;
   border-top: 1px solid var(--border);
@@ -2811,6 +2814,322 @@ h1 {
 .playground-mapping-results .mapping-result-swatch,
 .playground-mapping-original .mapping-result-swatch {
   min-height: 7rem;
+}
+
+.playground-interpolation-actions {
+  display: flex;
+  gap: 1.5rem;
+  align-items: end;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.playground-interpolation-actions .interpolation-presets {
+  margin-top: 0;
+}
+
+.playground-interpolation-action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
+.playground-interpolation-action-buttons button,
+.playground-endpoint-heading button {
+  min-height: 2.45rem;
+  padding: 0.45rem 0.7rem;
+  color: var(--accent-dark);
+  border: 1px solid #aaa5cf;
+  border-radius: 0.45rem;
+  background: #f8f7ff;
+  font: inherit;
+  font-size: 0.76rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.playground-interpolation-action-buttons button:hover,
+.playground-endpoint-heading button:hover {
+  border-color: var(--accent);
+  background: var(--surface-muted);
+}
+
+.playground-endpoint-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+  margin-top: var(--layout-gap);
+}
+
+.playground-endpoint-card {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.35fr) minmax(0, 1fr);
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.playground-endpoint-swatch {
+  min-height: 12rem;
+  border-right: 1px solid rgb(32 32 42 / 18%);
+}
+
+.playground-endpoint-content {
+  min-width: 0;
+  padding: 1rem;
+}
+
+.playground-endpoint-heading {
+  display: flex;
+  gap: 0.75rem;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.playground-endpoint-heading h3 {
+  margin-bottom: 0;
+}
+
+.playground-endpoint-content dl {
+  margin: 0.8rem 0 0;
+}
+
+.playground-endpoint-content dl > div {
+  display: grid;
+  grid-template-columns: minmax(6rem, 0.25fr) minmax(0, 1fr);
+  gap: 0.6rem;
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.playground-endpoint-content dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.playground-endpoint-content dd {
+  min-width: 0;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.playground-interpolation-settings {
+  display: grid;
+  grid-template-columns: minmax(22rem, 1.25fr) minmax(20rem, 0.75fr);
+  gap: var(--layout-gap);
+  margin-top: var(--layout-gap);
+}
+
+.playground-mix-control,
+.playground-hue-setting {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.playground-mix-heading {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 750;
+}
+
+.playground-mix-heading output {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.playground-mix-inputs {
+  display: grid;
+  grid-template-columns: auto minmax(8rem, 1fr) auto;
+  gap: 0.45rem 0.65rem;
+  align-items: center;
+  margin-top: 0.65rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.playground-mix-inputs input[type='range'] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.playground-mix-inputs label:not(.visually-hidden) {
+  grid-column: 1 / 3;
+}
+
+.playground-mix-inputs input[type='number'] {
+  grid-column: 3;
+  width: 5rem;
+  padding: 0.38rem 0.45rem;
+  color: #20202a;
+  border: 1px solid #aaa8b5;
+  border-radius: 0.35rem;
+  background: var(--surface);
+  font: inherit;
+}
+
+.playground-mix-inputs input[aria-invalid='true'] {
+  border-color: #a52d25;
+  box-shadow: 0 0 0 1px #a52d25;
+}
+
+.playground-mix-control > p,
+.playground-hue-setting p,
+.playground-hue-setting small {
+  margin: 0.7rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.playground-hue-setting {
+  display: grid;
+  align-content: start;
+}
+
+.playground-hue-setting > label,
+.playground-native-mix > label {
+  font-weight: 750;
+}
+
+.playground-hue-setting select,
+.playground-native-mix select {
+  width: 100%;
+  min-height: 2.5rem;
+  margin-top: 0.4rem;
+  padding: 0.4rem 0.55rem;
+  color: #20202a;
+  border: 1px solid #aaa8b5;
+  border-radius: 0.4rem;
+  background: var(--surface);
+  font: inherit;
+}
+
+.playground-interpolation-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+  margin-top: var(--layout-gap);
+  align-items: start;
+}
+
+.playground-interpolation-card {
+  min-width: 0;
+  padding: clamp(1rem, 1.2vw, 1.3rem);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.playground-interpolation-card .interpolation-result-heading h3,
+.playground-interpolation-card .interpolation-result-heading p {
+  margin: 0;
+}
+
+.playground-engine-gradient {
+  position: relative;
+  height: 4.25rem;
+  margin: 1rem 0 0;
+  border: 1px solid rgb(32 32 42 / 28%);
+  border-radius: 0.55rem;
+}
+
+.playground-engine-gradient > span {
+  position: absolute;
+  top: -0.35rem;
+  bottom: -0.35rem;
+  width: 0.2rem;
+  border: 1px solid #ffffff;
+  background: #20202a;
+  box-shadow: 0 0 0 1px #20202a;
+  transform: translateX(-50%);
+}
+
+.playground-sample-summary {
+  margin: 0.55rem 0 0.8rem;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.playground-interpolation-card > .secondary-button {
+  width: 100%;
+  margin-top: 0.9rem;
+}
+
+.playground-color-mix {
+  margin-top: var(--layout-gap);
+  padding: clamp(1rem, 1.3vw, 1.4rem);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.playground-color-mix > div:first-child h3,
+.playground-color-mix > div:first-child p {
+  margin-bottom: 0;
+}
+
+.playground-generated-css {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.playground-generated-css > div {
+  min-width: 0;
+}
+
+.playground-generated-css h4 {
+  margin-bottom: 0.35rem;
+}
+
+.playground-generated-css pre {
+  min-height: 100%;
+  margin: 0;
+  padding: 0.85rem;
+  overflow-x: auto;
+  color: #f8f7ff;
+  border-radius: 0.6rem;
+  background: #262431;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.playground-generated-css code {
+  font-size: 0.75rem;
+}
+
+.playground-native-mix {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.playground-native-mix > select {
+  max-width: 22rem;
+}
+
+.playground-native-mix .native-color-mix-preview {
+  margin-top: 0.9rem;
+}
+
+.playground-native-mix > p {
+  margin: 0.75rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
 }
 
 .placeholder-panel {
@@ -3606,6 +3925,13 @@ h1 {
   .playground-gamut-context {
     grid-column: auto;
   }
+
+  .playground-endpoint-grid,
+  .playground-interpolation-settings,
+  .playground-interpolation-grid,
+  .playground-generated-css {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 1000px) {
@@ -3669,7 +3995,8 @@ h1 {
     margin-top: 0.65rem;
   }
 
-  .playground-gamut-explorer {
+  .playground-gamut-explorer,
+  .playground-interpolation-explorer {
     margin-top: 3rem;
     padding-top: 2rem;
   }
@@ -3696,6 +4023,33 @@ h1 {
   .playground-mapping-original .mapping-result-swatch {
     border-right: 0;
     border-bottom: 1px solid rgb(0 0 0 / 15%);
+  }
+
+  .playground-interpolation-actions {
+    display: block;
+  }
+
+  .playground-interpolation-action-buttons {
+    justify-content: flex-start;
+    margin-top: 1rem;
+  }
+
+  .playground-endpoint-card {
+    grid-template-columns: 1fr;
+  }
+
+  .playground-endpoint-swatch {
+    min-height: 8rem;
+    border-right: 0;
+    border-bottom: 1px solid rgb(32 32 42 / 18%);
+  }
+
+  .playground-endpoint-heading {
+    display: block;
+  }
+
+  .playground-endpoint-heading button {
+    margin-top: 0.65rem;
   }
 
   .learn-layout {

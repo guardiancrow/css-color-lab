@@ -4,10 +4,10 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 14では、PlaygroundへCurrent Color直結のGamut Explorerを追加しています。Learnは順番に理解する教材、Playgroundは同じ1色を複数空間から自由に編集・比較するツールとして責務を分けています。
+Phase 15では、PlaygroundへInterpolation / Gradient Explorerを追加しています。Learnは順番に理解する教材、Playgroundは同じ1色や2色間の経路を自由に編集・比較するツールとして責務を分けています。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
-- `/playground`: Color ConverterとGamut Explorerを備えた実験ツール
+- `/playground`: Color Converter、Gamut Explorer、Interpolation Explorerを備えた実験ツール
 - Playground専用wide layout、Current Color summary、native / mapped preview
 - sRGB、HSL、Lab、LCh、Oklab、OkLChの双方向editor grid
 - Hexと6種類のCSS color syntax、3 gamut statusの同時表示
@@ -18,6 +18,12 @@ Phase 14では、PlaygroundへCurrent Color直結のGamut Explorerを追加し�
 - 各gamutのin-gamut lower boundaryへCを設定するaction
 - 4種類の検証済みgamut presetとCurrent Colorへの適用
 - sRGB / Display P3 / Rec.2020 targetを選べるclipping / CSS mapping比較
+- Current Colorから独立したserializableなStart / End endpoint state
+- Current Colorの明示的なStart / End取り込みとselected resultのApply
+- sRGB / Linear sRGB / Oklab / OkLChの25点Engine-sampled gradient
+- 共通mix amount、selected marker、raw intermediate、3 gamut status
+- OkLChのshorter / longer / increasing / decreasing Hue method
+- 4方式のCSS `color-mix()`生成とbrowser-native support preview
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
 - 単一の現在色state、alpha、gamut判定、明示的gamut mapping
@@ -208,6 +214,16 @@ Gamut ExplorerはColor Converterと同じ`CanonicalColor`を直接参照し、fo
 現在のL / hについて既存`findMaxChromaForGamut`を3 gamutへ適用し、sRGB、Display P3、Rec.2020それぞれのin-gamut側の最大Cを求めます。Current Cとの差を`remaining`または`outside boundary`で表示し、実計算値と動的scaleからChroma axis上のmarker位置を算出します。各boundary actionはbinary searchが返すlower boundへCurrent Cを設定します。Phase 9の4 gamut presetもCurrent Colorへ適用します。
 
 Original / Simple clipping / CSS gamut mapping比較ではtargetをsRGB、Display P3、Rec.2020から選択できます。既存のclip / map APIからtarget RGB coordinates、resulting OkLCh、ΔL / ΔC / Δh、target gamut statusを導出します。これらは表示用の派生結果で、Original canonical colorを暗黙に変更しません。L / C / h操作時の3 boundary計算はCurrent Color単位で`useMemo`し、複雑なcache layerは追加していません。
+
+## Playground Interpolation / Gradient Explorer
+
+Interpolation ExplorerはPhase 10の`interpolateColors`、`sampleInterpolation`、`createPreviewGradient`、`getHuePath`、`serializeColorMix`を再利用します。Start / EndはColor.js objectではなくapp-owned `CanonicalColor`としてcomponent local stateへ保持し、初期値にはPhase 10のBlue → Yellow pairを使用します。preset、Swap、Resetを備え、Current Colorは`Use Current Color as Start / End`を押した場合だけcopyします。
+
+sRGB、Linear sRGB、Oklab、OkLChを常に同じmix amountで比較します。各stripは25個のraw Engine sampleから作り、表示時だけsampleごとにsRGB mappingします。selected resultはraw CSS、coordinates、alpha、sRGB / Display P3 / Rec.2020 statusを保持し、previewがmappedかを文字で明示します。各cardの`Use … result as Current Color`だけが共有Current Colorを更新し、Start / Endは変更しません。
+
+OkLChにはshorter / longer / increasing / decreasing Hue methodとHue path summaryを提供します。powerless Hueとalpha premultiplicationはColor Engineの既存仕様を維持します。4方式すべての`color-mix()`をStart `100 - amount`%、End `amount`%で生成し、native previewはruntime feature detectionに応じて表示します。browser computed styleはEngine結果として読み戻しません。
+
+gradient sampleはStart / End / Hue methodだけをdependencyにしてmemoizeし、mix slider操作では再計算しません。selected resultsとgenerated CSSはmix amountを含む別のmemoへ分離しています。
 
 ## 対象ブラウザ
 

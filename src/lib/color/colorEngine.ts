@@ -59,6 +59,10 @@ export interface InterpolateColorOptions {
 
 const OKLCH_POWERLESS_CHROMA = 0.000004;
 
+export function isPowerlessOklchChroma(chroma: ColorChannel): boolean {
+  return chroma === null || Math.abs(chroma) <= OKLCH_POWERLESS_CHROMA;
+}
+
 function assertChannel(channel: ColorChannel, index: number): void {
   if (channel !== null && !Number.isFinite(channel)) {
     throw new TypeError(
@@ -241,16 +245,10 @@ export function interpolateColors(
   ];
 
   if (space === 'oklch') {
-    if (
-      startCoordinates[1] === null ||
-      Math.abs(startCoordinates[1]) <= OKLCH_POWERLESS_CHROMA
-    ) {
+    if (isPowerlessOklchChroma(startCoordinates[1])) {
       startCoordinates[2] = null;
     }
-    if (
-      endCoordinates[1] === null ||
-      Math.abs(endCoordinates[1]) <= OKLCH_POWERLESS_CHROMA
-    ) {
+    if (isPowerlessOklchChroma(endCoordinates[1])) {
       endCoordinates[2] = null;
     }
 

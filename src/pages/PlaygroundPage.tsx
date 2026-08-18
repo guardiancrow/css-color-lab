@@ -5,6 +5,7 @@ import { OklabControls } from '../components/color/OklabControls';
 import { OkLChControls } from '../components/color/OkLChControls';
 import { PlaygroundColorSummary } from '../components/color/PlaygroundColorSummary';
 import { PlaygroundGamutExplorer } from '../components/color/PlaygroundGamutExplorer';
+import { PlaygroundInterpolationExplorer } from '../components/color/PlaygroundInterpolationExplorer';
 import { RGBControls } from '../components/color/RGBControls';
 
 const editors = [
@@ -61,6 +62,7 @@ export function PlaygroundPage() {
         <span>Jump to</span>
         <a href="#color-converter">Color Converter</a>
         <a href="#gamut-explorer">Gamut Explorer</a>
+        <a href="#interpolation">Interpolation / Gradient</a>
       </nav>
 
       <PlaygroundColorSummary />
@@ -98,6 +100,8 @@ export function PlaygroundPage() {
       </section>
 
       <PlaygroundGamutExplorer />
+
+      <PlaygroundInterpolationExplorer />
     </main>
   );
 }
