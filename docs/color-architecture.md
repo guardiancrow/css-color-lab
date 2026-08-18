@@ -46,12 +46,15 @@ Color Engineの公開責務は次に限定する。
 - `mapColorToGamut`: 呼び出し側が明示した場合だけlossy mappingする
 - `serializeColor`: Color Engineの値をCSS境界へ渡す
 
-Contextは現在色と更新関数だけを共有する。Phase 2ではReduxやZustandを必要とする状態量・更新関係がないため、React Contextと`useState`を使用する。
+Contextは現在色と汎用更新関数だけを共有する。channel固有setterは持たない。ReduxやZustandを必要とする状態量・更新関係がないため、React Contextと`useState`を使用する。
+
+Phase 3のRGB Controlsは、canonical stateを毎render時にsRGBへ変換して0〜255のUI値を導出する。操作時には変更後の3channelをsRGBのcanonical valueとして保存し、既存alphaを保持する。HSL、XYZ、Oklabなどは引き続き派生値であり、個別stateにはしない。
 
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。
-- UI用の桁数調整は`formatColorForInspector`だけで行う。
+- UI用の桁数調整は表示formatterとUI境界helperだけで行う。
+- sRGB Controlsでは`srgb8Bit` helperだけが0〜1座標と0〜255整数の境界変換を担当する。浮動小数点誤差の整数化はUI境界でのみ行う。
 - alphaは常にcanonical valueに含め、`0`から`1`を許可する。変換時にも保持する。
 - RGB座標が基準範囲外でも受け入れ、暗黙にclipしない。
 - 変換、gamut判定、gamut mappingは別操作とする。

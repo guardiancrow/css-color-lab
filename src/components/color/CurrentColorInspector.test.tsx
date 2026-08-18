@@ -4,7 +4,7 @@ import { ColorProvider } from '../../context/ColorProvider';
 import { CurrentColorInspector } from './CurrentColorInspector';
 
 describe('CurrentColorInspector', () => {
-  it('renders the placeholder color representations', () => {
+  it('renders color representations derived from the Color Engine', () => {
     render(
       <ColorProvider>
         <CurrentColorInspector />

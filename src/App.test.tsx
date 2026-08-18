@@ -25,6 +25,12 @@ describe('application routes', () => {
       screen.getByRole('navigation', { name: '章ナビゲーション' }),
     ).toBeInTheDocument();
     expect(screen.getAllByRole('region')).toHaveLength(10);
+    expect(
+      screen.getByRole('heading', { level: 3, name: 'RGBとは' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('group', { name: 'Mix red, green, and blue' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {
