@@ -14,7 +14,7 @@ function formatNumber(value: ColorChannel, fractionDigits: number): string {
   return Object.is(rounded, -0) ? '0' : String(rounded);
 }
 
-function joinCoordinates(
+export function formatColorCoordinates(
   coordinates: readonly ColorChannel[],
   fractionDigits: number,
 ): string {
@@ -58,13 +58,13 @@ export function formatColorForInspector(
       gamutMapping: mappedOptions,
     }),
     isInSrgbGamut,
-    srgb: joinCoordinates(
+    srgb: formatColorCoordinates(
       srgb.map((channel) => (channel === null ? null : channel * 255)),
       1,
     ),
     hsl: `${formatNumber(hsl[0], 1)}°  ${formatNumber(hsl[1], 1)}%  ${formatNumber(hsl[2], 1)}%`,
-    xyzD65: joinCoordinates(getColorCoordinates(color, 'xyz-d65'), 4),
-    oklab: joinCoordinates(getColorCoordinates(color, 'oklab'), 4),
+    xyzD65: formatColorCoordinates(getColorCoordinates(color, 'xyz-d65'), 4),
+    oklab: formatColorCoordinates(getColorCoordinates(color, 'oklab'), 4),
     oklch: `${formatNumber(oklch[0], 4)}  ${formatNumber(oklch[1], 4)}  ${formatNumber(oklch[2], 1)}°`,
     alpha: formatNumber(color.alpha, 3),
   };

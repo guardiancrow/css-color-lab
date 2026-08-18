@@ -3,10 +3,7 @@ import { LinearRgbChapter } from './LinearRgbChapter';
 import { LearnChapter } from './LearnChapter';
 import { RgbChapter } from './RgbChapter';
 import { SrgbChapter } from './SrgbChapter';
-
-export function XyzChapter() {
-  return <LearnChapter chapter={chapters[3]} />;
-}
+import { XyzChapter } from './XyzChapter';
 
 export function HslChapter() {
   return <LearnChapter chapter={chapters[4]} />;

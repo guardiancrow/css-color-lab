@@ -37,6 +37,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Linear RGB' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'XYZ' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

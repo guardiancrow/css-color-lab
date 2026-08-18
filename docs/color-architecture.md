@@ -55,6 +55,12 @@ Phase 4のtransfer function教材は、Color Engineの`sRGB`と`sRGB_Linear`間�
 
 RGB補間は現段階では直交座標の`sRGB`と`sRGB_Linear`だけに限定する。両端を指定空間へ変換し、CSSの色補間に合わせてalpha premultiplicationを行う。補間API自身はclipもgamut mappingも行わない。今後、極座標色空間のhue補間方法を扱うときは、同じ関数へ暗黙に追加せず別の明示的なAPI設計を検討する。
 
+Phase 5のXYZ教材は既存の`convertColor`を順に呼び、encoded sRGB → Linear sRGB → XYZ D65という学習用pipelineを組み立てる。Color Engineにはすでに必要な空間と任意空間変換があるため、XYZ専用の重複APIは追加しない。`xyzLesson` helperは変換を実装せず、3段階のserializableな座標を教材へ渡す表示モデルだけを担当する。
+
+XYZ D65は特定ディスプレイのRGB channelではなく、異なる色空間間の共通基盤として扱う。D65はsRGBとDisplay P3のwhite pointである。Current Color pipelineだけが共有canonical stateを参照し、RGB primaries、neutral gray、sRGB／Display P3比較は教材ローカルstateまたは固定値とする。Display P3をCurrent Colorへ設定するeditorはPhase 5に含めない。
+
+sRGB／Display P3比較では同じcoordinatesからそれぞれ直接XYZ D65を計算し、暗黙のclipやgamut mappingを行わない。previewだけは元のRGB空間のCSS serializationをブラウザへ渡す。したがって計算値はdisplay gamutに依存しない一方、実際のpreviewはブラウザ・ディスプレイ環境に依存する。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。
