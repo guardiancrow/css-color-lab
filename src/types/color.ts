@@ -3,10 +3,37 @@ export interface DisplayColorValue {
   value: string;
 }
 
+export type ColorChannel = number | null;
+
+export type ColorCoordinates = readonly [
+  ColorChannel,
+  ColorChannel,
+  ColorChannel,
+];
+
+export type ColorSpaceId =
+  | 'srgb'
+  | 'srgb-linear'
+  | 'xyz-d65'
+  | 'xyz-d50'
+  | 'hsl'
+  | 'lab'
+  | 'lch'
+  | 'oklab'
+  | 'oklch'
+  | 'display-p3';
+
+export type GamutSpaceId = 'srgb' | 'display-p3';
+
 /**
- * Phase 2 will define the canonical color representation here, after evaluating
- * conversion libraries and precision requirements. The application must keep
- * one canonical current-color state; Hex, HSL, XYZ, Oklab, and other views are
- * derived values, never independent mutable states.
+ * The single, serializable color value stored by the application.
+ *
+ * It deliberately contains no Color.js object. Components keep one value in
+ * the color's authoring space and derive every other representation through
+ * the Color Engine. Coordinates are never rounded or implicitly clipped.
  */
-export type CanonicalColor = unknown;
+export interface CanonicalColor {
+  readonly space: ColorSpaceId;
+  readonly coordinates: ColorCoordinates;
+  readonly alpha: number;
+}

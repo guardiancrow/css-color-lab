@@ -268,7 +268,6 @@ h1 {
   height: 3.25rem;
   border: 1px solid rgb(0 0 0 / 18%);
   border-radius: 0.55rem;
-  background: #6c5ce7;
 }
 
 .color-values {
@@ -297,6 +296,30 @@ h1 {
 
 .inspector-note {
   margin: 1rem 0 0;
+}
+
+.gamut-status {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 1rem 0 0;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.gamut-status span {
+  width: 0.65rem;
+  height: 0.65rem;
+  border: 2px solid currentcolor;
+  border-radius: 50%;
+}
+
+.gamut-status[data-in-gamut='true'] span {
+  background: #29845a;
+}
+
+.gamut-status[data-in-gamut='false'] span {
+  background: #c1473d;
 }
 
 .standalone-page {

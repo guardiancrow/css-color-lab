@@ -4,21 +4,24 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 1では、教材を拡張できるプロジェクト基盤と画面構成のみを実装しています。
+Phase 2では、教材を拡張できる画面構成に加え、すべての色操作の基盤となるColor Engineを実装しています。
 
 - `/`: 10章のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
+- sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3の変換
+- 単一の現在色state、alpha、gamut判定、明示的gamut mapping
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-色変換、操作UI、可視化、長い教材本文はまだ実装していません。
+Current Color InspectorはColor Engineの実データをread-onlyで表示します。スライダーなどの編集UI、可視化、長い教材本文はまだ実装していません。
 
 ## 技術構成
 
 - Vite
 - React / TypeScript
 - React Router
+- Color.js
 - CSS
 - Vitest / Testing Library / jsdom
 - ESLint / Prettier
@@ -51,15 +54,19 @@ src/
 ├─ components/
 │  ├─ color/        # 現在色を表示・操作する共通UI
 │  └─ learn/        # 教材の章と章ナビゲーション
-├─ lib/              # 章定義などUIに依存しない共有データ
+├─ context/          # アプリ全体で共有する現在色state
+├─ lib/
+│  └─ color/         # UIから独立したColor Engineと表示formatter
 ├─ pages/            # URL単位の画面
 ├─ test/             # テストセットアップ
 └─ types/            # 色・教材の共有型
 ```
 
-## 色状態の設計方針
+## 色状態とColor Engine
 
-将来の色操作では、Hex、HSL、XYZ、Oklabなどを個別の可変stateとして保持しません。「現在の色」を表す単一のcanonical stateを持ち、各色空間の表示値はそこから導出します。canonical representationは、Phase 2で変換ライブラリ、精度、色域外の値、alphaの扱いを比較したうえで決定します。
+Hex、HSL、XYZ、Oklabなどを個別の可変stateとして保持しません。アプリ所有のserializableな `{ space, coordinates, alpha }` を単一のcanonical stateとし、各表示はColor Engineを通して導出します。Color.jsオブジェクトをReact stateやUIへ露出させません。
+
+詳しい判断と数値処理方針は[Color Architecture](docs/color-architecture.md)を参照してください。
 
 ## 対象ブラウザ
 

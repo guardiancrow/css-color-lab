@@ -1,4 +1,5 @@
 import { Link, NavLink, Route, Routes } from 'react-router-dom';
+import { ColorProvider } from './context/ColorProvider';
 import { LearnPage } from './pages/LearnPage';
 import { PlaygroundPage } from './pages/PlaygroundPage';
 
@@ -17,33 +18,35 @@ function NotFoundPage() {
 
 export function App() {
   return (
-    <div className="app-shell">
-      <a className="skip-link" href="#main-content">
-        本文へ移動
-      </a>
-      <header className="site-header">
-        <Link className="site-title" to="/" aria-label="CSS Color Lab ホーム">
-          <span className="brand-mark" aria-hidden="true" />
-          CSS Color Lab
-        </Link>
-        <nav aria-label="メインナビゲーション">
-          <ul className="site-nav">
-            <li>
-              <NavLink to="/" end>
-                Learn
-              </NavLink>
-            </li>
-            <li>
-              <NavLink to="/playground">Playground</NavLink>
-            </li>
-          </ul>
-        </nav>
-      </header>
-      <Routes>
-        <Route path="/" element={<LearnPage />} />
-        <Route path="/playground" element={<PlaygroundPage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </div>
+    <ColorProvider>
+      <div className="app-shell">
+        <a className="skip-link" href="#main-content">
+          本文へ移動
+        </a>
+        <header className="site-header">
+          <Link className="site-title" to="/" aria-label="CSS Color Lab ホーム">
+            <span className="brand-mark" aria-hidden="true" />
+            CSS Color Lab
+          </Link>
+          <nav aria-label="メインナビゲーション">
+            <ul className="site-nav">
+              <li>
+                <NavLink to="/" end>
+                  Learn
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/playground">Playground</NavLink>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <Routes>
+          <Route path="/" element={<LearnPage />} />
+          <Route path="/playground" element={<PlaygroundPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+      </div>
+    </ColorProvider>
   );
 }
