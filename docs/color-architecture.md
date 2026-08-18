@@ -68,6 +68,14 @@ Hueはcommit時に剰余で`[0, 360)`へnormalizeし、SaturationとLightnessは
 
 HSL Lightness固定Hue比較とSaturation比較は教材ローカルstateであり、Current Colorを変更しない。relative luminanceはColor Engineの`getRelativeLuminance`がXYZ D65のYを返す。HSL UIや教材内に輝度式を重複実装せず、clipやgamut mappingも行わない。Hue stripのCSS gradientは操作補助であり、色変換計算の情報源にはしない。
 
+Phase 7のLab / LCh Controlsもcanonical colorから毎renderで座標を導出し、L/a/bまたはL/C/hを別の永続stateとして持たない。編集時は既存alphaを保った`lab`または`lch` tagged canonical valueを作るため、RGB、HSL、XYZ pipeline、Inspectorも同じ色から再計算される。教材用Lab Lightness実験とLCh Hue実験だけがCurrent Colorから分離したlocal stateを持つ。
+
+Lab変換pipelineは既存`convertColor`をXYZ D65 → XYZ D50 → Labの順に構成する。D65 → D50 chromatic adaptationの実装はColor Engine内部のColor.jsへ委譲し、React UIや`lab` helperへBradford行列を重複実装しない。CSSの`lab()` / `lch()`はD50基準として扱う。
+
+Lab a/b sliderは`-125〜125`、LCh C sliderは`0〜150`を教材用reference rangeとする。これらは数学的上限ではなく、number inputとcanonical stateはslider範囲外のa/bおよび非負Cも保持する。Lは`0〜100`、Cは0以上へ制約する。LCh Hueは`[0, 360)`へnormalizeする。C = 0で変換Hueがmissingならeditorは`0°`をfallback表示し、明示編集したpowerless Hueはhidden stateではなくcanonical LCh coordinateとして保持する。
+
+Lab / LCh canonical colorがsRGB gamut外でもclipまたはmappingしない。`isInColorGamut`は元の色を判定し、CSS Lab / LCh serializationも元座標を使う。画面swatchとHexだけが`mapColorToGamut(..., 'srgb', 'css')`を明示的に呼び、UIにはoriginal colorを保持したmapped previewであることを表示する。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

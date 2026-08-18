@@ -1208,6 +1208,338 @@ h1 {
   margin-top: 0.8rem;
 }
 
+.lab-current-pipeline,
+.lab-experiment {
+  margin-top: 2.5rem;
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: #fbfaff;
+}
+
+.lab-concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.lab-concept-grid article {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+}
+
+.lab-concept-grid strong,
+.lab-concept-grid span {
+  display: block;
+}
+
+.lab-concept-grid span {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.lab-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin-top: 2.5rem;
+  align-items: start;
+}
+
+.lab-controls {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: #fbfaff;
+}
+
+.lab-controls-heading h3 {
+  margin-bottom: 0.35rem;
+}
+
+.lab-controls-heading > p:last-child {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.lab-channel-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.lab-axis {
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.lab-axis-heading {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  font-weight: 750;
+}
+
+.lab-axis-heading output {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-axis-direction {
+  margin: 0.2rem 0 0.55rem;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+  line-height: 1.35;
+}
+
+.lab-axis-inputs {
+  display: grid;
+  grid-template-columns: auto minmax(4rem, 1fr) auto;
+  gap: 0.4rem 0.5rem;
+  align-items: center;
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.lab-axis-inputs input[type='range'] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--accent);
+  cursor: pointer;
+}
+
+.lab-axis-inputs label:not(.visually-hidden) {
+  grid-column: 1 / 3;
+  font-size: 0.72rem;
+}
+
+.lab-number-field {
+  display: grid;
+  grid-column: 3;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  width: 5.5rem;
+  border: 1px solid #aaa8b5;
+  border-radius: 0.35rem;
+  background: var(--surface);
+}
+
+.lab-number-field:focus-within {
+  outline: 3px solid var(--focus);
+  outline-offset: 3px;
+}
+
+.lab-number-field:has(input[aria-invalid='true']) {
+  border-color: #a52d25;
+  box-shadow: 0 0 0 1px #a52d25;
+}
+
+.lab-number-field input {
+  min-width: 0;
+  padding: 0.35rem 0 0.35rem 0.4rem;
+  color: #20202a;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 0.8rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-number-field span {
+  padding-right: 0.35rem;
+}
+
+.lab-color-preview {
+  margin-top: 1rem;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface);
+}
+
+.lab-color-swatch {
+  min-height: 9rem;
+  border-bottom: 1px solid rgb(0 0 0 / 15%);
+}
+
+.lab-color-preview > .gamut-status,
+.lab-color-preview > .preview-mapping-note {
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
+}
+
+.preview-mapping-note {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.lab-color-preview dl {
+  margin: 0;
+  padding: 0 0.75rem 0.75rem;
+}
+
+.lab-color-preview dl > div {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 0.4rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.lab-color-preview dt {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.lab-color-preview dd {
+  overflow-wrap: anywhere;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lab-featured-result {
+  width: min(25rem, 100%);
+  margin-top: 1rem;
+}
+
+.lab-result-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface);
+}
+
+.lab-result-preview {
+  min-height: 8rem;
+  border-bottom: 1px solid rgb(0 0 0 / 15%);
+}
+
+.lab-result-body {
+  padding: 0.8rem;
+}
+
+.lab-result-body h4 {
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.lab-result-body .gamut-status {
+  margin-top: 0.5rem;
+}
+
+.lab-result-body dl {
+  margin: 0.6rem 0 0;
+}
+
+.lab-result-body dl > div {
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.lab-result-body dt {
+  color: var(--text-muted);
+  font-size: 0.68rem;
+}
+
+.lab-result-body dd {
+  overflow-wrap: anywhere;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.72rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lightness-definition-comparison {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.lightness-definition-comparison article {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+}
+
+.lightness-definition-comparison h4 {
+  margin: 0 0 0.5rem;
+}
+
+.lightness-definition-comparison dl {
+  margin: 0;
+}
+
+.lightness-definition-comparison dl > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 1fr) auto;
+  gap: 0.5rem;
+  padding: 0.3rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.lightness-definition-comparison dt {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.lightness-definition-comparison dd {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.lch-polar-concept {
+  display: grid;
+  grid-template-columns: minmax(6rem, 1fr) auto minmax(6rem, 1fr);
+  gap: 0.7rem;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface-muted);
+  text-align: center;
+}
+
+.lch-polar-concept span {
+  padding: 0.6rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface);
+  font-weight: 750;
+}
+
+.lch-polar-concept strong {
+  color: var(--accent-dark);
+}
+
+.lch-polar-concept small {
+  grid-column: 1 / -1;
+  color: var(--text-muted);
+}
+
+.lab-hue-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.8rem;
+}
+
 .coming-soon,
 .inspector-note {
   color: var(--text-muted);
@@ -1469,8 +1801,20 @@ h1 {
   }
 
   .hsl-concept-grid,
-  .hsl-representative-grid {
+  .hsl-representative-grid,
+  .lab-concept-grid,
+  .lab-editor-grid,
+  .lightness-definition-comparison,
+  .lab-hue-grid {
     grid-template-columns: 1fr;
+  }
+
+  .lch-polar-concept {
+    grid-template-columns: 1fr;
+  }
+
+  .lch-polar-concept strong {
+    transform: rotate(90deg);
   }
 
   .transfer-result-body > p {

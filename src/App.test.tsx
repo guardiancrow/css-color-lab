@@ -43,6 +43,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'HSL' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Lab / LCh' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

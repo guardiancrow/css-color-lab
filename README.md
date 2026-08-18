@@ -4,9 +4,9 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 6では、Chapter 1〜4に続き、Chapter 5「HSL」をインタラクティブ教材として実装しています。
+Phase 7では、Chapter 1〜5に続き、Chapter 6「Lab / LCh」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜5の教材と、後続5章のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜6の教材と、後続4章のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3の変換
@@ -18,10 +18,13 @@ Phase 6では、Chapter 1〜4に続き、Chapter 5「HSL」をインタラクテ
 - RGB原色、relative luminance、sRGB／Display P3のXYZ比較
 - Current Colorと双方向同期するHue／Saturation／Lightness editor
 - HSL Lightness固定Hue比較とSaturation実験
+- Current Colorと双方向同期するLab / LCh editor
+- XYZ D65 → XYZ D50 → Lab pipelineとchromatic adaptation
+- Lab Lightness、LCh Hue、out-of-sRGB gamutの教材実験
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB ControlsまたはHSL Controlsからcanonical stateを更新すると、もう一方のeditor、Current Color Inspector、Chapter 4の変換パイプラインがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。Labなど後続色空間の編集UI、色空間の可視化、Chapter 6以降の教材本文はまだ実装していません。
+RGB、HSL、Lab、LChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab pipelineがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。Oklabなど後続色空間の編集UI、2D / 3D可視化、Chapter 7以降の教材本文はまだ実装していません。
 
 ## 技術構成
 
@@ -100,6 +103,16 @@ Chapter 5ではHSLを、sRGBのRGB値をHue／Saturation／Lightnessとして操
 Hueはcommit時に`[0, 360)`へnormalizeします。例えば`360° → 0°`、`-30° → 330°`、`390° → 30°`です。sRGBから変換した無彩色でHueがmissingの場合、UIでは編集開始値として`0°`を表示します。無彩色上で明示的に編集されたHueはhidden stateではなくcanonical HSL coordinateとして保持され、Saturationを上げるとそのHueが使われます。
 
 Lightness固定Hue比較とSaturation実験はCurrent Colorから分離した教材ローカルstateです。HSL Lightnessはencoded sRGBのmax/minから得る計算上の座標であり、XYZ D65のYで確認するrelative luminanceや知覚的lightnessとは区別します。
+
+## Lab / LCh editorとD50
+
+Chapter 6では、知覚的均等性を目指して設計されたCIE Labと、そのa/b平面をpolar coordinatesへ変換したLChを扱います。CSSの`lab()` / `lch()`はD50基準で定義されるため、sRGB由来のXYZ D65からはColor Engine内部のBradford chromatic adaptationでXYZ D50へ対応づけてからLabへ変換します。
+
+Lab ControlsはL/a/b、LCh ControlsはL/C/hを単一のCurrent Colorから導出し、どちらの編集も同じcanonical stateを更新します。LCh Hueは`[0, 360)`へnormalizeします。C = 0で変換結果のHueがmissingならUIは`0°`をfallback表示し、ユーザーが明示したpowerless Hueはcanonical LCh coordinateとして保持します。
+
+Lab a/b sliderの`-125〜125`とLCh C sliderの`0〜150`はColor.jsのreference rangeに合わせた教材用操作範囲で、数学的な存在範囲や固定上限ではありません。number inputとcanonical stateはa/bやCがslider範囲外でも保持します。
+
+Lab / LCh編集でsRGB gamut外になっても元のcanonical colorをclipしません。gamut判定とCSS Lab / LCh値は元の色から求め、previewとHexだけを既存の明示的なCSS gamut mappingでsRGB表示用に変換します。
 
 ## 対象ブラウザ
 
