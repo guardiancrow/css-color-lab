@@ -45,6 +45,8 @@ export interface SerializeColorOptions {
   };
 }
 
+export type RgbInterpolationSpace = 'srgb' | 'srgb-linear';
+
 function assertChannel(channel: ColorChannel, index: number): void {
   if (channel !== null && !Number.isFinite(channel)) {
     throw new TypeError(
@@ -113,6 +115,62 @@ export function getColorCoordinates(
   targetSpace: ColorSpaceId,
 ): ColorCoordinates {
   return convertColor(color, targetSpace).coordinates;
+}
+
+function interpolateChannel(
+  start: ColorChannel,
+  end: ColorChannel,
+  startAlpha: number,
+  endAlpha: number,
+  amount: number,
+  resultAlpha: number,
+): ColorChannel {
+  if (start === null && end === null) {
+    return null;
+  }
+
+  const resolvedStart = start ?? end;
+  const resolvedEnd = end ?? start;
+
+  if (resolvedStart === null || resolvedEnd === null) {
+    return null;
+  }
+
+  const premultiplied =
+    resolvedStart * startAlpha * (1 - amount) + resolvedEnd * endAlpha * amount;
+
+  return resultAlpha === 0 ? premultiplied : premultiplied / resultAlpha;
+}
+
+/**
+ * Interpolate two colors in an RGB space without clipping or gamut mapping.
+ * Coordinates are alpha-premultiplied, matching CSS color interpolation.
+ */
+export function interpolateRgbColors(
+  start: CanonicalColor,
+  end: CanonicalColor,
+  amount: number,
+  space: RgbInterpolationSpace,
+): CanonicalColor {
+  if (!Number.isFinite(amount) || amount < 0 || amount > 1) {
+    throw new RangeError('Interpolation amount must be from 0 to 1.');
+  }
+
+  const startColor = convertColor(start, space);
+  const endColor = convertColor(end, space);
+  const alpha = startColor.alpha * (1 - amount) + endColor.alpha * amount;
+  const coordinates = startColor.coordinates.map((channel, index) =>
+    interpolateChannel(
+      channel,
+      endColor.coordinates[index] ?? null,
+      startColor.alpha,
+      endColor.alpha,
+      amount,
+      alpha,
+    ),
+  ) as [ColorChannel, ColorChannel, ColorChannel];
+
+  return createColor(space, coordinates, alpha);
 }
 
 export function isInColorGamut(

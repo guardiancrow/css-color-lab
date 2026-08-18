@@ -45,10 +45,15 @@ Color Engineの公開責務は次に限定する。
 - `isInColorGamut`: 元の値を変更せずgamutを判定する
 - `mapColorToGamut`: 呼び出し側が明示した場合だけlossy mappingする
 - `serializeColor`: Color Engineの値をCSS境界へ渡す
+- `interpolateRgbColors`: sRGBまたはLinear sRGBで、gamut mappingせずに2色を補間する
 
 Contextは現在色と汎用更新関数だけを共有する。channel固有setterは持たない。ReduxやZustandを必要とする状態量・更新関係がないため、React Contextと`useState`を使用する。
 
 Phase 3のRGB Controlsは、canonical stateを毎render時にsRGBへ変換して0〜255のUI値を導出する。操作時には変更後の3channelをsRGBのcanonical valueとして保存し、既存alphaを保持する。HSL、XYZ、Oklabなどは引き続き派生値であり、個別stateにはしない。
+
+Phase 4のtransfer function教材は、Color Engineの`sRGB`と`sRGB_Linear`間の変換を利用する。教材UI内に式を再実装せず、`srgbTransfer` helperがneutral grayの1channel値とEngineの境界を担当する。UIでは8-bit整数または桁数を制限した値を表示するが、Engineへ渡すinternal coordinateは0〜1の浮動小数点精度を維持する。Chapter 2・3のsliderは比較の基準値を安定して残すための教材ローカルstateであり、アプリ全体の「現在色」とは意図的に分離する。各実験には、その操作がCurrent Colorを変更しないことを明記する。Linear sRGBを固定のcanonical representationへ変更したわけではなく、従来どおり入力空間tagを保持する単一のcanonical colorを使用する。
+
+RGB補間は現段階では直交座標の`sRGB`と`sRGB_Linear`だけに限定する。両端を指定空間へ変換し、CSSの色補間に合わせてalpha premultiplicationを行う。補間API自身はclipもgamut mappingも行わない。今後、極座標色空間のhue補間方法を扱うときは、同じ関数へ暗黙に追加せず別の明示的なAPI設計を検討する。
 
 ## Numeric and gamut policy
 
@@ -62,6 +67,6 @@ Phase 3のRGB Controlsは、canonical stateを毎render時にsRGBへ変換して
 - Hexと画面上のpreviewは有限gamutを必要とするため、Inspectorが明示的にsRGB mappingを指定する。生のsRGB変換値とgamut状態は別に表示する。
 - ブラウザの`CSS.supports()`やレンダリング結果を変換計算の情報源にしない。CSS serializationはEngineからブラウザへ渡す境界として扱う。
 
-## Supported spaces in Phase 2
+## Supported spaces
 
 `srgb`、`srgb-linear`、`xyz-d65`、`xyz-d50`、`hsl`、`lab`、`lch`、`oklab`、`oklch`、`display-p3`を型と変換対象として扱う。

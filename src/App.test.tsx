@@ -31,6 +31,12 @@ describe('application routes', () => {
     expect(
       screen.getByRole('group', { name: 'Mix red, green, and blue' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'sRGB' }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Linear RGB' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

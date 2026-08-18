@@ -1,14 +1,8 @@
 import { chapters } from '../../lib/chapters';
+import { LinearRgbChapter } from './LinearRgbChapter';
 import { LearnChapter } from './LearnChapter';
 import { RgbChapter } from './RgbChapter';
-
-export function SrgbChapter() {
-  return <LearnChapter chapter={chapters[1]} />;
-}
-
-export function LinearRgbChapter() {
-  return <LearnChapter chapter={chapters[2]} />;
-}
+import { SrgbChapter } from './SrgbChapter';
 
 export function XyzChapter() {
   return <LearnChapter chapter={chapters[3]} />;
