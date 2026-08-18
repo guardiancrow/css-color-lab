@@ -4,10 +4,14 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 12では、完成したChapter 1〜10の内容に合わせてLearn全体のdesktop layout、responsive behavior、comparison density、sticky sidebarを再調整しています。新しい教材機能やColor Engine変更は含みません。
+Phase 13では、Playground foundationとColor Converterを実装しています。Learnは順番に理解する教材、Playgroundは同じ1色を複数空間から自由に編集・比較するツールとして責務を分けています。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
-- `/playground`: 将来の実験ツール用Playgroundページ
+- `/playground`: 6色空間を横断してCurrent Colorを編集するColor Converter
+- Playground専用wide layout、Current Color summary、native / mapped preview
+- sRGB、HSL、Lab、LCh、Oklab、OkLChの双方向editor grid
+- Hexと6種類のCSS color syntax、3 gamut statusの同時表示
+- 共通Alpha control、Reset、基本色と検証済みwide-gamut preset
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
 - 単一の現在色state、alpha、gamut判定、明示的gamut mapping
@@ -44,7 +48,7 @@ Phase 12では、完成したChapter 1〜10の内容に合わせてLearn全体�
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut status、Chapter 10のrelative color baseがColor Engine経由で再計算されます。各章の固定比較実験とrelative offsetは教材ローカルstateです。Playgroundの本格実装と全章横断のlayout polishは後続Phaseに分離しています。
+RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、Playground summary、XYZ / Lab / Oklab pipeline、Current Color gamut status、Chapter 10のrelative color baseがColor Engine経由で再計算されます。各章の固定比較実験とrelative offsetは教材ローカルstateです。
 
 ## 技術構成
 
@@ -182,6 +186,14 @@ Learn pageは最大`148rem`まで利用し、large desktopではNavigation `180�
 - `760px`以下: Learn全体を1カラム化し、stickyを解除
 
 3カラム時のNavigationとInspectorにはviewport基準の最大高さと縦overflowを設定し、低いdesktop viewportでも全項目へ到達できるようにしています。code、長いCSS serialization、coordinate表示はpage全体を押し広げず、個別wrapまたはcode block内scrollで処理します。
+
+## Playground Color Converter
+
+PlaygroundはLearnの3カラムを再利用せず、最大`148rem`のinteraction areaを使う専用layoutです。上部にCurrent Color summary、下部に`sRGB / HSL`、`Lab / LCh`、`Oklab / OkLCh`の2列editor gridを配置します。`1100px`以下でeditorを1列化し、`760px`以下ではsummary、gamut、presetも1列の自然な順序にします。
+
+6つのeditorはLearnと同じControlsをそのまま再利用し、すべてContext内の単一`CanonicalColor`を参照します。Resetは`#D27A43`へ戻し、presetはsRGB基本色、neutral gray、Phase 9で検証済みの「sRGB外 / Display P3内」のOkLCh色を提供します。Alphaは各editorへ重複させず、summaryに共通のrange / number inputを1つ置きます。色空間を変更しても既存alphaは保持されます。
+
+summaryはColor Engineのserializerを通した`rgb()`、`hsl()`、`lab()`、`lch()`、`oklab()`、`oklch()`とHexを表示します。sRGB外のcanonical colorは変更せず、Hexとmapped previewだけをCSS方式でsRGBへmappingして注記します。Native / original previewは元のCSS表現をbrowserへ渡す独立した描画確認であり、Engineの計算結果として読み戻しません。sRGB、Display P3、Rec.2020の判定もmapping前のcanonical colorに対して行います。
 
 ## 対象ブラウザ
 

@@ -2130,6 +2130,332 @@ h1 {
   padding: 5rem 0;
 }
 
+.playground-shell {
+  width: min(148rem, 100%);
+  margin: 0 auto;
+  padding: 3rem clamp(1.25rem, 2vw, 3rem) 6rem;
+}
+
+.playground-hero {
+  max-width: 48rem;
+  margin-bottom: 2rem;
+}
+
+.playground-hero h1 {
+  margin-bottom: 0.5rem;
+}
+
+.playground-hero > p:last-child,
+.playground-summary-heading p,
+.playground-section-heading > p,
+.playground-editor-card > header p,
+.playground-gamut-panel > p {
+  color: var(--text-muted);
+}
+
+.playground-summary,
+.playground-converter {
+  min-width: 0;
+}
+
+.playground-summary {
+  padding: clamp(1rem, 1.5vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--surface);
+  box-shadow: 0 0.8rem 2rem rgb(36 31 73 / 6%);
+}
+
+.playground-summary-heading,
+.playground-section-heading {
+  display: flex;
+  gap: 1.5rem;
+  align-items: end;
+  justify-content: space-between;
+}
+
+.playground-summary-heading h2,
+.playground-section-heading h2,
+.playground-summary-heading p,
+.playground-section-heading p {
+  margin-bottom: 0;
+}
+
+.playground-summary-heading > div,
+.playground-section-heading > div {
+  min-width: 0;
+}
+
+.playground-summary-heading > div > p:last-child {
+  max-width: 44rem;
+}
+
+.secondary-button,
+.playground-presets button {
+  min-height: 2.45rem;
+  padding: 0.5rem 0.8rem;
+  color: var(--accent-dark);
+  border: 1px solid #aaa5cf;
+  border-radius: 0.45rem;
+  background: #f8f7ff;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.secondary-button:hover,
+.playground-presets button:hover {
+  border-color: var(--accent);
+  background: var(--surface-muted);
+}
+
+.playground-summary-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(15rem, 0.8fr) minmax(23rem, 1.25fr)
+    minmax(17rem, 0.95fr);
+  gap: var(--layout-gap);
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.playground-preview-panel,
+.playground-css-panel,
+.playground-gamut-panel {
+  min-width: 0;
+}
+
+.playground-original-preview,
+.playground-mapped-preview {
+  display: flex;
+  align-items: end;
+  min-height: 8.5rem;
+  padding: 0.75rem;
+  overflow: hidden;
+  color: #ffffff;
+  border: 1px solid rgb(0 0 0 / 18%);
+  border-radius: 0.6rem;
+  background: var(--mapped-color);
+  background: var(--original-color);
+  box-shadow: inset 0 -3rem 3rem -2rem rgb(0 0 0 / 60%);
+}
+
+.playground-mapped-preview {
+  min-height: 4.5rem;
+  margin-top: 0.65rem;
+  background: none;
+}
+
+.playground-original-preview span,
+.playground-mapped-preview span {
+  font-size: 0.76rem;
+  font-weight: 750;
+  text-shadow: 0 1px 2px rgb(0 0 0 / 75%);
+}
+
+.playground-preview-note {
+  margin: 0.7rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.playground-alpha {
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--border);
+}
+
+.playground-alpha-heading {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 750;
+}
+
+.playground-alpha-heading output {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.playground-alpha-inputs {
+  display: grid;
+  grid-template-columns: minmax(6rem, 1fr) auto 5rem;
+  gap: 0.6rem;
+  align-items: center;
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+}
+
+.playground-alpha-inputs input[type='range'] {
+  width: 100%;
+  margin: 0;
+  accent-color: var(--accent);
+}
+
+.playground-alpha-inputs input[type='number'] {
+  min-width: 0;
+  width: 100%;
+  padding: 0.38rem 0.45rem;
+  color: #20202a;
+  border: 1px solid #aaa8b5;
+  border-radius: 0.35rem;
+  background: var(--surface);
+  font: inherit;
+}
+
+.playground-alpha-inputs input[aria-invalid='true'] {
+  border-color: #a52d25;
+  box-shadow: 0 0 0 1px #a52d25;
+}
+
+.playground-css-panel h3,
+.playground-gamut-panel h3 {
+  margin-bottom: 0.65rem;
+  font-size: 1rem;
+}
+
+.playground-css-values {
+  margin: 0;
+}
+
+.playground-css-values > div {
+  display: grid;
+  grid-template-columns: minmax(8.5rem, 0.36fr) minmax(0, 1fr);
+  gap: 0.65rem;
+  padding: 0.42rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.playground-css-values dt {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  font-weight: 750;
+}
+
+.playground-css-values dd {
+  min-width: 0;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+}
+
+.playground-gamut-panel > p {
+  margin-bottom: 0;
+  font-size: 0.76rem;
+}
+
+.playground-gamut-panel .gamut-status-grid {
+  grid-template-columns: 1fr;
+  gap: 0.55rem;
+  margin-top: 0.8rem;
+}
+
+.playground-gamut-panel .gamut-status-grid article {
+  padding: 0.65rem;
+}
+
+.playground-gamut-summary {
+  margin-top: 0.75rem;
+  overflow-wrap: anywhere;
+}
+
+.playground-presets {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.playground-presets > span {
+  flex: 0 0 auto;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.playground-presets > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.playground-converter {
+  margin-top: 3rem;
+}
+
+.playground-section-heading > p {
+  max-width: 38rem;
+  font-size: 0.82rem;
+}
+
+.playground-editor-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--layout-gap);
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.playground-editor-card {
+  min-width: 0;
+  padding: clamp(1rem, 1.3vw, 1.4rem);
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.playground-editor-card > header {
+  margin-bottom: 1rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.playground-editor-card > header h2,
+.playground-editor-card > header p {
+  margin-bottom: 0;
+}
+
+.playground-editor-card > header h2 {
+  font-size: 1.3rem;
+}
+
+.playground-editor-card > header p {
+  margin-top: 0.2rem;
+  font-size: 0.78rem;
+}
+
+.playground-editor-card .rgb-controls,
+.playground-editor-card .hsl-controls,
+.playground-editor-card .lab-controls {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.playground-editor-card .rgb-controls-heading,
+.playground-editor-card .hsl-controls-heading {
+  margin-bottom: 1rem;
+}
+
+.playground-editor-card .rgb-workbench,
+.playground-editor-card .hsl-workbench {
+  gap: 1rem;
+}
+
+.playground-editor-card .srgb-preview-swatch {
+  min-height: 8rem;
+}
+
+.playground-editor-card .lab-color-swatch {
+  min-height: 6.5rem;
+}
+
 .placeholder-panel {
   margin-top: 3rem;
   padding: clamp(1.5rem, 5vw, 3rem);
@@ -2885,6 +3211,26 @@ h1 {
   }
 }
 
+@media (max-width: 1250px) {
+  .playground-summary-grid {
+    grid-template-columns: minmax(15rem, 0.75fr) minmax(23rem, 1.25fr);
+  }
+
+  .playground-gamut-panel {
+    grid-column: 1 / -1;
+  }
+
+  .playground-gamut-panel .gamut-status-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 1100px) {
+  .playground-editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 @media (max-width: 1000px) {
   .lab-editor-grid {
     grid-template-columns: 1fr;
@@ -2907,6 +3253,43 @@ h1 {
   .learn-hero {
     margin-bottom: 2.5rem;
     text-align: left;
+  }
+
+  .playground-shell {
+    padding: 2.5rem 1rem 4rem;
+  }
+
+  .playground-summary-heading,
+  .playground-section-heading {
+    display: block;
+  }
+
+  .playground-summary-heading .secondary-button {
+    margin-top: 1rem;
+  }
+
+  .playground-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playground-gamut-panel {
+    grid-column: auto;
+  }
+
+  .playground-gamut-panel .gamut-status-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playground-presets {
+    display: block;
+  }
+
+  .playground-presets > div {
+    margin-top: 0.65rem;
+  }
+
+  .playground-section-heading > p {
+    margin-top: 0.65rem;
   }
 
   .learn-layout {
@@ -3112,6 +3495,19 @@ h1 {
 
   .chapter-navigation ol {
     grid-template-columns: 1fr;
+  }
+
+  .playground-css-values > div {
+    grid-template-columns: 1fr;
+    gap: 0.15rem;
+  }
+
+  .playground-alpha-inputs {
+    grid-template-columns: 1fr 4.5rem;
+  }
+
+  .playground-alpha-inputs label:not(.visually-hidden) {
+    grid-column: 1;
   }
 }
 

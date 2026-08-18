@@ -108,6 +108,12 @@ Phase 11のRelative Color実験は共有Current Colorを読み取り専用のbas
 
 runtime feature detectionは`modernCssSupport`へ隔離し、`CSS.supports('color', value)`で7つの構文を判定する。状態は`Supported`、`Unsupported`、`Detection unavailable`を文字で表示する。この判定はsyntax supportだけを対象とし、display gamut、OS color management、描画精度は判定しない。
 
+Phase 13のPlayground Color ConverterはLearn用wrapperを複製せず、既存のRGB、HSL、Lab、LCh、Oklab、OkLCh Controlsを同じColorProvider配下へ同時配置する。各Controlsはcanonical colorから派生値を取得し、編集元空間で新しいcanonical valueを保存するため、6 editor、CSS summary、preview、gamut判定が一方向の導出関係を維持する。6空間分の永続stateやColor.js objectは追加しない。
+
+Playground presentationは`playgroundColor` helperへ集約する。6種類のCSS syntaxとHexは`serializeColor`、3 gamut判定は既存gamut helperを利用し、React内で変換値を手組みしない。Phase 9で期待gamutをテスト済みのOkLCh presetをwide-gamut例として再利用する。Native previewはsource spaceのserializationをbrowserへ渡し、mapped previewとHexだけが明示的なsRGB CSS gamut mappingを使う。元canonical coordinatesは置換しない。
+
+Alpha editorはPlayground summaryに1つだけ置き、同じspace / coordinatesからalphaだけを変更したcanonical valueを作る。各space editorの既存更新helperはprevious colorのalphaを引き継ぐため、色操作後も透明度を保持する。number inputの不正な一時文字列はUI local draftに留まり、NaNやInfinityをcanonical stateへ渡さない。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。
