@@ -4,9 +4,9 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 7では、Chapter 1〜5に続き、Chapter 6「Lab / LCh」をインタラクティブ教材として実装しています。
+Phase 8では、Chapter 1〜6に続き、Chapter 7「Oklab / OkLCh」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜6の教材と、後続4章のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜7の教材と、後続3章のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3の変換
@@ -21,10 +21,13 @@ Phase 7では、Chapter 1〜5に続き、Chapter 6「Lab / LCh」をインタラ
 - Current Colorと双方向同期するLab / LCh editor
 - XYZ D65 → XYZ D50 → Lab pipelineとchromatic adaptation
 - Lab Lightness、LCh Hue、out-of-sRGB gamutの教材実験
+- Current Colorと双方向同期するOklab / OkLCh editor
+- Lab D50 pipelineとOklab D65 pipelineの比較
+- LCh / OkLChの共有Hue rotation比較とsRGB / Display P3判定
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB、HSL、Lab、LChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab pipelineがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。Oklabなど後続色空間の編集UI、2D / 3D可視化、Chapter 7以降の教材本文はまだ実装していません。
+RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipelineがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。gamut可視化、2D / 3D可視化、Chapter 8以降の教材本文はまだ実装していません。
 
 ## 技術構成
 
@@ -113,6 +116,16 @@ Lab ControlsはL/a/b、LCh ControlsはL/C/hを単一のCurrent Colorから導出
 Lab a/b sliderの`-125〜125`とLCh C sliderの`0〜150`はColor.jsのreference rangeに合わせた教材用操作範囲で、数学的な存在範囲や固定上限ではありません。number inputとcanonical stateはa/bやCがslider範囲外でも保持します。
 
 Lab / LCh編集でsRGB gamut外になっても元のcanonical colorをclipしません。gamut判定とCSS Lab / LCh値は元の色から求め、previewとHexだけを既存の明示的なCSS gamut mappingでsRGB表示用に変換します。
+
+## Oklab / OkLCh editorとD65
+
+Chapter 7では、Lab / LChと同じく知覚的均等性を目指しつつ、現代的な画像・UI用途での改善を意図して設計されたOklabと、その円柱形式OkLChを扱います。CSS LabがXYZ D65からD50へのchromatic adaptationを経るのに対し、OklabはD65基準なのでsRGB → Linear sRGB → XYZ D65 → Oklabと進みます。この経路差だけで優劣や正確さを評価するものではありません。
+
+Oklab ControlsはL/a/b、OkLCh ControlsはL/C/hを単一のCurrent Colorから導出します。Lab / LChと軸構造は似ていますが定義とscaleが異なり、数値に互換性はありません。OkLCh Hueは`[0, 360)`へnormalizeします。C = 0で変換Hueがmissingなら`0°`をfallback表示し、ユーザーが明示したpowerless Hueはcanonical OkLCh coordinateとして保持します。
+
+sliderはCSS percentage reference rangeに合わせ、Oklabを`L 0〜1 / a,b −0.4〜0.4`、OkLChを`L 0〜1 / C 0〜0.4 / h 0〜360`とします。これは数学的上限ではありません。number inputとcanonical stateはslider範囲外のa/bと非負Cを保持し、内部精度を表示のために丸めません。internal Lの`0.65`とCSSの`65%`はUIで区別して表示します。
+
+LCh / OkLCh Hue比較は、それぞれのscaleに適した独立したL/Cを固定し、共有Hueだけを教材ローカルstateで回します。各色はsRGBとDisplay P3のgamut状態を文字で示します。out-of-sRGBでも元のcanonical座標は保持し、swatchとHexだけを明示的にsRGB mappingします。OkLChはLightness、Chroma、Hueを分離してtheme variationやgradientを設計しやすく、wide-gamut値も表現できますが、完全な知覚モデルではなくgamut制約も残ります。
 
 ## 対象ブラウザ
 

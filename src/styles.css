@@ -1540,6 +1540,156 @@ h1 {
   margin-top: 0.8rem;
 }
 
+.oklab-current-pipeline,
+.oklab-hue-comparison {
+  background: #f9fbff;
+}
+
+.pipeline-comparison,
+.lab-oklab-values,
+.lch-oklch-comparison,
+.hsl-oklch-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.pipeline-comparison {
+  margin-top: 1rem;
+}
+
+.pipeline-comparison article,
+.hsl-oklch-summary article {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.pipeline-comparison h4,
+.hsl-oklch-summary h3 {
+  margin: 0;
+}
+
+.pipeline-comparison ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.75rem 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.pipeline-comparison li {
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface-muted);
+  font-size: 0.72rem;
+}
+
+.pipeline-comparison li + li::before {
+  margin-right: 0.45rem;
+  color: var(--text-muted);
+  content: '→';
+}
+
+.oklab-coordinate-pipeline {
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+}
+
+.lab-oklab-values {
+  margin-top: 1rem;
+}
+
+.oklab-concept-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.oklab-concept-grid article {
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+}
+
+.oklab-concept-grid strong,
+.oklab-concept-grid span {
+  display: block;
+}
+
+.oklab-concept-grid span {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.76rem;
+}
+
+.oklab-editor-grid .lab-axis-inputs input[type='range'] {
+  accent-color: #495bb8;
+}
+
+.gamut-status-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem 1rem;
+}
+
+.gamut-status-list .gamut-status {
+  margin-top: 0.65rem;
+}
+
+.oklab-color-preview > .gamut-status-list,
+.oklab-color-preview > .preview-mapping-note {
+  margin-right: 0.75rem;
+  margin-left: 0.75rem;
+}
+
+.lch-oklch-comparison {
+  margin-top: 1rem;
+}
+
+.hsl-oklch-summary {
+  margin-top: 2.5rem;
+}
+
+.hsl-oklch-summary p {
+  margin-bottom: 0;
+  color: var(--text-muted);
+}
+
+.transformation-flow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.transformation-flow span {
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.75rem;
+}
+
+.transformation-flow strong {
+  color: var(--accent-dark);
+}
+
+.oklch-use-list {
+  padding-left: 1.25rem;
+}
+
+.oklch-use-list li + li {
+  margin-top: 0.35rem;
+}
+
 .coming-soon,
 .inspector-note {
   color: var(--text-muted);
@@ -1803,10 +1953,29 @@ h1 {
   .hsl-concept-grid,
   .hsl-representative-grid,
   .lab-concept-grid,
+  .oklab-concept-grid,
   .lab-editor-grid,
   .lightness-definition-comparison,
-  .lab-hue-grid {
+  .lab-hue-grid,
+  .pipeline-comparison,
+  .lab-oklab-values,
+  .lch-oklch-comparison,
+  .hsl-oklch-summary {
     grid-template-columns: 1fr;
+  }
+
+  .oklab-coordinate-pipeline {
+    grid-template-columns: 1fr;
+  }
+
+  .transformation-flow {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+  }
+
+  .transformation-flow strong {
+    transform: rotate(90deg);
   }
 
   .lch-polar-concept {

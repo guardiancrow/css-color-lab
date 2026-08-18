@@ -46,6 +46,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Lab / LCh' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Oklab / OkLCh' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

@@ -76,6 +76,14 @@ Lab a/b sliderは`-125〜125`、LCh C sliderは`0〜150`を教材用reference ra
 
 Lab / LCh canonical colorがsRGB gamut外でもclipまたはmappingしない。`isInColorGamut`は元の色を判定し、CSS Lab / LCh serializationも元座標を使う。画面swatchとHexだけが`mapColorToGamut(..., 'srgb', 'css')`を明示的に呼び、UIにはoriginal colorを保持したmapped previewであることを表示する。
 
+Phase 8のOklab / OkLCh Controlsも同じ方針で、canonical colorから毎renderでL/a/bまたはL/C/hを導出する。Color EngineにはPhase 2から両空間が登録済みで、任意変換、serialization、sRGB / Display P3判定が揃っているため公開APIを追加しない。`oklab` helperはUIのreference range、入力commit、Hue normalization、XYZ D65 → Oklab教材pipelineだけを担当する。
+
+OklabはD65基準なので、sRGB由来の変換はencoded sRGB → Linear sRGB → XYZ D65 → Oklabと構成する。CSS LabのXYZ D65 → XYZ D50 chromatic adaptationを含む経路と並べて表示するが、経路の長さを正確さや優劣とは結びつけない。OklabのL/a/bとLabのL/a/b、OkLChのL/C/hとLChのL/C/hは構造が似ていても定義とscaleが異なり、数値には互換性がない。
+
+Oklab a/b sliderはCSS percentage reference rangeの`-0.4〜0.4`、OkLCh C sliderは`0〜0.4`を教材用範囲とする。Lは内部coordinateの`0〜1`、Hueは`0〜360`を使う。a/b/Cは理論上unboundedなので、number inputとcanonical stateはslider外のa/bと非負Cを保持する。OkLCh Hueは`[0, 360)`へnormalizeし、C = 0で変換Hueがmissingなら`0°`をfallback表示する。明示編集されたpowerless Hueはhidden stateではなくcanonical OkLCh coordinateへ保持する。
+
+LCh / OkLCh Hue比較はCurrent Color editorではなく教材ローカル実験であり、各空間のscaleに適したL/Cを別々に固定し、共有Hueだけをlocal stateにする。元のLCh / OkLCh座標についてsRGBとDisplay P3をそれぞれ判定し、previewだけを必要に応じて明示的にsRGB mappingする。canonical座標、計算値、gamut状態はmapping前の値を維持する。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

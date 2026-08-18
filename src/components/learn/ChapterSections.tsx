@@ -3,13 +3,10 @@ import { HslChapter } from './HslChapter';
 import { LabChapter } from './LabChapter';
 import { LinearRgbChapter } from './LinearRgbChapter';
 import { LearnChapter } from './LearnChapter';
+import { OklabChapter } from './OklabChapter';
 import { RgbChapter } from './RgbChapter';
 import { SrgbChapter } from './SrgbChapter';
 import { XyzChapter } from './XyzChapter';
-
-export function OklabChapter() {
-  return <LearnChapter chapter={chapters[6]} />;
-}
 
 export function GamutChapter() {
   return <LearnChapter chapter={chapters[7]} />;
