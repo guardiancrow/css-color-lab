@@ -143,6 +143,19 @@ export interface GamutComparisonResult {
   readonly mappedDelta: ColorCoordinates;
 }
 
+export interface TargetGamutComparisonResult {
+  readonly target: GamutSpaceId;
+  readonly original: CanonicalColor;
+  readonly rawTarget: CanonicalColor;
+  readonly clipped: CanonicalColor;
+  readonly mapped: CanonicalColor;
+  readonly originalOklch: ColorCoordinates;
+  readonly clippedOklch: ColorCoordinates;
+  readonly mappedOklch: ColorCoordinates;
+  readonly clippedDelta: ColorCoordinates;
+  readonly mappedDelta: ColorCoordinates;
+}
+
 function numericDelta(
   result: ColorCoordinates,
   original: ColorCoordinates,
@@ -164,16 +177,36 @@ function numericDelta(
 export function compareSrgbClippingAndMapping(
   original: CanonicalColor,
 ): GamutComparisonResult {
-  const rawSrgb = convertColor(original, 'srgb');
-  const clipped = clipColorToGamut(original, 'srgb');
-  const mapped = mapColorToGamut(original, 'srgb', 'css');
+  const comparison = compareClippingAndMapping(original, 'srgb');
+
+  return {
+    original: comparison.original,
+    rawSrgb: comparison.rawTarget,
+    clipped: comparison.clipped,
+    mapped: comparison.mapped,
+    originalOklch: comparison.originalOklch,
+    clippedOklch: comparison.clippedOklch,
+    mappedOklch: comparison.mappedOklch,
+    clippedDelta: comparison.clippedDelta,
+    mappedDelta: comparison.mappedDelta,
+  };
+}
+
+export function compareClippingAndMapping(
+  original: CanonicalColor,
+  target: GamutSpaceId,
+): TargetGamutComparisonResult {
+  const rawTarget = convertColor(original, target);
+  const clipped = clipColorToGamut(original, target);
+  const mapped = mapColorToGamut(original, target, 'css');
   const originalOklch = convertColor(original, 'oklch').coordinates;
   const clippedOklch = convertColor(clipped, 'oklch').coordinates;
   const mappedOklch = convertColor(mapped, 'oklch').coordinates;
 
   return {
+    target,
     original,
-    rawSrgb,
+    rawTarget,
     clipped,
     mapped,
     originalOklch,

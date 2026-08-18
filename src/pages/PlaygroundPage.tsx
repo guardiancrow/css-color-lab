@@ -4,6 +4,7 @@ import { LChControls } from '../components/color/LChControls';
 import { OklabControls } from '../components/color/OklabControls';
 import { OkLChControls } from '../components/color/OkLChControls';
 import { PlaygroundColorSummary } from '../components/color/PlaygroundColorSummary';
+import { PlaygroundGamutExplorer } from '../components/color/PlaygroundGamutExplorer';
 import { RGBControls } from '../components/color/RGBControls';
 
 const editors = [
@@ -56,9 +57,16 @@ export function PlaygroundPage() {
         </p>
       </header>
 
+      <nav className="playground-section-nav" aria-label="Playground sections">
+        <span>Jump to</span>
+        <a href="#color-converter">Color Converter</a>
+        <a href="#gamut-explorer">Gamut Explorer</a>
+      </nav>
+
       <PlaygroundColorSummary />
 
       <section
+        id="color-converter"
         className="playground-converter"
         aria-labelledby="color-converter-title"
       >
@@ -88,6 +96,8 @@ export function PlaygroundPage() {
           ))}
         </div>
       </section>
+
+      <PlaygroundGamutExplorer />
     </main>
   );
 }

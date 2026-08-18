@@ -114,6 +114,12 @@ Playground presentationは`playgroundColor` helperへ集約する。6種類のCS
 
 Alpha editorはPlayground summaryに1つだけ置き、同じspace / coordinatesからalphaだけを変更したcanonical valueを作る。各space editorの既存更新helperはprevious colorのalphaを引き継ぐため、色操作後も透明度を保持する。number inputの不正な一時文字列はUI local draftに留まり、NaNやInfinityをcanonical stateへ渡さない。
 
+Phase 14のGamut ExplorerもColor Converterと同じColorProviderへ接続する。Phase 9の教材実験はlocal stateを維持する一方、Explorer用OkLCh Controls、boundary action、4 presetはすべて共有canonical Current Colorを更新する。target gamut selectorだけが比較表示用のlocal UI stateであり、独立したgamut color stateは追加しない。
+
+`analyzeGamutBoundaries`はCurrent Colorを編集可能なOkLCh座標へ変換し、既存`findMaxChromaForGamut`をsRGB、Display P3、Rec.2020へ適用する。返す最大Cはtolerance `0.00001`のin-gamut lower boundである。Current Cとの差、文字status、chart用の動的scaleと位置を同じ分析結果から導出し、chartだけの推測値を持たない。React側ではCurrent Colorをdependencyとした`useMemo`で3回の探索結果を共有する。
+
+clipping / mapping比較は既存sRGB互換wrapperを維持しつつ、`compareClippingAndMapping(original, target)`へ共通化する。raw target RGB、simple clipping、CSS mapping、resulting OkLCh、元OkLChとの差を返すが、いずれも新しい派生canonical valueでありOriginalを変更しない。PlaygroundにApply操作は設けず、target変更や比較renderが共有Current Colorを書き換えないことをテストする。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

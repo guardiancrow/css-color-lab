@@ -4,14 +4,20 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 13では、Playground foundationとColor Converterを実装しています。Learnは順番に理解する教材、Playgroundは同じ1色を複数空間から自由に編集・比較するツールとして責務を分けています。
+Phase 14では、PlaygroundへCurrent Color直結のGamut Explorerを追加しています。Learnは順番に理解する教材、Playgroundは同じ1色を複数空間から自由に編集・比較するツールとして責務を分けています。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
-- `/playground`: 6色空間を横断してCurrent Colorを編集するColor Converter
+- `/playground`: Color ConverterとGamut Explorerを備えた実験ツール
 - Playground専用wide layout、Current Color summary、native / mapped preview
 - sRGB、HSL、Lab、LCh、Oklab、OkLChの双方向editor grid
 - Hexと6種類のCSS color syntax、3 gamut statusの同時表示
 - 共通Alpha control、Reset、基本色と検証済みwide-gamut preset
+- Current Colorと双方向同期するfocused OkLCh Gamut Explorer
+- sRGB / Display P3 / Rec.2020の最大Chromaと境界差の数値表示
+- 実計算値を位置へ反映する1次元Chroma boundary chart
+- 各gamutのin-gamut lower boundaryへCを設定するaction
+- 4種類の検証済みgamut presetとCurrent Colorへの適用
+- sRGB / Display P3 / Rec.2020 targetを選べるclipping / CSS mapping比較
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
 - 単一の現在色state、alpha、gamut判定、明示的gamut mapping
@@ -194,6 +200,14 @@ PlaygroundはLearnの3カラムを再利用せず、最大`148rem`のinteraction
 6つのeditorはLearnと同じControlsをそのまま再利用し、すべてContext内の単一`CanonicalColor`を参照します。Resetは`#D27A43`へ戻し、presetはsRGB基本色、neutral gray、Phase 9で検証済みの「sRGB外 / Display P3内」のOkLCh色を提供します。Alphaは各editorへ重複させず、summaryに共通のrange / number inputを1つ置きます。色空間を変更しても既存alphaは保持されます。
 
 summaryはColor Engineのserializerを通した`rgb()`、`hsl()`、`lab()`、`lch()`、`oklab()`、`oklch()`とHexを表示します。sRGB外のcanonical colorは変更せず、Hexとmapped previewだけをCSS方式でsRGBへmappingして注記します。Native / original previewは元のCSS表現をbrowserへ渡す独立した描画確認であり、Engineの計算結果として読み戻しません。sRGB、Display P3、Rec.2020の判定もmapping前のcanonical colorに対して行います。
+
+## Playground Gamut Explorer
+
+Gamut ExplorerはColor Converterと同じ`CanonicalColor`を直接参照し、focused OkLCh ControlsからL / C / hを操作します。Converter側の変更はExplorerへ、Explorer側の変更はConverter、Summary、CSS syntaxへ即時反映されます。Playground内にはColor Converter / Gamut Explorerへのanchor navigationを置き、機能を非表示にするtab stateは追加していません。
+
+現在のL / hについて既存`findMaxChromaForGamut`を3 gamutへ適用し、sRGB、Display P3、Rec.2020それぞれのin-gamut側の最大Cを求めます。Current Cとの差を`remaining`または`outside boundary`で表示し、実計算値と動的scaleからChroma axis上のmarker位置を算出します。各boundary actionはbinary searchが返すlower boundへCurrent Cを設定します。Phase 9の4 gamut presetもCurrent Colorへ適用します。
+
+Original / Simple clipping / CSS gamut mapping比較ではtargetをsRGB、Display P3、Rec.2020から選択できます。既存のclip / map APIからtarget RGB coordinates、resulting OkLCh、ΔL / ΔC / Δh、target gamut statusを導出します。これらは表示用の派生結果で、Original canonical colorを暗黙に変更しません。L / C / h操作時の3 boundary計算はCurrent Color単位で`useMemo`し、複雑なcache layerは追加していません。
 
 ## 対象ブラウザ
 

@@ -42,7 +42,19 @@ const axes = [
   },
 ] as const;
 
-export function OkLChControls() {
+interface OkLChControlsProps {
+  readonly labelPrefix?: string;
+  readonly heading?: string;
+  readonly eyebrow?: string;
+  readonly showPreview?: boolean;
+}
+
+export function OkLChControls({
+  labelPrefix = 'OkLCh',
+  heading = 'OkLCh Controls',
+  eyebrow = 'Current Color editor',
+  showPreview = true,
+}: OkLChControlsProps = {}) {
   const baseId = useId();
   const { currentColor, setCurrentColor } = useCurrentColor();
   const coordinates = getEditableOklchCoordinates(currentColor);
@@ -52,8 +64,8 @@ export function OkLChControls() {
   return (
     <div className="lab-controls" role="group" aria-labelledby={titleId}>
       <div className="lab-controls-heading">
-        <p className="eyebrow">Current Color editor</p>
-        <h3 id={titleId}>OkLCh Controls</h3>
+        <p className="eyebrow">{eyebrow}</p>
+        <h3 id={titleId}>{heading}</h3>
         <p id={helpId}>
           C sliderの0〜0.4はCSS reference
           rangeです。Hueはcommit時に0〜360°へwrapします。
@@ -65,6 +77,7 @@ export function OkLChControls() {
             key={axis.abbreviation}
             id={`${baseId}-${axis.abbreviation}`}
             spaceName="OkLCh"
+            labelSpaceName={labelPrefix}
             name={axis.name}
             abbreviation={axis.abbreviation}
             direction={axis.direction}
@@ -86,7 +99,9 @@ export function OkLChControls() {
           />
         ))}
       </div>
-      <OklabColorPreview color={currentColor} editorSpace="OkLCh" />
+      {showPreview ? (
+        <OklabColorPreview color={currentColor} editorSpace="OkLCh" />
+      ) : null}
       <p className="experiment-footnote">
         C =
         0ではHueはpowerlessです。変換でHueがmissingなら0°を表示し、明示編集したHueはcanonical
