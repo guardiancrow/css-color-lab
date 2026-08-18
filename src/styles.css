@@ -43,6 +43,7 @@ a {
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 [tabindex]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
@@ -2115,6 +2116,301 @@ h1 {
   font-weight: 700;
 }
 
+.color-interpolation-experiment,
+.hue-interpolation-experiment,
+.color-mix-generator {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  background: var(--surface-muted);
+}
+
+.interpolation-presets,
+.hue-method-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin: 1.25rem 0 0;
+  padding: 0;
+  border: 0;
+}
+
+.interpolation-presets legend,
+.hue-method-options legend {
+  width: 100%;
+  margin-bottom: 0.35rem;
+  font-weight: 750;
+}
+
+.interpolation-presets button {
+  padding: 0.55rem 0.8rem;
+  border: 1px solid #b9b6ca;
+  border-radius: 0.55rem;
+  color: #302f3d;
+  background: var(--surface);
+  font: inherit;
+  font-weight: 650;
+  cursor: pointer;
+}
+
+.interpolation-presets button:hover,
+.interpolation-presets button[aria-pressed='true'] {
+  color: var(--accent-dark);
+  border-color: var(--accent);
+  background: #eeecff;
+}
+
+.interpolation-endpoints,
+.interpolation-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 1rem 0 1.5rem;
+}
+
+.interpolation-endpoints article {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.85rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+}
+
+.interpolation-endpoints h4,
+.interpolation-endpoints code {
+  margin: 0;
+}
+
+.interpolation-endpoints code {
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: 0.78rem;
+}
+
+.endpoint-swatch,
+.interpolation-result-swatch {
+  flex: 0 0 auto;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid rgb(32 32 42 / 25%);
+  border-radius: 0.65rem;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 35%);
+}
+
+.interpolation-result-card {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  background: var(--surface);
+}
+
+.interpolation-result-heading {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.interpolation-result-heading h4,
+.interpolation-result-heading p {
+  margin: 0;
+}
+
+.engine-gradient {
+  height: 3.25rem;
+  margin: 0.9rem 0;
+  border: 1px solid rgb(32 32 42 / 28%);
+  border-radius: 0.55rem;
+}
+
+.interpolation-coordinate-list {
+  margin: 0;
+}
+
+.interpolation-coordinate-list > div {
+  display: grid;
+  grid-template-columns: minmax(5.2rem, auto) minmax(0, 1fr);
+  gap: 0.65rem;
+  padding: 0.35rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.interpolation-coordinate-list dt {
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.interpolation-coordinate-list dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.78rem;
+}
+
+.compact-gamut-status {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 0.7rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  list-style: none;
+  color: var(--text-muted);
+  font-size: 0.75rem;
+}
+
+.compact-gamut-status span {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  margin-right: 0.25rem;
+  border-radius: 50%;
+  background: #a12727;
+}
+
+.compact-gamut-status li[data-in-gamut='true'] span {
+  background: #167143;
+}
+
+.mapping-disclosure {
+  margin: 0.7rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.77rem;
+}
+
+.interpolation-space-note {
+  min-height: 4.7rem;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.color-mix-generator {
+  background: var(--surface);
+}
+
+.color-mix-generator h3,
+.color-mix-generator p {
+  margin-top: 0;
+}
+
+.color-mix-controls {
+  display: grid;
+  grid-template-columns: max-content minmax(10rem, 1fr);
+  gap: 0.55rem 0.8rem;
+  align-items: center;
+  max-width: 30rem;
+}
+
+.color-mix-controls label {
+  font-weight: 700;
+}
+
+.color-mix-controls select {
+  min-height: 2.5rem;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid #aaa7bc;
+  border-radius: 0.45rem;
+  color: inherit;
+  background: #fff;
+  font: inherit;
+}
+
+.color-mix-generator pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border-radius: 0.65rem;
+  color: #f8f7ff;
+  background: #262431;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.native-color-mix-preview,
+.hue-path-result {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+}
+
+.native-color-mix-preview > div > span,
+.hue-result-swatch {
+  display: block;
+  flex: 0 0 auto;
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid rgb(32 32 42 / 25%);
+  border-radius: 50%;
+  background: repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 0 / 1rem 1rem;
+}
+
+.native-color-mix-preview > div {
+  flex: 1 1 10rem;
+}
+
+.native-color-mix-preview > div > p {
+  margin-top: 0.4rem;
+  font-size: 0.78rem;
+}
+
+.native-color-mix-preview code {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.native-color-mix-preview p,
+.hue-path-result p {
+  margin: 0;
+}
+
+.hue-method-options label {
+  display: flex;
+  gap: 0.55rem;
+  align-items: flex-start;
+  flex: 1 1 10rem;
+  padding: 0.7rem;
+  border: 1px solid #b9b6ca;
+  border-radius: 0.65rem;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.hue-method-options label:has(input:checked) {
+  border-color: var(--accent);
+  background: #eeecff;
+}
+
+.hue-method-options input {
+  margin-top: 0.35rem;
+}
+
+.hue-method-options span,
+.hue-method-options small {
+  display: block;
+}
+
+.hue-method-options small {
+  color: var(--text-muted);
+}
+
+.hue-path-result {
+  margin: 1rem 0;
+  background: var(--surface);
+}
+
+.hue-path-values {
+  font-size: 1.1rem;
+}
+
 @media (max-width: 1100px) {
   .learn-layout {
     grid-template-columns: minmax(180px, 220px) minmax(0, 720px);
@@ -2274,7 +2570,13 @@ h1 {
   .wide-preview-comparison,
   .mapping-result-grid,
   .mapping-explanation,
-  .mapping-original {
+  .mapping-original,
+  .interpolation-endpoints,
+  .interpolation-result-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .color-mix-controls {
     grid-template-columns: 1fr;
   }
 

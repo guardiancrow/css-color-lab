@@ -48,6 +48,16 @@ export interface SerializeColorOptions {
 }
 
 export type RgbInterpolationSpace = 'srgb' | 'srgb-linear';
+export type InterpolationSpace = RgbInterpolationSpace | 'oklab' | 'oklch';
+export type HueInterpolationMethod =
+  'shorter' | 'longer' | 'increasing' | 'decreasing';
+
+export interface InterpolateColorOptions {
+  readonly space: InterpolationSpace;
+  readonly hueMethod?: HueInterpolationMethod;
+}
+
+const OKLCH_POWERLESS_CHROMA = 0.000004;
 
 function assertChannel(channel: ColorChannel, index: number): void {
   if (channel !== null && !Number.isFinite(channel)) {
@@ -165,23 +175,113 @@ export function interpolateRgbColors(
   amount: number,
   space: RgbInterpolationSpace,
 ): CanonicalColor {
+  return interpolateColors(start, end, amount, { space });
+}
+
+function normalizeHue(hue: number): number {
+  return ((hue % 360) + 360) % 360;
+}
+
+/** Apply the CSS Color hue fixup rules after carrying forward a missing hue. */
+export function adjustHueEndpoints(
+  start: ColorChannel,
+  end: ColorChannel,
+  method: HueInterpolationMethod,
+): readonly [ColorChannel, ColorChannel] {
+  if (start === null && end === null) {
+    return [null, null];
+  }
+
+  let adjustedStart = normalizeHue(start ?? end ?? 0);
+  let adjustedEnd = normalizeHue(end ?? start ?? 0);
+  const difference = adjustedEnd - adjustedStart;
+
+  if (method === 'shorter') {
+    if (difference > 180) adjustedStart += 360;
+    else if (difference < -180) adjustedEnd += 360;
+  } else if (method === 'longer') {
+    if (difference > 0 && difference < 180) adjustedStart += 360;
+    else if (difference <= 0 && difference > -180) adjustedEnd += 360;
+  } else if (method === 'increasing' && difference < 0) {
+    adjustedEnd += 360;
+  } else if (method === 'decreasing' && difference > 0) {
+    adjustedStart += 360;
+  }
+
+  return [adjustedStart, adjustedEnd];
+}
+
+/**
+ * Interpolate without clipping or gamut mapping. Missing components are carried
+ * forward, powerless OkLCh hues become missing, and alpha is premultiplied.
+ */
+export function interpolateColors(
+  start: CanonicalColor,
+  end: CanonicalColor,
+  amount: number,
+  options: InterpolateColorOptions,
+): CanonicalColor {
   if (!Number.isFinite(amount) || amount < 0 || amount > 1) {
     throw new RangeError('Interpolation amount must be from 0 to 1.');
   }
 
+  const { space, hueMethod = 'shorter' } = options;
   const startColor = convertColor(start, space);
   const endColor = convertColor(end, space);
   const alpha = startColor.alpha * (1 - amount) + endColor.alpha * amount;
-  const coordinates = startColor.coordinates.map((channel, index) =>
+  const startCoordinates = [...startColor.coordinates] as [
+    ColorChannel,
+    ColorChannel,
+    ColorChannel,
+  ];
+  const endCoordinates = [...endColor.coordinates] as [
+    ColorChannel,
+    ColorChannel,
+    ColorChannel,
+  ];
+
+  if (space === 'oklch') {
+    if (
+      startCoordinates[1] === null ||
+      Math.abs(startCoordinates[1]) <= OKLCH_POWERLESS_CHROMA
+    ) {
+      startCoordinates[2] = null;
+    }
+    if (
+      endCoordinates[1] === null ||
+      Math.abs(endCoordinates[1]) <= OKLCH_POWERLESS_CHROMA
+    ) {
+      endCoordinates[2] = null;
+    }
+
+    const [startHue, endHue] = adjustHueEndpoints(
+      startCoordinates[2],
+      endCoordinates[2],
+      hueMethod,
+    );
+    startCoordinates[2] = startHue;
+    endCoordinates[2] = endHue;
+  }
+
+  const coordinates = startCoordinates.map((channel, index) =>
     interpolateChannel(
       channel,
-      endColor.coordinates[index] ?? null,
+      endCoordinates[index] ?? null,
       startColor.alpha,
       endColor.alpha,
       amount,
       alpha,
     ),
   ) as [ColorChannel, ColorChannel, ColorChannel];
+
+  if (space === 'oklch') {
+    const startHue = startCoordinates[2];
+    const endHue = endCoordinates[2];
+    coordinates[2] =
+      startHue === null || endHue === null
+        ? null
+        : normalizeHue(startHue * (1 - amount) + endHue * amount);
+  }
 
   return createColor(space, coordinates, alpha);
 }

@@ -4,9 +4,9 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 9では、Chapter 1〜7に続き、Chapter 8「Gamut」をインタラクティブ教材として実装しています。
+Phase 10では、Chapter 1〜8に続き、Chapter 9「Color interpolation」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜8の教材と、後続2章のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜9の教材と、Chapter 10のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
@@ -27,10 +27,14 @@ Phase 9では、Chapter 1〜7に続き、Chapter 8「Gamut」をインタラク�
 - Current ColorのsRGB / Display P3 / Rec.2020 gamut判定
 - OkLCh Chroma / Hue / Lightnessと最大Chroma boundaryの実験
 - simple clippingとCSS gamut mappingの数値比較
+- sRGB / Linear sRGB / Oklab / OkLChの補間比較
+- shorter / longer / increasing / decreasing hueの経路比較
+- Engine sampleによるgradient、premultiplied alpha、raw中間色のgamut判定
+- CSS `color-mix()` generatorとbrowser-native support preview
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut statusがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。本格的な2D / 3D gamut可視化、Chapter 9以降の教材本文はまだ実装していません。
+RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut statusがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。本格的な2D / 3D gamut可視化とChapter 10の教材本文はまだ実装していません。
 
 ## 技術構成
 
@@ -139,6 +143,14 @@ Current Colorは3 gamutに対して元のcanonical colorを直接判定します
 `clipColorToGamut`はtarget RGBへ変換したchannelを単純に範囲内へ切り詰め、`mapColorToGamut(..., 'css')`はCSS方式のgamut mappingを明示的に実行します。どちらも新しいcanonical valueを返し、元色を変更しません。mapped／clipped結果はColor.jsが元空間で返すため、Color Engine境界でtarget RGBへ明示変換してからtag付けします。
 
 CSS例として`color(display-p3 ...)`、`color(rec2020 ...)`、`oklch(...)`を示します。OkLChとDisplay P3は同義ではありません。original CSS previewと明示的sRGB mapped previewを分離しますが、wide-gamut側の実際の見え方はbrowser、OS color management、display capabilityに依存します。`color-gamut` media featureも能力の目安であり、正確なdisplay診断ではありません。
+
+## Color interpolation
+
+Chapter 9では同じ2色をsRGB、Linear sRGB、Oklab、OkLChで補間します。端点presetとmix位置は教材ローカルstateであり、Current Colorを変更しません。各gradient stripはbrowser任せの2-stop gradientではなく、Color Engineが25点を計算し、各点を表示時だけ明示的にsRGB gamut mappingして作ります。結果カードは補間空間の座標、raw sRGB、OkLCh、sRGB / Display P3 / Rec.2020のgamut状態を別々に示します。
+
+`interpolateColors`はCSSのmissing component carry-forward、OkLChのpowerless Hue、4つのHue interpolation method、alpha premultiplicationを扱います。補間中のcanonical valueはclipもmappingもしません。従来の`interpolateRgbColors`は互換wrapperとして残します。
+
+generatorはEngineでserializeした端点から、interpolation spaceと必要なHue methodを明示する`color-mix()`を作ります。`CSS.supports()`とbrowser-native previewは実装確認用で、Engineの計算結果を置き換えるものではありません。
 
 ## 対象ブラウザ
 
