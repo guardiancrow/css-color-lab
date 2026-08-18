@@ -18,6 +18,7 @@ describe('modern CSS color feature detection', () => {
       'unsupported',
     );
     expect(supports).toHaveBeenCalledWith('color', 'oklch(from red l c h)');
+    expect(supports).toHaveBeenCalledWith('color', 'color(rec2020 1 0 0)');
   });
 
   it('keeps detection unavailable when CSS.supports cannot be used', () => {

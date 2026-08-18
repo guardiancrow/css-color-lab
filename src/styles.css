@@ -47,6 +47,7 @@ a:focus-visible,
 button:focus-visible,
 input:focus-visible,
 select:focus-visible,
+summary:focus-visible,
 [tabindex]:focus-visible {
   outline: 3px solid var(--focus);
   outline-offset: 3px;
@@ -3132,22 +3133,6 @@ h1 {
   font-size: 0.74rem;
 }
 
-.placeholder-panel {
-  margin-top: 3rem;
-  padding: clamp(1.5rem, 5vw, 3rem);
-  border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  background: var(--surface);
-}
-
-.placeholder-panel h2 {
-  font-size: 1.35rem;
-}
-
-.placeholder-panel ul {
-  padding-left: 1.25rem;
-}
-
 .text-link {
   color: var(--accent-dark);
   font-weight: 700;
@@ -4575,6 +4560,25 @@ h1 {
 
   .playground-alpha-inputs label:not(.visually-hidden) {
     grid-column: 1;
+  }
+}
+
+@media (forced-colors: active) {
+  .brand-mark,
+  .gamut-status span,
+  .compact-gamut-status span {
+    border: 1px solid CanvasText;
+  }
+
+  button[aria-pressed='true'],
+  .site-nav a[aria-current='page'] {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+
+  .feature-result,
+  .modern-support-list li {
+    color: CanvasText;
   }
 }
 

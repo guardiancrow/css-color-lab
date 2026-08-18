@@ -106,7 +106,7 @@ Phase 11のRelative Color実験は共有Current Colorを読み取り専用のbas
 
 `calculateContrastRatio`は既存`getRelativeLuminance`からWCAG 2.x ratioを導出し、`analyzeBlackWhiteContrast`は教材用にblack / whiteの大きいratioを選ぶ。現行`contrast-color()`もblack / whiteの最大contrastを選ぶが、厳密なalgorithmはUA定義であるため、Engine選択をnative resultの再実装やexpected値とは扱わない。ratioだけでfont、size、周辺色を含むaccessibilityを保証しない。
 
-runtime feature detectionは`modernCssSupport`へ隔離し、`CSS.supports('color', value)`で7つの構文を判定する。状態は`Supported`、`Unsupported`、`Detection unavailable`を文字で表示する。この判定はsyntax supportだけを対象とし、display gamut、OS color management、描画精度は判定しない。
+runtime feature detectionは`modernCssSupport`へ隔離し、`CSS.supports('color', value)`でrelative colors、`color-mix()`、`light-dark()`、`contrast-color()`、Oklab、OkLCh、Display P3、Rec.2020の8構文を判定する。状態は`Supported`、`Unsupported`、`Detection unavailable`を文字で表示する。この判定はsyntax supportだけを対象とし、display gamut、OS color management、描画精度は判定しない。
 
 Phase 13のPlayground Color ConverterはLearn用wrapperを複製せず、既存のRGB、HSL、Lab、LCh、Oklab、OkLCh Controlsを同じColorProvider配下へ同時配置する。各Controlsはcanonical colorから派生値を取得し、編集元空間で新しいcanonical valueを保存するため、6 editor、CSS summary、preview、gamut判定が一方向の導出関係を維持する。6空間分の永続stateやColor.js objectは追加しない。
 
@@ -133,6 +133,8 @@ Phase 16のModern CSS Toolsは、Relative Base、color-mix A / B、Light / Dark�
 Relative calculationとserialization、補間、contrast ratio、feature detectionはPhase 11 / 15の既存helperを再利用し、React componentへ変換式を重複させない。raw resultはgamut外でも保持し、swatchだけを既存の表示用sRGB mappingへ渡す。browser-native CSSは独立したsupport previewであり、Engine resultの入力やexpected値にはしない。未対応時もgenerated codeとEngine analysisは利用可能にする。
 
 generated CSSのpresentationとClipboard処理は共通`CssCodeBlock`へ集約する。Clipboard APIの成功／失敗は`aria-live`で通知し、失敗時も選択可能なsemantic `pre` / `code`を残す。このbrowser APIは利便機能に限定し、色計算やtool stateには関与しない。
+
+Phase 17のrelease auditではColor Engine、canonical state、数値処理を変更しない。cross-browser対応は標準CSSとgraceful fallbackを維持し、native `summary`のfocus表示、Forced Colorsでの選択・status識別、Rec.2020のruntime syntax detectionを補強する。responsive品質はpage-level overflowを隠す指定ではなく、既存の`minmax(0, 1fr)`、子要素の`min-width: 0`、code block単位のoverflow、1100px / 760px breakpointで維持する。実browserの描画、console、zoom、assistive technologyは`docs/manual-qa.md`の実機確認対象とする。
 
 ## Numeric and gamut policy
 

@@ -4,7 +4,7 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 16では、PlaygroundへModern CSS Toolsを追加しています。Learnは順番に理解する教材、Playgroundは色やCSSを自由に編集・比較・生成するツールとして責務を分けています。
+Phase 17では新しい主要機能を増やさず、cross-browser、accessibility、responsive layout、performance、用語、error resilienceを横断監査し、v1候補としてのrelease品質を整えています。Learnは順番に理解する教材、Playgroundは色やCSSを自由に編集・比較・生成するツールとして責務を分けています。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
 - `/playground`: Color Converter、Gamut Explorer、Interpolation Explorer、Modern CSS Toolsを備えた実験ツール
@@ -55,7 +55,7 @@ Phase 16では、PlaygroundへModern CSS Toolsを追加しています。Learn�
 - Relative ColorのEngine計算、browser-native preview、3 gamut判定
 - `light-dark()`のscheme simulationとnative preview
 - `contrast-color()`のblack / white比較とcontrast ratio
-- Modern CSS Color 7機能のruntime detectionと`@supports`例
+- Modern CSS Color 8機能のruntime detectionと`@supports`例
 - Chapter 10からPlaygroundへの明確な導線
 - large desktopで余剰幅をmain contentへ配分する3カラムlayout
 - proseの読みやすい行長とinteractive contentのwide表示を分離
@@ -96,6 +96,15 @@ npm run typecheck
 npm test
 npm run build
 ```
+
+production buildをローカルで確認する場合は、build後にpreview serverを起動します。
+
+```bash
+npm run build
+npm run preview
+```
+
+実機確認項目は[Manual QA](docs/manual-qa.md)にまとめています。
 
 ## ディレクトリ構成
 
@@ -241,4 +250,4 @@ compact `color-mix()`はPhase 15のendpoint preset、補間、serializerを再�
 
 ## 対象ブラウザ
 
-最新のChromium系ブラウザとFirefoxを対象とします。特定ブラウザ専用APIには依存しません。
+最新のChromium系ブラウザとFirefoxを対象とします。特定ブラウザ専用APIには依存しません。Relative Color、`color-mix()`、`light-dark()`、`contrast-color()`、Oklab / OkLCh、Display P3、Rec.2020のnative構文対応は固定browser version表ではなく、実行時の`CSS.supports()`で判定します。構文未対応時もEngine result、generated CSS、説明を維持します。

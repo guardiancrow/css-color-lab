@@ -26,6 +26,11 @@ export const MODERN_COLOR_FEATURES = [
     label: 'Display P3 syntax',
     value: 'color(display-p3 1 0 0)',
   },
+  {
+    id: 'rec2020',
+    label: 'Rec.2020 syntax',
+    value: 'color(rec2020 1 0 0)',
+  },
 ] as const;
 
 export type ModernColorFeatureId = (typeof MODERN_COLOR_FEATURES)[number]['id'];

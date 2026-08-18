@@ -11,6 +11,14 @@ function renderAt(path: string) {
   );
 }
 
+function expectNamedInteractiveControls(container: HTMLElement) {
+  for (const control of container.querySelectorAll(
+    'button, input, select, summary',
+  )) {
+    expect(control).toHaveAccessibleName();
+  }
+}
+
 describe('application routes', () => {
   it('renders the Learn page and its chapter navigation', () => {
     const { container } = renderAt('/');
@@ -35,7 +43,7 @@ describe('application routes', () => {
       screen.getByRole('heading', { level: 2, name: 'sRGB' }),
     ).toBeInTheDocument();
     expect(
-      screen.getByRole('heading', { level: 2, name: 'Linear RGB' }),
+      screen.getByRole('heading', { level: 2, name: 'Linear sRGB' }),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { level: 2, name: 'XYZ' }),
@@ -66,13 +74,28 @@ describe('application routes', () => {
     expect(
       container.querySelector('.relative-color-experiment'),
     ).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '本文へ移動' })).toHaveAttribute(
+      'href',
+      '#main-content',
+    );
+    expect(screen.getByRole('main')).toHaveAttribute('id', 'main-content');
+    expectNamedInteractiveControls(container);
   });
 
   it('renders the Playground page', () => {
-    renderAt('/playground');
+    const { container } = renderAt('/playground');
 
     expect(
       screen.getByRole('heading', { level: 1, name: 'Color Playground' }),
     ).toBeInTheDocument();
+    const sectionNavigation = screen.getByRole('navigation', {
+      name: 'Playground sections',
+    });
+    for (const link of sectionNavigation.querySelectorAll('a')) {
+      const target = link.getAttribute('href');
+      expect(target).toMatch(/^#/);
+      expect(container.querySelector(target ?? '')).toBeInTheDocument();
+    }
+    expectNamedInteractiveControls(container);
   });
 });

@@ -122,7 +122,7 @@ color: oklch(70% 0.22 20);`}</code>
           同じ2色でも、途中の色をどの色空間で計算するかで結果は変わるのでしょうか？
         </h3>
         <p>
-          次はsRGB、Linear RGB、Oklab、OkLChのinterpolationを比較し、CSS
+          次はsRGB、Linear sRGB、Oklab、OkLChのinterpolationを比較し、CSS
           <code>color-mix()</code>へつながる考え方を学びます。
         </p>
       </aside>

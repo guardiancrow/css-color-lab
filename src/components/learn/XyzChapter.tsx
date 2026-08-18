@@ -59,7 +59,7 @@ export function XyzChapter() {
       <XyzGrayExperiment />
 
       <details className="formula-details matrix-details">
-        <summary>How does Linear RGB become XYZ? — 行列を見る</summary>
+        <summary>How does Linear sRGB become XYZ? — 行列を見る</summary>
         <div>
           <p>
             Linear sRGBの3成分へ、sRGBのprimariesとD65 white

@@ -116,5 +116,6 @@ describe('feature support panel', () => {
     expect(within(list).getAllByText('Unsupported')).not.toHaveLength(0);
     expect(within(list).getByText('Relative colors')).toBeInTheDocument();
     expect(within(list).getByText('Display P3 syntax')).toBeInTheDocument();
+    expect(within(list).getByText('Rec.2020 syntax')).toBeInTheDocument();
   });
 });

@@ -51,7 +51,7 @@ export function RgbChapter() {
         <h3 id="rgb-next-question">
           RGBの数値を半分にすると、見た目の明るさも半分になるのでしょうか？
         </h3>
-        <p>Chapter 2のsRGBとChapter 3のLinear RGBで確かめます。</p>
+        <p>Chapter 2のsRGBとChapter 3のLinear sRGBで確かめます。</p>
       </aside>
     </section>
   );

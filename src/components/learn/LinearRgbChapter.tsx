@@ -12,7 +12,7 @@ export function LinearRgbChapter() {
       aria-labelledby="linear-rgb-title"
     >
       <p className="chapter-number">Chapter 3</p>
-      <h2 id="linear-rgb-title">Linear RGB</h2>
+      <h2 id="linear-rgb-title">Linear sRGB</h2>
       <p className="lesson-lead">
         Linear
         sRGBでは、0.5は基準となる白の50%の光量を表します。表示するときはtransfer

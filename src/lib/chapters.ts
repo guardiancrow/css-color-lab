@@ -16,7 +16,7 @@ export const chapters = [
   {
     id: 'linear-rgb',
     number: 3,
-    title: 'Linear RGB',
+    title: 'Linear sRGB',
     description: '光の量と計算結果の関係を、sRGBとの違いから学びます。',
   },
   {

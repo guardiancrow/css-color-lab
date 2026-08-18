@@ -1,4 +1,10 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { describe, expect, it, vi } from 'vitest';
 import { App } from '../../App';
@@ -276,6 +282,18 @@ describe('Playground Modern CSS Tools', () => {
         ),
       ).toBeInTheDocument();
       expect(screen.getByLabelText('Generated color-mix CSS')).toBeVisible();
+
+      Reflect.deleteProperty(navigator, 'clipboard');
+      fireEvent.click(
+        screen.getByRole('button', { name: 'Copy contrast-color CSS' }),
+      );
+      await waitFor(() => {
+        expect(
+          screen.getAllByText(
+            'Could not copy automatically. Select the code manually.',
+          ),
+        ).toHaveLength(2);
+      });
     } finally {
       if (clipboardDescriptor) {
         Object.defineProperty(navigator, 'clipboard', clipboardDescriptor);
