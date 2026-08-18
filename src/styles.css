@@ -18,6 +18,9 @@
   --accent: #5545c7;
   --accent-dark: #392c96;
   --focus: #1463d6;
+  --learn-max-width: 148rem;
+  --prose-width: 48rem;
+  --layout-gap: clamp(1rem, 1.5vw, 2rem);
 }
 
 * {
@@ -120,9 +123,9 @@ select:focus-visible,
 }
 
 .learn-page {
-  width: min(1500px, 100%);
+  width: min(var(--learn-max-width), 100%);
   margin: 0 auto;
-  padding: 4rem 3rem 6rem;
+  padding: 4rem clamp(1.25rem, 2vw, 3rem) 6rem;
 }
 
 .learn-hero {
@@ -163,18 +166,42 @@ h1 {
 
 .learn-layout {
   display: grid;
-  grid-template-columns: minmax(180px, 230px) minmax(420px, 720px) minmax(
-      240px,
-      290px
-    );
-  gap: clamp(1.5rem, 3vw, 3rem);
+  grid-template-columns:
+    minmax(180px, 220px)
+    minmax(0, 1fr)
+    minmax(220px, 260px);
+  gap: var(--layout-gap);
   align-items: start;
-  justify-content: center;
+}
+
+.learn-sidebars {
+  display: contents;
+}
+
+.navigation-region {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.chapter-list {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.inspector-region {
+  grid-column: 3;
+  grid-row: 1;
 }
 
 .sticky-region {
   position: sticky;
   top: 1.5rem;
+  max-height: calc(100vh - 3rem);
+  max-height: calc(100dvh - 3rem);
+  min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
 }
 
 .chapter-navigation ol {
@@ -189,7 +216,7 @@ h1 {
   display: grid;
   grid-template-columns: 2rem 1fr;
   gap: 0.4rem;
-  padding: 0.55rem 0.45rem;
+  padding: 0.48rem 0.4rem;
   color: var(--text-muted);
   font-size: 0.88rem;
   line-height: 1.35;
@@ -210,11 +237,13 @@ h1 {
 .chapter-list {
   display: grid;
   gap: 1.25rem;
+  min-width: 0;
 }
 
 .learn-chapter {
   min-height: 21rem;
-  padding: clamp(1.5rem, 4vw, 3rem);
+  min-width: 0;
+  padding: clamp(1.5rem, 2.25vw, 2.25rem);
   scroll-margin-top: 2rem;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
@@ -248,11 +277,13 @@ h1 {
 }
 
 .lesson-lead {
+  max-width: var(--prose-width);
   color: var(--text-muted);
   font-size: 1.08rem;
 }
 
 .lesson-copy {
+  max-width: var(--prose-width);
   margin-top: 2rem;
 }
 
@@ -263,10 +294,12 @@ h1 {
   background: var(--surface-muted);
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
   font-size: 0.9em;
-  white-space: nowrap;
+  overflow-wrap: anywhere;
+  white-space: normal;
 }
 
 .lesson-note {
+  max-width: var(--prose-width);
   margin-top: 1.5rem;
   padding: 1rem 1.1rem;
   color: #454352;
@@ -1725,7 +1758,7 @@ h1 {
 .gamut-range-summary,
 .gamut-status-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
   gap: 0.75rem;
   margin-top: 1.5rem;
 }
@@ -1841,7 +1874,7 @@ h1 {
 
 .gamut-boundary-values dl {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
   gap: 0.5rem;
   margin: 0;
 }
@@ -2007,7 +2040,7 @@ h1 {
 }
 
 .color-inspector {
-  padding: 1.25rem;
+  padding: 1rem;
   border: 1px solid var(--border);
   border-radius: 0.75rem;
   background: var(--surface);
@@ -2017,7 +2050,7 @@ h1 {
   display: flex;
   gap: 0.85rem;
   align-items: center;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem;
 }
 
 .inspector-heading h2 {
@@ -2043,9 +2076,9 @@ h1 {
 
 .color-values > div {
   display: grid;
-  grid-template-columns: 4rem 1fr;
+  grid-template-columns: 3.5rem minmax(0, 1fr);
   gap: 0.5rem;
-  padding: 0.55rem 0;
+  padding: 0.48rem 0;
   border-top: 1px solid var(--border);
 }
 
@@ -2055,9 +2088,11 @@ h1 {
 }
 
 .color-values dd {
+  min-width: 0;
+  overflow-wrap: anywhere;
   margin: 0;
   font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
-  font-size: 0.84rem;
+  font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
 }
 
@@ -2709,19 +2744,154 @@ h1 {
   background: var(--accent);
 }
 
-@media (max-width: 1100px) {
-  .learn-layout {
-    grid-template-columns: minmax(180px, 220px) minmax(0, 720px);
-  }
+/* Phase 12: prose keeps a readable measure while experiments use the full track. */
+.learn-chapter > .lesson-conclusion,
+.learn-chapter > .next-question,
+.learn-chapter > .formula-details {
+  max-width: var(--prose-width);
+}
 
-  .inspector-region {
-    position: static;
-    grid-column: 2;
-    grid-row: 2;
+.learn-chapter > *,
+.chapter-list > *,
+.native-engine-comparison > *,
+.interpolation-result-grid > *,
+.lab-editor-grid > * {
+  min-width: 0;
+}
+
+.learn-chapter pre,
+.learn-chapter code {
+  max-width: 100%;
+}
+
+.learn-chapter pre {
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.lab-editor-grid {
+  gap: 0.8rem;
+  margin-top: 2rem;
+}
+
+.oklab-editor-grid .lab-controls {
+  padding: 0.85rem;
+}
+
+.oklab-editor-grid .lab-channel-list {
+  gap: 0.65rem;
+}
+
+.oklab-editor-grid .lab-axis {
+  padding: 0.7rem;
+}
+
+.oklab-editor-grid .lab-number-field {
+  width: 5rem;
+}
+
+.oklab-editor-grid .lab-color-swatch {
+  min-height: 7rem;
+}
+
+.oklab-editor-grid .lab-color-preview dl {
+  padding-bottom: 0.6rem;
+}
+
+.gamut-current-status,
+.gamut-experiment,
+.mapping-comparison {
+  margin-top: 2rem;
+}
+
+.gamut-experiment,
+.mapping-comparison,
+.modern-experiment,
+.modern-support-panel,
+.color-interpolation-experiment,
+.hue-interpolation-experiment {
+  padding: clamp(0.9rem, 1.25vw, 1.25rem);
+}
+
+.gamut-experiment .scalar-control {
+  margin-top: 0;
+  padding: 0.8rem;
+}
+
+.gamut-experiment .gamut-status-grid article {
+  padding: 0.65rem;
+}
+
+.gamut-experiment .wide-preview-swatch {
+  min-height: 6.5rem;
+}
+
+.interpolation-result-card {
+  padding: 0.85rem;
+}
+
+.interpolation-space-note {
+  min-height: 0;
+}
+
+.transfer-result {
+  grid-template-rows: minmax(7rem, 1fr) auto;
+}
+
+.transfer-result-preview {
+  min-height: 7rem;
+}
+
+.color-inspector {
+  min-width: 0;
+}
+
+@media (min-width: 1600px) {
+  .gamut-slider-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 720px) {
+@media (max-width: 1500px) {
+  .learn-layout {
+    grid-template-columns: minmax(170px, 200px) minmax(0, 1fr);
+  }
+
+  .sticky-region {
+    position: static;
+    max-height: none;
+    overflow: visible;
+    scrollbar-gutter: auto;
+  }
+
+  .learn-sidebars {
+    display: grid;
+    grid-column: 1;
+    grid-row: 1;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .navigation-region,
+  .inspector-region {
+    position: static;
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  .chapter-list {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+
+@media (max-width: 1000px) {
+  .lab-editor-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
   .site-header {
     padding: 0 1rem;
   }
@@ -2742,6 +2912,12 @@ h1 {
   .learn-layout {
     display: flex;
     flex-direction: column;
+  }
+
+  .learn-sidebars {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
   }
 
   .sticky-region,

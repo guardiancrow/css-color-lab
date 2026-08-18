@@ -13,7 +13,7 @@ function renderAt(path: string) {
 
 describe('application routes', () => {
   it('renders the Learn page and its chapter navigation', () => {
-    renderAt('/');
+    const { container } = renderAt('/');
 
     expect(
       screen.getByRole('heading', {
@@ -54,6 +54,17 @@ describe('application routes', () => {
     ).toBeInTheDocument();
     expect(
       screen.getByRole('heading', { level: 2, name: 'Modern CSS Color' }),
+    ).toBeInTheDocument();
+    expect(container.querySelector('.learn-layout')).toBeInTheDocument();
+    expect(container.querySelector('.learn-sidebars')).toBeInTheDocument();
+    expect(container.querySelector('.chapter-list')).toBeInTheDocument();
+    expect(container.querySelector('.oklab-editor-grid')).toBeInTheDocument();
+    expect(container.querySelector('.gamut-experiment')).toBeInTheDocument();
+    expect(
+      container.querySelector('.interpolation-result-grid'),
+    ).toBeInTheDocument();
+    expect(
+      container.querySelector('.relative-color-experiment'),
     ).toBeInTheDocument();
   });
 

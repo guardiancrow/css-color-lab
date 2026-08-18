@@ -4,7 +4,7 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 11では、Learn最後のChapter 10「Modern CSS Color」をインタラクティブ教材として実装しています。
+Phase 12では、完成したChapter 1〜10の内容に合わせてLearn全体のdesktop layout、responsive behavior、comparison density、sticky sidebarを再調整しています。新しい教材機能やColor Engine変更は含みません。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
@@ -37,6 +37,10 @@ Phase 11では、Learn最後のChapter 10「Modern CSS Color」をインタラ�
 - `contrast-color()`のblack / white比較とcontrast ratio
 - Modern CSS Color 7機能のruntime detectionと`@supports`例
 - Chapter 10からPlaygroundへの明確な導線
+- large desktopで余剰幅をmain contentへ配分する3カラムlayout
+- proseの読みやすい行長とinteractive contentのwide表示を分離
+- Oklab / OkLCh、Gamut、Interpolation、Modern CSS Colorの比較密度調整
+- viewport高を超えるnav / Inspectorのsticky scroll対応
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
@@ -165,6 +169,19 @@ Chapter 10ではCurrent Colorをoriginとして`oklch(from var(--base) l c h)`�
 `color-mix()`は複数色の補間、relative colorは一つのoriginのchannel操作として整理します。`light-dark()`は`color-scheme`に応じたvalue選択を教材simulationとnative CSSで比較します。`contrast-color()`はblack / whiteを返す現行定義を紹介し、Engine欄ではWCAG 2.x contrast ratioを表示します。厳密なnative選択algorithmはUA定義なので、両結果を同一視しません。
 
 `CSS.supports()`でrelative colors、`color-mix()`、`light-dark()`、`contrast-color()`、Oklab、OkLCh、Display P3 syntaxをruntime判定します。未対応時も教材を無効化せず、native previewだけをfallback表示にします。CSS側のprogressive enhancementとしてfallback declarationと`@supports`を併記しています。
+
+## Learn layout
+
+Learn pageは最大`148rem`まで利用し、large desktopではNavigation `180〜220px`、Current Color Inspector `220〜260px`に抑え、残りを教材main trackへ配分します。従来のmain上限`720px`は廃止しました。Chapter cardはmain track全体を利用しますが、lead、本文、note、conclusionなどのproseは最大`48rem`に制限し、読みやすい行長を維持します。
+
+主要breakpointは次のとおりです。
+
+- `1600px`以上: Gamutの3操作を横並びにしてwide trackを活用
+- `1500px`以下: Navigation + mainの2カラム。InspectorはNavigation下へ移動し、sidebarがmainを圧迫しない構成
+- `1000px`以下: Lab / LCh、Oklab / OkLCh editor比較を1列化
+- `760px`以下: Learn全体を1カラム化し、stickyを解除
+
+3カラム時のNavigationとInspectorにはviewport基準の最大高さと縦overflowを設定し、低いdesktop viewportでも全項目へ到達できるようにしています。code、長いCSS serialization、coordinate表示はpage全体を押し広げず、個別wrapまたはcode block内scrollで処理します。
 
 ## 対象ブラウザ
 

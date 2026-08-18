@@ -14,14 +14,16 @@ export function LearnPage() {
         </p>
       </header>
       <div className="learn-layout">
-        <div className="sticky-region">
-          <ChapterNavigation chapters={chapters} />
+        <div className="learn-sidebars">
+          <div className="sticky-region navigation-region">
+            <ChapterNavigation chapters={chapters} />
+          </div>
+          <div className="sticky-region inspector-region">
+            <CurrentColorInspector />
+          </div>
         </div>
         <div className="chapter-list">
           <ChapterSectionList />
-        </div>
-        <div className="sticky-region inspector-region">
-          <CurrentColorInspector />
         </div>
       </div>
     </main>
