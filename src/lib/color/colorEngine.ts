@@ -5,6 +5,7 @@ import {
   OKLab,
   OKLCH,
   P3,
+  REC_2020,
   sRGB,
   sRGB_Linear,
   XYZ_D50,
@@ -33,6 +34,7 @@ const colorSpaces = {
   oklab: OKLab,
   oklch: OKLCH,
   'display-p3': P3,
+  rec2020: REC_2020,
 } as const;
 
 export interface SerializeColorOptions {
@@ -41,7 +43,7 @@ export interface SerializeColorOptions {
   readonly precision?: number;
   readonly gamutMapping?: {
     readonly target: GamutSpaceId;
-    readonly method: 'css' | 'clip';
+    readonly method: 'css';
   };
 }
 
@@ -195,14 +197,29 @@ export function isInColorGamut(
 export function mapColorToGamut(
   color: CanonicalColor,
   target: GamutSpaceId,
-  method: 'css' | 'clip' = 'css',
+  method: 'css' = 'css',
 ): CanonicalColor {
   const mapped = toGamut(toLibraryColor(color), {
     space: colorSpaces[target],
     method,
   });
+  const converted = to(mapped, colorSpaces[target]);
 
-  return fromLibraryColor(target, mapped.coords, mapped.alpha);
+  return fromLibraryColor(target, converted.coords, converted.alpha);
+}
+
+/** Simple per-channel clipping, kept distinct from perceptual gamut mapping. */
+export function clipColorToGamut(
+  color: CanonicalColor,
+  target: GamutSpaceId,
+): CanonicalColor {
+  const clipped = toGamut(toLibraryColor(color), {
+    space: colorSpaces[target],
+    method: 'clip',
+  });
+  const converted = to(clipped, colorSpaces[target]);
+
+  return fromLibraryColor(target, converted.coords, converted.alpha);
 }
 
 export function serializeColor(

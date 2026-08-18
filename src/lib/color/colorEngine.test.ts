@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import type { ColorCoordinates } from '../../types/color';
 import {
+  clipColorToGamut,
   convertColor,
   createColor,
   getColorCoordinates,
@@ -152,6 +153,24 @@ describe('Color Engine gamut behavior', () => {
     expect(serializeColor(mapped, { format: 'hex' })).toMatch(
       /^#[0-9a-f]{6}$/i,
     );
+  });
+
+  it('supports Rec.2020 conversion, serialization, and gamut checks', () => {
+    const color = createColor('rec2020', [0.4, 0.66, 0.34]);
+
+    expect(isInColorGamut(color, 'rec2020')).toBe(true);
+    expect(serializeColor(color)).toMatch(/^color\(rec2020 /);
+    expect(convertColor(color, 'oklch').space).toBe('oklch');
+  });
+
+  it('clips only through the explicit clipping API', () => {
+    const original = createColor('display-p3', [0, 1, 0]);
+    const clipped = clipColorToGamut(original, 'srgb');
+
+    expect(clipped.space).toBe('srgb');
+    expect(isInColorGamut(clipped, 'srgb')).toBe(true);
+    expect(original.space).toBe('display-p3');
+    expect(original.coordinates).toEqual([0, 1, 0]);
   });
 });
 

@@ -44,6 +44,7 @@ Color Engineの公開責務は次に限定する。
 - `convertColor` / `getColorCoordinates`: 丸めずに別空間へ変換する
 - `getRelativeLuminance`: gamut mappingせずXYZ D65のYを取得する
 - `isInColorGamut`: 元の値を変更せずgamutを判定する
+- `clipColorToGamut`: 呼び出し側が明示したtarget RGBへsimple clippingする
 - `mapColorToGamut`: 呼び出し側が明示した場合だけlossy mappingする
 - `serializeColor`: Color Engineの値をCSS境界へ渡す
 - `interpolateRgbColors`: sRGBまたはLinear sRGBで、gamut mappingせずに2色を補間する
@@ -84,6 +85,14 @@ Oklab a/b sliderはCSS percentage reference rangeの`-0.4〜0.4`、OkLCh C slide
 
 LCh / OkLCh Hue比較はCurrent Color editorではなく教材ローカル実験であり、各空間のscaleに適したL/Cを別々に固定し、共有Hueだけをlocal stateにする。元のLCh / OkLCh座標についてsRGBとDisplay P3をそれぞれ判定し、previewだけを必要に応じて明示的にsRGB mappingする。canonical座標、計算値、gamut状態はmapping前の値を維持する。
 
+Phase 9では`rec2020`をColor Engineの変換対象と`GamutSpaceId`へ追加する。Current ColorのsRGB / Display P3 / Rec.2020判定は共有canonical stateから毎renderで導出する。OkLCh Chroma / Hue / Lightness実験、preset、clipping / mapping比較は教材ローカルstateまたは固定値であり、Current Color editorとは分離する。
+
+`findMaxChromaForGamut`は固定L/hのOkLCh ray上で、元色への`isInColorGamut`だけを使ってbinary searchする。初期upper boundをC = 0.4とし、必要ならout-of-gamutを見つけるまで拡張する。既定toleranceは`0.00001`で、返すlower boundはin-gamut、対応するupper boundはout-of-gamutである。探索中にclipやmappingを行わない。
+
+simple clippingは新しい`clipColorToGamut`で明示し、CSS方式の`mapColorToGamut`とAPIを分ける。Color.jsの`toGamut`はmapped colorをorigin spaceで返すため、両APIは結果をtarget RGB spaceへ明示変換してからcanonical valueを作る。元canonical colorはimmutableで変更しない。教材はraw target RGB、resulting RGB、resulting OkLCh、originalとの差分を別々に表示する。
+
+wide-gamut previewはoriginal CSS syntaxと明示的sRGB mapped previewを区別する。`color(display-p3 ...)`や`color(rec2020 ...)`のserializationは元値から導出し、表示能力を計算の根拠にはしない。browserのsyntax support、OS color management、display gamutによって実際の見え方が異なり、`color-gamut` media featureも近似的なcapability hintに留まる。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。
@@ -92,10 +101,11 @@ LCh / OkLCh Hue比較はCurrent Color editorではなく教材ローカル実験
 - alphaは常にcanonical valueに含め、`0`から`1`を許可する。変換時にも保持する。
 - RGB座標が基準範囲外でも受け入れ、暗黙にclipしない。
 - 変換、gamut判定、gamut mappingは別操作とする。
+- simple clippingも`clipColorToGamut`による明示操作とし、gamut mappingとは区別する。
 - gamut mappingの既定手法はCSS Color 4方式だが、`mapColorToGamut`の明示呼び出しなしには実行しない。
 - Hexと画面上のpreviewは有限gamutを必要とするため、Inspectorが明示的にsRGB mappingを指定する。生のsRGB変換値とgamut状態は別に表示する。
 - ブラウザの`CSS.supports()`やレンダリング結果を変換計算の情報源にしない。CSS serializationはEngineからブラウザへ渡す境界として扱う。
 
 ## Supported spaces
 
-`srgb`、`srgb-linear`、`xyz-d65`、`xyz-d50`、`hsl`、`lab`、`lch`、`oklab`、`oklch`、`display-p3`を型と変換対象として扱う。
+`srgb`、`srgb-linear`、`xyz-d65`、`xyz-d50`、`hsl`、`lab`、`lch`、`oklab`、`oklch`、`display-p3`、`rec2020`を型と変換対象として扱う。

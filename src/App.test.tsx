@@ -49,6 +49,9 @@ describe('application routes', () => {
     expect(
       screen.getByRole('heading', { level: 2, name: 'Oklab / OkLCh' }),
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { level: 2, name: 'Gamut' }),
+    ).toBeInTheDocument();
   });
 
   it('renders the Playground page', () => {

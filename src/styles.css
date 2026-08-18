@@ -1690,6 +1690,309 @@ h1 {
   margin-top: 0.35rem;
 }
 
+.space-gamut-distinction {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  gap: 0.8rem;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.space-gamut-distinction article,
+.gamut-range-summary article,
+.gamut-current-status,
+.gamut-experiment,
+.mapping-comparison {
+  padding: clamp(1rem, 3vw, 1.5rem);
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: #fbfcff;
+}
+
+.space-gamut-distinction h3,
+.space-gamut-distinction p:last-child,
+.gamut-range-summary h3,
+.gamut-range-summary p {
+  margin-bottom: 0;
+}
+
+.space-gamut-distinction > strong {
+  color: var(--accent-dark);
+  font-size: 1.5rem;
+}
+
+.gamut-range-summary,
+.gamut-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+}
+
+.gamut-range-summary article {
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+}
+
+.gamut-range-mark {
+  display: block;
+  height: 0.45rem;
+  margin-bottom: 0.75rem;
+  border: 1px solid currentcolor;
+  border-radius: 999px;
+}
+
+.gamut-range-srgb {
+  width: 45%;
+  color: #315d8d;
+  background: #90bce5;
+}
+
+.gamut-range-p3 {
+  width: 70%;
+  color: #66569d;
+  background: #b0a3df;
+}
+
+.gamut-range-rec2020 {
+  width: 100%;
+  color: #884b69;
+  background: #d79aae;
+}
+
+.gamut-current-status,
+.gamut-experiment,
+.mapping-comparison {
+  margin-top: 2.5rem;
+}
+
+.gamut-status-grid article {
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface);
+}
+
+.gamut-status-grid article[data-in-gamut='true'] {
+  border-left: 0.3rem solid #29845a;
+}
+
+.gamut-status-grid article[data-in-gamut='false'] {
+  border-left: 0.3rem solid #c1473d;
+}
+
+.gamut-status-grid h4,
+.gamut-status-grid .gamut-status {
+  margin: 0;
+}
+
+.gamut-status-grid .gamut-status {
+  margin-top: 0.45rem;
+  font-size: 0.74rem;
+}
+
+.gamut-current-values,
+.wide-css-values {
+  margin: 1rem 0 0;
+}
+
+.gamut-current-values > div,
+.wide-css-values > div {
+  display: grid;
+  grid-template-columns: minmax(7rem, 0.4fr) minmax(0, 1fr);
+  gap: 0.6rem;
+  padding: 0.45rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.gamut-current-values dt,
+.wide-css-values dt {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+
+.gamut-current-values dd,
+.wide-css-values dd {
+  overflow-wrap: anywhere;
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.76rem;
+}
+
+.gamut-slider-list {
+  display: grid;
+  gap: 0.8rem;
+}
+
+.gamut-boundary-values {
+  margin-top: 1rem;
+  padding: 0.9rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+}
+
+.gamut-boundary-values > p {
+  margin: 0 0 0.5rem;
+  font-weight: 750;
+}
+
+.gamut-boundary-values dl {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 0;
+}
+
+.gamut-boundary-values dl > div {
+  padding: 0.55rem;
+  border: 1px solid var(--border);
+  border-radius: 0.35rem;
+  background: var(--surface);
+}
+
+.gamut-boundary-values dt {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.gamut-boundary-values dd {
+  margin: 0.2rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.8rem;
+}
+
+.gamut-boundary-values small {
+  display: block;
+  margin-top: 0.55rem;
+  color: var(--text-muted);
+}
+
+.gamut-preset-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.gamut-preset-buttons button {
+  padding: 0.45rem 0.65rem;
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 0.4rem;
+  background: var(--surface);
+  cursor: pointer;
+}
+
+.gamut-preset-buttons button:hover,
+.gamut-preset-buttons button[aria-pressed='true'] {
+  border-color: var(--accent-dark);
+  background: #edeaff;
+}
+
+.wide-preview-comparison,
+.mapping-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.wide-preview-comparison article,
+.mapping-result-grid article,
+.mapping-original {
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 0.55rem;
+  background: var(--surface);
+}
+
+.wide-preview-swatch,
+.mapping-result-swatch {
+  min-height: 8rem;
+  border-bottom: 1px solid rgb(0 0 0 / 15%);
+}
+
+.wide-preview-comparison h4,
+.wide-preview-comparison p,
+.mapping-result-grid h4,
+.mapping-result-grid p,
+.mapping-result-grid dl {
+  margin-right: 0.8rem;
+  margin-left: 0.8rem;
+}
+
+.wide-preview-comparison p,
+.mapping-explanation {
+  color: var(--text-muted);
+  font-size: 0.74rem;
+}
+
+.mapping-original {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.4fr) minmax(0, 1fr);
+  margin-top: 1rem;
+}
+
+.mapping-original > div:last-child {
+  padding: 0.8rem;
+}
+
+.mapping-original h4,
+.mapping-original dl {
+  margin: 0;
+}
+
+.mapping-original dl > div,
+.mapping-result-grid dl > div {
+  padding: 0.4rem 0;
+  border-top: 1px solid var(--border);
+}
+
+.mapping-original dt,
+.mapping-result-grid dt {
+  color: var(--text-muted);
+  font-size: 0.7rem;
+}
+
+.mapping-original dd,
+.mapping-result-grid dd {
+  overflow-wrap: anywhere;
+  margin: 0.2rem 0 0;
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 0.76rem;
+}
+
+.mapping-result-grid article {
+  padding-bottom: 0.8rem;
+}
+
+.mapping-explanation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin-top: 0.75rem;
+}
+
+.mapping-explanation p {
+  margin: 0;
+  padding: 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--surface-muted);
+}
+
+.wide-css-explanation pre {
+  overflow-x: auto;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: #24232d;
+  color: #f7f6ff;
+  font-size: 0.78rem;
+}
+
 .coming-soon,
 .inspector-note {
   color: var(--text-muted);
@@ -1962,6 +2265,22 @@ h1 {
   .lch-oklch-comparison,
   .hsl-oklch-summary {
     grid-template-columns: 1fr;
+  }
+
+  .space-gamut-distinction,
+  .gamut-range-summary,
+  .gamut-status-grid,
+  .gamut-boundary-values dl,
+  .wide-preview-comparison,
+  .mapping-result-grid,
+  .mapping-explanation,
+  .mapping-original {
+    grid-template-columns: 1fr;
+  }
+
+  .space-gamut-distinction > strong {
+    transform: rotate(90deg);
+    text-align: center;
   }
 
   .oklab-coordinate-pipeline {

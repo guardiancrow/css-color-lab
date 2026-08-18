@@ -4,12 +4,12 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 8では、Chapter 1〜6に続き、Chapter 7「Oklab / OkLCh」をインタラクティブ教材として実装しています。
+Phase 9では、Chapter 1〜7に続き、Chapter 8「Gamut」をインタラクティブ教材として実装しています。
 
-- `/`: Chapter 1〜7の教材と、後続3章のplaceholderを縦に読むLearnページ
+- `/`: Chapter 1〜8の教材と、後続2章のplaceholderを縦に読むLearnページ
 - `/playground`: 将来の実験ツール用Playgroundページ
 - stickyな章ナビゲーションとCurrent Color Inspector
-- sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3の変換
+- sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
 - 単一の現在色state、alpha、gamut判定、明示的gamut mapping
 - 0〜255のsRGB slider／number inputとリアルタイムpreview
 - encoded sRGBとLinear sRGBを往復するneutral gray実験
@@ -24,10 +24,13 @@ Phase 8では、Chapter 1〜6に続き、Chapter 7「Oklab / OkLCh」をイン�
 - Current Colorと双方向同期するOklab / OkLCh editor
 - Lab D50 pipelineとOklab D65 pipelineの比較
 - LCh / OkLChの共有Hue rotation比較とsRGB / Display P3判定
+- Current ColorのsRGB / Display P3 / Rec.2020 gamut判定
+- OkLCh Chroma / Hue / Lightnessと最大Chroma boundaryの実験
+- simple clippingとCSS gamut mappingの数値比較
 - レスポンシブな基本レイアウトとアクセシビリティの土台
 - ESLint、Prettier、TypeScript strict mode、Vitest
 
-RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipelineがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。gamut可視化、2D / 3D可視化、Chapter 8以降の教材本文はまだ実装していません。
+RGB、HSL、Lab、LCh、Oklab、OkLChのいずれのControlsからcanonical stateを更新しても、ほかのeditor、Current Color Inspector、XYZ / Lab / Oklab pipeline、Current Color gamut statusがColor Engine経由で再計算されます。各章の固定比較実験は教材ローカルstateを使い、Current Colorとは明確に分離しています。本格的な2D / 3D gamut可視化、Chapter 9以降の教材本文はまだ実装していません。
 
 ## 技術構成
 
@@ -126,6 +129,16 @@ Oklab ControlsはL/a/b、OkLCh ControlsはL/C/hを単一のCurrent Colorから�
 sliderはCSS percentage reference rangeに合わせ、Oklabを`L 0〜1 / a,b −0.4〜0.4`、OkLChを`L 0〜1 / C 0〜0.4 / h 0〜360`とします。これは数学的上限ではありません。number inputとcanonical stateはslider範囲外のa/bと非負Cを保持し、内部精度を表示のために丸めません。internal Lの`0.65`とCSSの`65%`はUIで区別して表示します。
 
 LCh / OkLCh Hue比較は、それぞれのscaleに適した独立したL/Cを固定し、共有Hueだけを教材ローカルstateで回します。各色はsRGBとDisplay P3のgamut状態を文字で示します。out-of-sRGBでも元のcanonical座標は保持し、swatchとHexだけを明示的にsRGB mappingします。OkLChはLightness、Chroma、Hueを分離してtheme variationやgradientを設計しやすく、wide-gamut値も表現できますが、完全な知覚モデルではなくgamut制約も残ります。
+
+## Gamut、clipping、mapping
+
+Chapter 8では、color spaceを色の座標系、gamutを特定の表現系やdeviceが扱える色の範囲として分けます。sRGB、Display P3、Rec.2020のRGB gamutを比較し、広いgamutはより多くの色を表現できる一方、常に用途上優れているとは限らないことを説明します。
+
+Current Colorは3 gamutに対して元のcanonical colorを直接判定します。教材ローカルのOkLCh実験ではL/C/hを操作でき、現在のL/hにおける各gamut内の最大Chromaをtolerance `0.00001`のbinary searchで探索します。探索中にmappingやclippingは行わず、元OkLCh色への`isInColorGamut`だけを使用します。4つのpresetで、sRGB内、sRGB外/P3内、P3外/Rec.2020内、Rec.2020外を確認できます。
+
+`clipColorToGamut`はtarget RGBへ変換したchannelを単純に範囲内へ切り詰め、`mapColorToGamut(..., 'css')`はCSS方式のgamut mappingを明示的に実行します。どちらも新しいcanonical valueを返し、元色を変更しません。mapped／clipped結果はColor.jsが元空間で返すため、Color Engine境界でtarget RGBへ明示変換してからtag付けします。
+
+CSS例として`color(display-p3 ...)`、`color(rec2020 ...)`、`oklch(...)`を示します。OkLChとDisplay P3は同義ではありません。original CSS previewと明示的sRGB mapped previewを分離しますが、wide-gamut側の実際の見え方はbrowser、OS color management、display capabilityに依存します。`color-gamut` media featureも能力の目安であり、正確なdisplay診断ではありません。
 
 ## 対象ブラウザ
 

@@ -1,4 +1,5 @@
 import { chapters } from '../../lib/chapters';
+import { GamutChapter } from './GamutChapter';
 import { HslChapter } from './HslChapter';
 import { LabChapter } from './LabChapter';
 import { LinearRgbChapter } from './LinearRgbChapter';
@@ -7,10 +8,6 @@ import { OklabChapter } from './OklabChapter';
 import { RgbChapter } from './RgbChapter';
 import { SrgbChapter } from './SrgbChapter';
 import { XyzChapter } from './XyzChapter';
-
-export function GamutChapter() {
-  return <LearnChapter chapter={chapters[7]} />;
-}
 
 export function InterpolationChapter() {
   return <LearnChapter chapter={chapters[8]} />;

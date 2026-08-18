@@ -21,9 +21,10 @@ export type ColorSpaceId =
   | 'lch'
   | 'oklab'
   | 'oklch'
-  | 'display-p3';
+  | 'display-p3'
+  | 'rec2020';
 
-export type GamutSpaceId = 'srgb' | 'display-p3';
+export type GamutSpaceId = 'srgb' | 'display-p3' | 'rec2020';
 
 /**
  * The single, serializable color value stored by the application.
