@@ -1,6 +1,6 @@
 # Manual QA Checklist
 
-Phase 17時点のv1候補を、実ブラウザと実viewportで確認するためのチェックリストです。自動テストでは確認できない描画、browser console、keyboard、Clipboard、OS accessibility設定を重点的に扱います。
+`v1.0.0-rc.1`を正式なv1.0.0候補として確認するためのチェックリストです。自動テストでは確認できない描画、browser console、keyboard、Clipboard、OS accessibility設定を重点的に扱います。
 
 ## 準備
 
@@ -26,6 +26,20 @@ Chromium系とFirefoxのそれぞれで確認します。
 - Modern CSSのSupport statusが文字で表示され、UnsupportedでもEngine resultとgenerated CSSが残る
 
 Clipboardは許可状態と拒否状態をそれぞれ確認します。`localhost`以外ではsecure context制約によりClipboard APIを利用できない場合があります。
+
+### Chromium
+
+- Learnのsticky Navigation / Inspector、anchors、range / number、`details` / `summary`
+- PlaygroundのConverter、Gamut、4-space Interpolation、Modern CSS Tools
+- Clipboardを許可した場合に`Copied`が通知される
+
+### Firefox
+
+- native range inputとarrow key操作
+- Engine-sampled CSS gradientsとselected marker
+- sticky領域とcode wrapping / local overflow
+- `CSS.supports()`の表示とModern CSS unsupported fallback
+- Clipboardの許可／拒否双方でgenerated CSSが残る
 
 ## Routes and anchors
 
@@ -71,6 +85,21 @@ anchor移動後に対象headingが見え、page上端へ不自然に隠れない
 - Modern CSS各toolのlocal stateが相互に勝手に変わらない
 - out-of-sRGB colorでraw canonical値とgamut statusが残り、mapped previewの注記がある
 - alphaがConverter、CSS syntax、Interpolation、Relative Colorで維持される
+- Gamut ExplorerのHue / Lightness / Chroma変更でsRGB、Display P3、Rec.2020のmax Cが更新される
+- boundary action後に対象gamut内となり、比較表示だけではOriginalが変わらない
+- 同じendpointでもsRGB、Linear sRGB、Oklab、OkLChのgradientが異なる
+- 350° → 10°でshorter / longer / increasing / decreasingのpathが区別できる
+- HSL S = 0、LCh / OkLCh C = 0、neutral interpolation endpointでNaNや`undefined`が出ない
+- Alphaを1未満にしてInterpolationへImport、Relative ColorへImport / Applyしても値が保持される
+- number inputで空文字、一時的な`-`、decimal、非常に大きい値、許可／不許可のnegativeを入力してもcrashしない
+
+## Modern CSS runtime and fallback
+
+Relative Color、`color-mix()`、`light-dark()`、`contrast-color()`、Oklab、OkLCh、Display P3、Rec.2020の各statusを確認します。
+
+- `Supported` / `Unsupported` / `Detection unavailable`がruntime結果として文字表示される
+- unsupportedでもpanel、Engine calculation、simulation、generated CSSが残る
+- blank area、layout collapse、exceptionが発生しない
 
 ## Keyboard and assistive settings
 
@@ -81,7 +110,7 @@ anchor移動後に対象headingが見え、page上端へ不自然に隠れない
 - Import / Apply / Copyがnative buttonとして操作できる
 - Copy feedbackをscreen readerのlive regionが通知する
 - Windows Forced Colorsで選択状態、focus、gamut statusの境界が識別できる
-- `prefers-reduced-motion: reduce`でsmooth scrollが無効になる
+- `prefers-reduced-motion: reduce`でsmooth scrollと不要なtransitionが抑制され、操作不能にならない
 
 Learnのlarge desktopではDOM focus順がChapter Navigation → Current Color Inspector →教材本文、視覚配置がNavigation →本文→Inspectorです。実際にkeyboard利用上の混乱がないかを重点確認し、問題があれば次のrelease修正でDOM構造を再検討します。
 

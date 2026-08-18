@@ -2,12 +2,20 @@
 
 CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れながら段階的に学ぶためのWebアプリケーションです。RGBは知っていても、OklabやOkLChがなぜ必要なのか分からない初学者を主な対象にしています。
 
-## 現在のPhase
+## Release status
 
-Phase 17では新しい主要機能を増やさず、cross-browser、accessibility、responsive layout、performance、用語、error resilienceを横断監査し、v1候補としてのrelease品質を整えています。Learnは順番に理解する教材、Playgroundは色やCSSを自由に編集・比較・生成するツールとして責務を分けています。
+`v1.0.0-rc.1`を基準に最終QAを行う、v1.0.0 release candidateです。Modern CSSのnative対応状況はbrowserごとにruntime判定し、未対応時もEngine resultとgenerated CSSを利用できます。
 
-- `/`: Chapter 1〜10を縦に読む、完成したLearnページ
-- `/playground`: Color Converter、Gamut Explorer、Interpolation Explorer、Modern CSS Toolsを備えた実験ツール
+## Learn
+
+`/`では、RGBからModern CSS Colorまでの10章を順番に学びます。各章のcontrolsと実験は共通Current Colorを使うものと、比較条件を固定する教材local stateに分かれています。
+
+## Playground
+
+`/playground`ではColor Converter、Gamut Explorer、Interpolation / Gradient Explorer、Modern CSS Toolsを利用できます。Current Colorと各toolのworking stateは、明示的なImport / Applyで連携します。
+
+## Development notes / Feature inventory
+
 - Playground専用wide layout、Current Color summary、native / mapped preview
 - sRGB、HSL、Lab、LCh、Oklab、OkLChの双方向editor grid
 - Hexと6種類のCSS color syntax、3 gamut statusの同時表示
