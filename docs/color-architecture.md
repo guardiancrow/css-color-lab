@@ -128,6 +128,12 @@ performance上、gradient samplesはStart / End / Hue methodをdependencyとす�
 
 CSS `color-mix()`は既存serializerでStart `100 - amount`%、End `amount`%を生成し、OkLChだけにHue method clauseを付ける。runtime support判定とbrowser-native previewは独立した実装確認であり、computed styleをEngine expected valueには使用しない。powerless OkLCh Hueの判定はColor Engineの共通helperを使用し、UI独自のthresholdを追加しない。
 
+Phase 16のModern CSS Toolsは、Relative Base、color-mix A / B、Light / Dark、contrast Backgroundをそれぞれcomponent localのserializable `CanonicalColor`として保持する。Phase 15のendpointを含む他toolのworking stateとは共有しない。Current ColorからのcopyとRelative resultのApplyには必ず明示buttonを介し、Current Colorの通常変更ではlocal stateを更新しない。Apply後は共有canonical stateからSummary、Converter、Gamut Explorerが再導出される一方、各toolのlocal stateは維持される。
+
+Relative calculationとserialization、補間、contrast ratio、feature detectionはPhase 11 / 15の既存helperを再利用し、React componentへ変換式を重複させない。raw resultはgamut外でも保持し、swatchだけを既存の表示用sRGB mappingへ渡す。browser-native CSSは独立したsupport previewであり、Engine resultの入力やexpected値にはしない。未対応時もgenerated codeとEngine analysisは利用可能にする。
+
+generated CSSのpresentationとClipboard処理は共通`CssCodeBlock`へ集約する。Clipboard APIの成功／失敗は`aria-live`で通知し、失敗時も選択可能なsemantic `pre` / `code`を残す。このbrowser APIは利便機能に限定し、色計算やtool stateには関与しない。
+
 ## Numeric and gamut policy
 
 - 内部座標はJavaScriptの`number`とColor.jsの計算精度を維持し、丸めない。

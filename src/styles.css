@@ -3848,6 +3848,279 @@ h1 {
   min-width: 0;
 }
 
+.playground-modern-tools {
+  min-width: 0;
+  margin-top: 4rem;
+  padding-top: 3rem;
+  border-top: 1px solid var(--border);
+  scroll-margin-top: 2rem;
+}
+
+.modern-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--layout-gap);
+  margin-top: 1.5rem;
+  align-items: start;
+}
+
+.modern-tool-panel {
+  min-width: 0;
+  padding: clamp(1rem, 1.5vw, 1.4rem);
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--surface);
+  box-shadow: 0 0.8rem 2rem rgb(36 31 73 / 5%);
+}
+
+.modern-relative-tool {
+  grid-column: 1 / -1;
+}
+
+.modern-tool-heading {
+  display: flex;
+  gap: 1rem;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.modern-tool-heading h3,
+.modern-tool-heading p {
+  margin-top: 0;
+}
+
+.modern-tool-heading p:last-child,
+.modern-tool-note {
+  color: var(--text-muted);
+}
+
+.modern-tool-actions,
+.modern-compact-endpoints button,
+.modern-tool-heading > button,
+.css-code-block button {
+  flex: 0 0 auto;
+}
+
+.modern-tool-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  justify-content: flex-end;
+}
+
+.modern-tool-panel button,
+.css-code-block button {
+  min-height: 2.35rem;
+  padding: 0.45rem 0.7rem;
+  color: var(--accent-dark);
+  border: 1px solid #aaa5cf;
+  border-radius: 0.45rem;
+  background: #f8f7ff;
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.modern-tool-panel button:hover,
+.css-code-block button:hover {
+  border-color: var(--accent);
+}
+
+.modern-relative-grid {
+  display: grid;
+  grid-template-columns: minmax(20rem, 0.9fr) minmax(24rem, 1.1fr);
+  gap: 1rem;
+  margin-top: 1rem;
+  align-items: start;
+}
+
+.modern-relative-grid .modern-slider-grid {
+  grid-template-columns: 1fr;
+}
+
+.modern-relative-result {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 0.7rem;
+  background: var(--surface-muted);
+}
+
+.modern-relative-previews,
+.modern-scheme-previews {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.modern-relative-previews > div {
+  min-height: 6rem;
+  border: 1px solid rgb(32 32 42 / 22%);
+  border-radius: 0.6rem;
+  background: repeating-conic-gradient(#ddd 0 25%, #fff 0 50%) 0 / 1rem 1rem;
+}
+
+.modern-relative-result dl,
+.modern-contrast-values {
+  display: grid;
+  gap: 0.45rem;
+  margin: 1rem 0;
+}
+
+.modern-relative-result dl > div,
+.modern-contrast-values > div {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.45fr) minmax(0, 1fr);
+  gap: 0.75rem;
+}
+
+.modern-relative-result dt,
+.modern-contrast-values dt {
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+.modern-relative-result dd,
+.modern-contrast-values dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.modern-compact-endpoints {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.modern-compact-endpoints > div {
+  display: grid;
+  grid-template-columns: 3rem minmax(0, 1fr);
+  gap: 0.65rem;
+  align-items: center;
+  min-width: 0;
+  padding: 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 0.65rem;
+  background: var(--surface-muted);
+}
+
+.modern-compact-endpoints span {
+  grid-row: 1 / 3;
+  width: 3rem;
+  height: 3rem;
+  border: 1px solid rgb(32 32 42 / 22%);
+  border-radius: 0.5rem;
+}
+
+.modern-compact-endpoints code {
+  overflow-wrap: anywhere;
+}
+
+.modern-compact-endpoints button {
+  justify-self: start;
+}
+
+.modern-select-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 1rem 0;
+}
+
+.modern-select-grid label {
+  display: grid;
+  gap: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.modern-select-grid select {
+  min-height: 2.5rem;
+  padding: 0.4rem;
+  color: var(--text);
+  border: 1px solid var(--border-strong);
+  border-radius: 0.45rem;
+  background: var(--surface);
+  font: inherit;
+}
+
+.modern-compact-result {
+  display: grid;
+  grid-template-columns: 5rem minmax(0, 1fr);
+  gap: 0.85rem;
+  align-items: center;
+  margin: 1rem 0;
+}
+
+.modern-compact-result > span {
+  width: 5rem;
+  height: 5rem;
+  border: 1px solid rgb(32 32 42 / 22%);
+  border-radius: 0.6rem;
+}
+
+.modern-compact-result code {
+  overflow-wrap: anywhere;
+}
+
+.modern-scheme-previews > div,
+.modern-contrast-preview,
+.modern-native-contrast {
+  display: grid;
+  min-height: 6rem;
+  padding: 0.9rem;
+  place-items: center;
+  border: 1px solid rgb(32 32 42 / 22%);
+  border-radius: 0.65rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.modern-contrast-preview,
+.modern-native-contrast {
+  margin-top: 0.75rem;
+}
+
+.modern-accessibility-warning {
+  padding: 0.75rem;
+  border-inline-start: 0.3rem solid #a45a13;
+  background: #fff8ed;
+}
+
+.css-code-block {
+  margin-top: 1rem;
+}
+
+.css-code-block > div {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+  font-weight: 750;
+}
+
+.css-code-block pre {
+  overflow-x: auto;
+  margin: 0.65rem 0 0;
+  padding: 0.85rem;
+  border-radius: 0.6rem;
+  color: #f8f7ff;
+  background: #262431;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.css-code-block > p {
+  min-height: 1.5em;
+  margin: 0.35rem 0 0;
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
 @media (min-width: 1600px) {
   .gamut-slider-list {
     grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -3897,6 +4170,10 @@ h1 {
   .playground-gamut-context .gamut-status-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .modern-tools-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1250px) {
@@ -3931,6 +4208,15 @@ h1 {
   .playground-interpolation-grid,
   .playground-generated-css {
     grid-template-columns: 1fr;
+  }
+
+  .modern-tools-grid,
+  .modern-relative-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .modern-relative-tool {
+    grid-column: auto;
   }
 }
 
@@ -3996,9 +4282,30 @@ h1 {
   }
 
   .playground-gamut-explorer,
-  .playground-interpolation-explorer {
+  .playground-interpolation-explorer,
+  .playground-modern-tools {
     margin-top: 3rem;
     padding-top: 2rem;
+  }
+
+  .modern-tool-heading {
+    display: block;
+  }
+
+  .modern-tool-actions,
+  .modern-tool-heading > button {
+    margin-top: 0.75rem;
+  }
+
+  .modern-tool-actions {
+    justify-content: flex-start;
+  }
+
+  .modern-compact-endpoints,
+  .modern-select-grid,
+  .modern-relative-previews,
+  .modern-scheme-previews {
+    grid-template-columns: 1fr;
   }
 
   .playground-boundary-heading,

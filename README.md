@@ -4,10 +4,10 @@ CSS Color Module Level 4 / Level 5 の色空間と色操作を、色に触れな
 
 ## 現在のPhase
 
-Phase 15では、PlaygroundへInterpolation / Gradient Explorerを追加しています。Learnは順番に理解する教材、Playgroundは同じ1色や2色間の経路を自由に編集・比較するツールとして責務を分けています。
+Phase 16では、PlaygroundへModern CSS Toolsを追加しています。Learnは順番に理解する教材、Playgroundは色やCSSを自由に編集・比較・生成するツールとして責務を分けています。
 
 - `/`: Chapter 1〜10を縦に読む、完成したLearnページ
-- `/playground`: Color Converter、Gamut Explorer、Interpolation Explorerを備えた実験ツール
+- `/playground`: Color Converter、Gamut Explorer、Interpolation Explorer、Modern CSS Toolsを備えた実験ツール
 - Playground専用wide layout、Current Color summary、native / mapped preview
 - sRGB、HSL、Lab、LCh、Oklab、OkLChの双方向editor grid
 - Hexと6種類のCSS color syntax、3 gamut statusの同時表示
@@ -24,6 +24,10 @@ Phase 15では、PlaygroundへInterpolation / Gradient Explorerを追加して�
 - 共通mix amount、selected marker、raw intermediate、3 gamut status
 - OkLChのshorter / longer / increasing / decreasing Hue method
 - 4方式のCSS `color-mix()`生成とbrowser-native support preview
+- Current Colorを明示的に取り込むPlayground Relative Color tool
+- compact `color-mix()`、`light-dark()`、`contrast-color()` generator
+- Modern CSS 4機能のruntime判定、Engine / native previewの分離
+- semantic code block、clipboard copy、成功／失敗feedback
 - stickyな章ナビゲーションとCurrent Color Inspector
 - sRGB、Linear sRGB、XYZ D50/D65、HSL、Lab/LCh、Oklab/OkLCh、Display P3、Rec.2020の変換
 - 単一の現在色state、alpha、gamut判定、明示的gamut mapping
@@ -224,6 +228,16 @@ sRGB、Linear sRGB、Oklab、OkLChを常に同じmix amountで比較します。
 OkLChにはshorter / longer / increasing / decreasing Hue methodとHue path summaryを提供します。powerless Hueとalpha premultiplicationはColor Engineの既存仕様を維持します。4方式すべての`color-mix()`をStart `100 - amount`%、End `amount`%で生成し、native previewはruntime feature detectionに応じて表示します。browser computed styleはEngine結果として読み戻しません。
 
 gradient sampleはStart / End / Hue methodだけをdependencyにしてmemoizeし、mix slider操作では再計算しません。selected resultsとgenerated CSSはmix amountを含む別のmemoへ分離しています。
+
+## Playground Modern CSS Tools
+
+Modern CSS Toolsは`#modern-css`で直接開ける4つ目のPlayground sectionです。中心となるRelative ColorはserializableなBase ColorとL / C / h offsetをlocal stateに保持し、既存のPhase 11 helperでraw OkLCh result、3 gamut status、mapped Engine preview、relative CSSを導出します。Current Colorは`Use Current Color as Base`でのみ取り込み、resultも明示的なApplyでのみ共有Current Colorへ送ります。Resetはbaseとoffsetだけを戻します。
+
+compact `color-mix()`はPhase 15のendpoint preset、補間、serializerを再利用しますが、Interpolation Explorerのlocal stateは共有しません。sRGB、Linear sRGB、Oklab、OkLChを選択でき、OkLChでは4つのHue methodを指定できます。gradient全体は重複実装せず、既存Explorerへのanchor linkを案内します。
+
+`light-dark()`はLight / Dark Colorとscheme simulationをlocal stateに保持し、生成例に必須の`color-scheme: light dark`を含めます。`contrast-color()`はlocal Backgroundについて既存helperでblack / whiteのWCAG 2.x contrast ratioを計算し、より高い方をEngine analysisとして示します。これは完全なaccessibility判定ではなく、browser-native resultとも同一視しません。
+
+4 panelはいずれもPhase 11のruntime `CSS.supports()` helperを利用します。未対応でもEngine result、simulation、generated CSSを維持し、native previewだけをfallback表示にします。共通`CssCodeBlock`はsemanticな`pre` / `code`、Clipboard APIによるCopy、`aria-live`の成功／失敗feedbackを提供します。desktopはRelative Colorを全幅、残りを最大3列で配置し、1500px以下で2列、1100px以下で1列へ移行します。
 
 ## 対象ブラウザ
 

@@ -6,6 +6,7 @@ import { OkLChControls } from '../components/color/OkLChControls';
 import { PlaygroundColorSummary } from '../components/color/PlaygroundColorSummary';
 import { PlaygroundGamutExplorer } from '../components/color/PlaygroundGamutExplorer';
 import { PlaygroundInterpolationExplorer } from '../components/color/PlaygroundInterpolationExplorer';
+import { PlaygroundModernCssTools } from '../components/color/PlaygroundModernCssTools';
 import { RGBControls } from '../components/color/RGBControls';
 
 const editors = [
@@ -63,6 +64,7 @@ export function PlaygroundPage() {
         <a href="#color-converter">Color Converter</a>
         <a href="#gamut-explorer">Gamut Explorer</a>
         <a href="#interpolation">Interpolation / Gradient</a>
+        <a href="#modern-css">Modern CSS Tools</a>
       </nav>
 
       <PlaygroundColorSummary />
@@ -102,6 +104,8 @@ export function PlaygroundPage() {
       <PlaygroundGamutExplorer />
 
       <PlaygroundInterpolationExplorer />
+
+      <PlaygroundModernCssTools />
     </main>
   );
 }
