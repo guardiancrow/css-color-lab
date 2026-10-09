@@ -16,6 +16,44 @@ CSS Color Labの開発履歴と実装詳細です。利用方法は[README](../R
 
 `v1.0.0-rc.1`は最終QAの基準、`v1.0.0`は完成版を示すtagです。公開用の文書・metadata・hosting整備は、このアプリ完成時点の履歴と区別します。詳細はGit履歴に残っています。
 
+## GitHub Actionsによる品質検証
+
+`.github/workflows/ci.yml`は、`master`へのpush、`master`を対象とするPull Request、手動実行で品質を検証します。`ubuntu-latest`上でNode.js `^24.15.0`に一致する24系を使用し、次の順序で実行します。
+
+```bash
+npm ci --no-audit --no-fund
+npm run format:check
+npm run lint
+npm run typecheck
+npm test
+npm run build
+```
+
+Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は34 test files・239 testsです。
+
+`actions/checkout` v7.0.1と`actions/setup-node` v7.0.0は、公式release tagから確認したfull commit SHAで固定しています。Token権限は`contents: read`のみで、checkout後に認証情報を保持しません。Deploymentやworkflowからのcommit / pushは実行しません。
+
+ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、239 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
+
+## Dependabotによる依存更新
+
+`.github/dependabot.yml`は、repository rootのnpm dependenciesとGitHub Actionsを毎週確認し、`master`向けの更新PRを提案します。Version updateのopen PR上限はecosystemごとに5件です。npmのminor / patch更新はruntimeと開発toolに分けてgroup化し、major更新とActions更新は個別にreviewします。Minor / patchでも互換性の問題が起こり得るため、自動マージは使用しません。
+
+更新PRではrelease notes、breaking changes、`package.json`とlockfileの差分、推移依存、Node.js要件を確認してください。Runtime dependenciesを変更する場合は[Third-party Notices](../THIRD_PARTY_NOTICES.md)のversion・license・本文も照合します。ローカルでは`npm ci`と上記の品質検証を実行し、browserでの確認には[Manual QA](manual-qa.md)を使います。Actions更新では公式releaseとSHAの対応を確認します。CIの成功と人間によるreview・承認を終えてからmergeします。
+
+このYAMLは定期的なversion updatesを設定します。脆弱性を対象とするDependabot alerts / security updatesは別のrepository設定です。Private repositoryでもdependency graphとDependabot alertsを有効にしたうえで、security updatesを有効化できます。SettingsのAdvanced Security（UIによってはCode security）で各項目を確認してください。今回の設定には`target-branch`を指定しているため、YAMLのgroup設定をsecurity updatesのgroup化にも適用できるとは扱いません。Security updatesはdefault branchを対象とし、version updates用のPR上限とは別に管理されます。
+
+Push後はInsightsのDependency graphにあるDependabot画面で両ecosystemの設定と実行ログを確認し、更新がある場合はPRの作成とCI実行も確認してください。利用可能な更新がなければ、PRが0件でも設定失敗とは限りません。SettingsではrepositoryがPrivate、default branchが`master`、Actionsが有効であることを確認し、workflow permissionsは読み取りを基本とします。Auto-mergeは有効化しません。Private repositoryのActions利用枠と課金設定も確認してください。
+
+公開前の未決事項は[Public Release Checklist](public-release-checklist.md)にまとめています。
+
+### 設定の参照資料
+
+- [actions/checkout releases](https://github.com/actions/checkout/releases)
+- [actions/setup-node v7.0.0](https://github.com/actions/setup-node/releases/tag/v7.0.0)
+- [Dependabot options reference](https://docs.github.com/en/code-security/reference/supply-chain-security/dependabot-options-reference)
+- [Dependabot security updatesの設定](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain/secure-your-dependencies/configure-security-updates)
+
 ## Architecture overview
 
 各editorは共有の`{ space, coordinates, alpha }`から表示値を導出し、編集元の色空間でCurrent Colorを更新します。Color.js objectはUIやReact stateへ保持せず、Color Engine内部で一時的に使用します。教材の固定条件実験やPlaygroundのendpointは、共有Current Colorとは別のlocal stateです。

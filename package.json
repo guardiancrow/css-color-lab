@@ -1,6 +1,10 @@
 {
   "name": "css-color-learning",
   "description": "An interactive Japanese learning app and playground for CSS Color 4/5, color spaces, gamut mapping, and interpolation.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/guardiancrow/css-color-lab.git"
+  },
   "private": true,
   "version": "1.0.0",
   "type": "module",
