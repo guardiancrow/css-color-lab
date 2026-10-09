@@ -1,6 +1,6 @@
 # Manual QA Checklist
 
-`v1.0.0-rc.1`を正式なv1.0.0候補として確認するためのチェックリストです。自動テストでは確認できない描画、browser console、keyboard、Clipboard、OS accessibility設定を重点的に扱います。
+`v1.0.0`以降の変更を実機で確認するためのチェックリストです。`v1.0.0-rc.1`の最終QAで用いた項目を継続して使用します。自動テストでは確認できない描画、browser console、keyboard、Clipboard、OS accessibility設定を重点的に扱います。
 
 ## 準備
 

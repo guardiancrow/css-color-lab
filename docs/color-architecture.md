@@ -1,5 +1,13 @@
 # Color Architecture
 
+## References
+
+色空間の定義、行列・transfer function、missing component、Hue interpolation、premultiplied alphaは[CSS Color Module Level 4](https://www.w3.org/TR/css-color-4/)を参照する。Relative Color、`color-mix()`、`light-dark()`、`contrast-color()`は[CSS Color Module Level 5](https://www.w3.org/TR/css-color-5/)を参照する。仕様に沿うアプリ側の補間処理と、Color.jsへ委譲する色空間変換を区別する。
+
+Oklabの一次資料は[Björn Ottossonの原典](https://bottosson.github.io/posts/oklab/)。既知値testは公開された行列・式を参照し、原典のreference implementationや長い説明文は転載していない。Color Engineは主に[Color.js](https://colorjs.io/)のfunctional APIを利用し、W3Cのsample conversion codeをvendoringしていない。
+
+Dependencyのlicense情報は[Third-party Notices](../THIRD_PARTY_NOTICES.md)、開発の区切りと機能の実装詳細は[Development Notes](development.md)にまとめる。
+
 ## Library decision
 
 Phase 2ではColor.js 0.7を採用する。

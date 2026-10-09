@@ -1,5 +1,6 @@
 {
   "name": "css-color-learning",
+  "description": "An interactive Japanese learning app and playground for CSS Color 4/5, color spaces, gamut mapping, and interpolation.",
   "private": true,
   "version": "1.0.0",
   "type": "module",
@@ -39,6 +40,6 @@
     "vitest": "^4.1.10"
   },
   "engines": {
-    "node": ">=20.19.0"
+    "node": "^22.22.2 || ^24.15.0 || >=26.0.0"
   }
 }

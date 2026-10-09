@@ -4,3 +4,7 @@ coverage
 .npm-cache
 *.local
 .DS_Store
+.env
+.env.*
+!.env.example
+*.log
