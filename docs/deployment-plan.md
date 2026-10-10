@@ -1,6 +1,6 @@
 # GitHub Pages公開設計
 
-この文書は次工程の設計です。Deployment workflow、Pages設定、artifact uploadはまだ追加・実行していません。初回公開には所有者の明示的な承認が必要です。
+Phase 20G-Aで[手動deployment workflow](../.github/workflows/pages.yml)を実装しました。RepositoryはPrivateのまま、workflowは未実行です。Pages設定、environment作成、artifact upload、deploymentはまだ行っていません。初回公開には所有者の明示的な承認が必要です。
 
 ## 公開範囲と契約プラン
 
@@ -13,18 +13,20 @@ Repositoryがprivateでも、この個人Project Pagesのサイトは公開配�
 ## 初回公開の前提
 
 1. 確定済みのMIT、Copyright (c) 2026 guardiancrow、自作部分への適用、version 1.0.1、Public repository／Public Pagesの方針が対象SHAに反映されていることを確認する。
-2. 公開予定のcommitと全参照を監査し、そのcommitのremote CI成功を確認する。
-3. 所有者が公開対象のfull commit SHAと初回deployを承認する。
-4. 次工程でworkflowをreviewし、masterへ反映する。初回は`workflow_dispatch`だけをtriggerとし、pushやPRから起動しない。
+2. Privateのままworkflowをreviewし、所有者が別工程でcommit／pushする。初回は`workflow_dispatch`だけをtriggerとし、pushやPRから起動しない。
+3. Workflow追加後の新しいfull SHAについて差分、権限、trigger、checkout、upload内容を再監査し、そのSHAのremote CI成功を確認する。Phase 20Fの監査結果は当時の確定SHAに対するもので、新commitへ自動適用しない。公開対象SHAが変わった場合も再確認する。
+4. 所有者がSettingsの確認を完了し、公開対象のfull commit SHA、Public化、Pages設定、artifact upload、初回deployを明示的に承認する。
 5. 承認後にrepositoryをPublicへ変更し、Settings → PagesでSourceをGitHub Actionsへ設定する。
-6. `github-pages` environmentを設定し、deployment branchをmasterに限定する。利用可能ならrequired reviewersと自己承認禁止を設定する。
+6. `github-pages` environmentを設定し、deployment branchをmasterに限定する。Freeのpublic repositoryではrequired reviewersを利用できる。自己承認禁止を使う場合は、dispatchした所有者以外の承認者を用意する。所有者だけをreviewerに指定し自己承認を禁止するとdeployを承認できない。所有者の承認記録と手動dispatchを採用する場合は、自動強制されるreview gateとは区別する。
 7. 所有者がActionsからmasterを選び、承認済みSHAを入力して手動実行する。SiteのHTTP応答、routing、notice、keyboard操作を確認する。
 
 `configure-pages`の`enablement`は既定の`false`を維持し、Settings操作を自動化しません。PATや新規secretsは不要です。[configure-pages inputs](https://github.com/actions/configure-pages/blob/v6.0.0/action.yml)
 
 ## Workflowとjobの契約
 
-Workflowは手動入力`release_sha`を必須とし、40桁のSHAであること、eventが`workflow_dispatch`であること、選択branchが`refs/heads/master`であることを検査します。Build対象は入力SHAに固定し、masterから到達可能であることを確認します。履歴確認用checkoutは`fetch-depth: 0`、`persist-credentials: false`とし、checkout後のHEADも入力と照合します。PR event、fork、任意branchからdeployしません。
+Workflowは手動入力`release_sha`を必須とし、40桁の小文字hexであることをcheckout前に検査します。入力はshell本文へ直接展開せずenvから読みます。両jobの条件でeventが`workflow_dispatch`、branchが`refs/heads/master`、repositoryが`guardiancrow/css-color-lab`、visibilityがPublicであることを確認します。Privateの間はbuild／upload／deploy jobを起動しません。
+
+Build対象は入力SHAに固定し、masterから到達可能であることを確認します。履歴確認用checkoutは`fetch-depth: 0`、`persist-credentials: false`とし、checkout後のHEADも入力と照合します。検査が失敗するとnpm実行やuploadへ進みません。承認済みの過去SHAを使ったrollbackも可能です。Gitによる到達性の検査は所有者の公開承認やremote CI確認を代替しないため、実行前に対象SHAの承認記録を確認します。
 
 | Job    | Permissions                                        | 処理                                                                                                 |
 | ------ | -------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
@@ -51,17 +53,17 @@ Environmentの機能にはプラン制約があります。Free／Pro／Teamで�
 
 ## Actions固定値
 
-2026-10-10に公式release tagとGit参照を照合した候補です。正式実装時に安定版、SHA、runner要件を再確認し、tagだけで参照しません。
+2026-10-10に公式latest release、tagのGit参照、action.ymlを再確認し、次の値を手動workflowに固定しました。Node 24対応のActionsをGitHub-hosted Ubuntu runnerで使用します。既存CIのsetup-nodeは変更していません。
 
 | Action                        | Stable version | Full commit SHA                            |
 | ----------------------------- | -------------- | ------------------------------------------ |
 | actions/checkout              | v7.0.1         | `3d3c42e5aac5ba805825da76410c181273ba90b1` |
-| actions/setup-node            | v7.0.0         | `820762786026740c76f36085b0efc47a31fe5020` |
+| actions/setup-node            | v7.1.0         | `949feb2413d6458794dcd2491c4babbbce0c15c1` |
 | actions/configure-pages       | v6.0.0         | `45bfe0192ca1faeb007ade9deae92b16b8254a0d` |
 | actions/upload-pages-artifact | v5.0.0         | `fc324d3547104276b827a68afc52ff2a11cc49c9` |
 | actions/deploy-pages          | v5.0.1         | `368f82528645a54fb793d4d04e342629a3f51346` |
 
-根拠は各公式release：[checkout](https://github.com/actions/checkout/releases/tag/v7.0.1)、[setup-node](https://github.com/actions/setup-node/releases/tag/v7.0.0)、[configure-pages](https://github.com/actions/configure-pages/releases/tag/v6.0.0)、[upload-pages-artifact](https://github.com/actions/upload-pages-artifact/releases/tag/v5.0.0)、[deploy-pages](https://github.com/actions/deploy-pages/releases/tag/v5.0.1)です。
+根拠は各公式release：[checkout](https://github.com/actions/checkout/releases/tag/v7.0.1)、[setup-node](https://github.com/actions/setup-node/releases/tag/v7.1.0)、[configure-pages](https://github.com/actions/configure-pages/releases/tag/v6.0.0)、[upload-pages-artifact](https://github.com/actions/upload-pages-artifact/releases/tag/v5.0.0)、[deploy-pages](https://github.com/actions/deploy-pages/releases/tag/v5.0.1)です。
 
 ## Rollbackと公開停止
 

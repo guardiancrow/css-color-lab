@@ -39,9 +39,9 @@ Vite pluginがrootのLICENSEを正本として両buildへ出力します。配�
 1. 今回の差分・検証結果をreviewし、所有者がcommit／private repositoryへpushする。
 2. 対象commitのremote CI成功を確認する。
 3. Phase 20Fで全公開対象refs、PR／Actions履歴、source、配布物を最終監査し、公開対象SHAを確定する。
-4. 最終監査・CI成功後、所有者が初回公開を明示的に承認する。
-5. 承認後にrepositoryをPublicへ変更する。GitHub FreeでPublic Pagesを配信する。
-6. [Deployment設計](deployment-plan.md)に沿ってworkflowとSettingsをreviewし、初回公開を明示的に承認して手動deployする。
+4. Privateのまま[手動workflow](../.github/workflows/pages.yml)をreviewし、所有者が別工程でcommit／pushする。追加後の新しいfull SHAについて差分・権限・trigger・uploadを再監査し、そのSHAのremote CI成功を確認する。Phase 20Fの合格を新commitへ自動適用しない。
+5. Settings確認と新SHAの監査・CI成功後、所有者がPublic化と初回deployを明示的に承認する。承認後にrepositoryをPublicへ変更する。
+6. [Deployment設計](deployment-plan.md)に沿ってPagesとgithub-pages environmentを設定し、承認済みfull SHAを指定して手動deployする。GitHub FreeのPrivate状態ではこれらの実設定を行わない。
 7. 公開siteを確認し、承認されたversionのtag／Releaseを作成する。
 
 Public化をdeployより先に承認・実施します。Deployは承認済みSHAを指定した手動実行に限り、PRや通常pushだけで初回公開しません。
