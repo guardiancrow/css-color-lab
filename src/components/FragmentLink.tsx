@@ -35,7 +35,10 @@ export function RouteFragment() {
   const location = useLocation();
 
   useEffect(() => {
-    const target = document.getElementById(location.hash.slice(1));
+    const targetId = location.hash.slice(1);
+    if (!targetId) return;
+
+    const target = document.getElementById(targetId);
     if (!target) return;
     if (typeof target.scrollIntoView === 'function') target.scrollIntoView();
     if (target.id === 'main-content') target.focus({ preventScroll: true });
