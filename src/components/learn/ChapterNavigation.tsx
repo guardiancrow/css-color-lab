@@ -1,4 +1,5 @@
 import type { ChapterDefinition } from '../../types/learn';
+import { FragmentLink } from '../FragmentLink';
 
 interface ChapterNavigationProps {
   chapters: readonly ChapterDefinition[];
@@ -11,12 +12,12 @@ export function ChapterNavigation({ chapters }: ChapterNavigationProps) {
       <ol>
         {chapters.map((chapter) => (
           <li key={chapter.id}>
-            <a href={`#${chapter.id}`}>
+            <FragmentLink targetId={chapter.id}>
               <span aria-hidden="true">
                 {String(chapter.number).padStart(2, '0')}
               </span>
               {chapter.title}
-            </a>
+            </FragmentLink>
           </li>
         ))}
       </ol>

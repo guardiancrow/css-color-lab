@@ -8,6 +8,7 @@ import { PlaygroundGamutExplorer } from '../components/color/PlaygroundGamutExpl
 import { PlaygroundInterpolationExplorer } from '../components/color/PlaygroundInterpolationExplorer';
 import { PlaygroundModernCssTools } from '../components/color/PlaygroundModernCssTools';
 import { RGBControls } from '../components/color/RGBControls';
+import { FragmentLink } from '../components/FragmentLink';
 
 const editors = [
   {
@@ -50,7 +51,7 @@ const editors = [
 
 export function PlaygroundPage() {
   return (
-    <main id="main-content" className="playground-shell">
+    <main id="main-content" className="playground-shell" tabIndex={-1}>
       <header className="playground-hero">
         <p className="eyebrow">Experiment freely</p>
         <h1>Color Playground</h1>
@@ -61,10 +62,12 @@ export function PlaygroundPage() {
 
       <nav className="playground-section-nav" aria-label="Playground sections">
         <span>Jump to</span>
-        <a href="#color-converter">Color Converter</a>
-        <a href="#gamut-explorer">Gamut Explorer</a>
-        <a href="#interpolation">Interpolation / Gradient</a>
-        <a href="#modern-css">Modern CSS Tools</a>
+        <FragmentLink targetId="color-converter">Color Converter</FragmentLink>
+        <FragmentLink targetId="gamut-explorer">Gamut Explorer</FragmentLink>
+        <FragmentLink targetId="interpolation">
+          Interpolation / Gradient
+        </FragmentLink>
+        <FragmentLink targetId="modern-css">Modern CSS Tools</FragmentLink>
       </nav>
 
       <PlaygroundColorSummary />

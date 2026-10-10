@@ -1,11 +1,12 @@
 import { Link, NavLink, Route, Routes } from 'react-router-dom';
 import { ColorProvider } from './context/ColorProvider';
+import { FragmentLink, RouteFragment } from './components/FragmentLink';
 import { LearnPage } from './pages/LearnPage';
 import { PlaygroundPage } from './pages/PlaygroundPage';
 
 function NotFoundPage() {
   return (
-    <main id="main-content" className="standalone-page">
+    <main id="main-content" className="standalone-page" tabIndex={-1}>
       <p className="eyebrow">404</p>
       <h1>ページが見つかりません</h1>
       <p>指定されたURLを確認するか、教材の最初に戻ってください。</p>
@@ -19,10 +20,11 @@ function NotFoundPage() {
 export function App() {
   return (
     <ColorProvider>
+      <RouteFragment />
       <div className="app-shell">
-        <a className="skip-link" href="#main-content">
+        <FragmentLink className="skip-link" targetId="main-content">
           本文へ移動
-        </a>
+        </FragmentLink>
         <header className="site-header">
           <Link className="site-title" to="/" aria-label="CSS Color Lab ホーム">
             <span className="brand-mark" aria-hidden="true" />

@@ -5,7 +5,7 @@ import { chapters } from '../lib/chapters';
 
 export function LearnPage() {
   return (
-    <main id="main-content" className="learn-page">
+    <main id="main-content" className="learn-page" tabIndex={-1}>
       <header className="learn-hero">
         <p className="eyebrow">Interactive learning path</p>
         <h1>色空間を、触りながら理解する。</h1>

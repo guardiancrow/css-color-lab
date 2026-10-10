@@ -12,6 +12,24 @@ npm run preview
 
 preview URLの`/`と`/playground`を使用します。各browserでは通常profileを基本とし、必要に応じてprivate windowでも確認します。
 
+## Pages buildの公開前QA
+
+通常構成は`npm run build`と`npm run preview`、Pages構成は`npm run build:pages`と`npm run preview:pages -- --host 127.0.0.1`で確認します。両buildは同じdistを使用するため、対象構成をbuildし直してからpreviewを起動してください。この検証ではPagesを有効化・公開しません。
+
+- 通常構成では`/`と`/playground`、不正なpathnameで従来の画面とアプリ内404を表示する。
+- Pages構成では`/css-color-lab/`を開き、Learnを表示する。
+- Main navigationからPlaygroundへ移動し、URLが`/css-color-lab/#/playground`になる。
+- 上記Playground URLを直接開き、reload後もPlaygroundを表示する。
+- Learnへ戻るリンクと、browserの戻る・進むで画面とURLが一致する。
+- `#/missing`でアプリ内404を表示し、Learnへ戻れる。
+- Learnの章リンクとPlaygroundの各sectionリンクで目的の要素へscrollし、routeを維持する。
+- `#/playground#modern-css`への直接アクセスとreloadでsection位置が復元される。
+- Tabでskip linkにfocusし、Enterで本文へ移動する。URLが`#/playground#main-content`となり、focusが`main-content`へ移る。Learnとアプリ内404でも確認する。
+- DevToolsのNetworkでHTML・JS・CSSが取得でき、asset URLが`/css-color-lab/assets/`配下である。Consoleの例外とnetwork 404がない。
+- SPA fallbackのない静的HTTP配信でも上記hash URLを確認する。`/css-color-lab/playground`というpathnameはPages用URLではない。
+
+Chromium系とFirefoxではfragment位置、keyboard focus、browser historyも確認します。自動ブラウザ検証を行った場合も、実機の描画・accessibility・各browser固有の差は別に確認してください。
+
 ## Browser matrix
 
 Chromium系とFirefoxのそれぞれで確認します。
