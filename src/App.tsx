@@ -48,6 +48,14 @@ export function App() {
           <Route path="/playground" element={<PlaygroundPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <footer className="site-footer">
+          <a
+            className="text-link"
+            href={`${import.meta.env.BASE_URL}THIRD_PARTY_NOTICES.md`}
+          >
+            第三者ライセンス
+          </a>
+        </footer>
       </div>
     </ColorProvider>
   );

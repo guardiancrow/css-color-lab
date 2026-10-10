@@ -102,9 +102,13 @@ W3Cのsample conversion codeを同梱した実装ではなく、変換処理は�
 
 Dependencyのcopyright・license本文と、browser bundle配布時の確認事項は[Third-party Notices](THIRD_PARTY_NOTICES.md)にまとめています。
 
+通常buildとPages buildにはこのnoticeを同梱し、画面末尾の「第三者ライセンス」から参照できます。Build後は`npm run audit:dist`、Pages用では`npm run audit:dist -- --pages`で配布物を検査します。
+
 ## Documentation
 
 - [Color Architecture](docs/color-architecture.md)：設計判断、stateの責務、数値・gamut方針
 - [Manual QA](docs/manual-qa.md)：browser、responsive layout、keyboard、accessibilityの確認項目
 - [Development Notes](docs/development.md)：開発・release履歴と機能の実装詳細
 - [Third-party Notices](THIRD_PARTY_NOTICES.md)：第三者dependencyのlicenseと配布時の確認事項
+- [Release Readiness](docs/release-readiness.md)：ライセンス・version・公開承認の判断事項
+- [Deployment Plan](docs/deployment-plan.md)：Pagesの権限・手動承認・公開停止の設計

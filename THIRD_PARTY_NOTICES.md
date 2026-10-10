@@ -165,6 +165,115 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 ```
 
+## Browser build helpers
+
+ViteとRolldownの生成helperもbrowser bundleに含まれます。以下の原文を同梱します。Rolldownのthird-party noticeはpackage付属の全文を保守的に保持しており、その全codeが配布されるという意味ではありません。
+
+| Package  | Version | License |
+| -------- | ------- | ------- |
+| vite     | 8.2.1   | MIT     |
+| rolldown | 1.2.4   | MIT     |
+
+### Vite browser helpers
+
+出典：`node_modules/vite/LICENSE.md`。
+
+```text
+MIT License
+
+Copyright (c) 2019-present, VoidZero Inc. and Vite contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+### Rolldown runtime
+
+出典：`node_modules/rolldown/LICENSE`。
+
+```text
+MIT License
+
+Copyright (c) 2024-present VoidZero Inc. & Contributors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+end of terms and conditions
+
+The licenses of externally maintained libraries from which parts of the Software is derived are listed [here](https://github.com/rolldown/rolldown/blob/main/THIRD-PARTY-LICENSE).
+```
+
+### Rolldown third-party notices
+
+出典：`node_modules/rolldown/THIRD-PARTY-LICENSE`。
+
+```text
+The MIT License (MIT)
+
+Copyright (c) 2017 [these people](https://github.com/rollup/rollup/graphs/contributors)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+---
+
+MIT License
+
+Copyright (c) 2020 Evan Wallace
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
 ## Build / test tools
 
 Vite、Vitest、Testing Library、ESLint、Prettierなどは開発・build・test用のdependencyです。この区分だけを理由に、tool自身や同梱codeを再配布する際のlicense条件がなくなるわけではありません。
@@ -173,11 +282,8 @@ Lockfileとinstalled packageのmetadataでは、主要toolはMIT、TypeScriptは
 
 ## Browser bundle配布時の確認
 
-GitHub Pagesなどへdeployする段階で、次を再確認します。
+通常buildとPages buildは、この文書を同じ内容でdistへ出力します。画面末尾の「第三者ライセンス」から原文へ到達できます。Build時にinstalled license原文、lockfile、version一覧、bundleのmoduleと生成helperを照合し、未確認の依存やhelperが増えた場合は失敗します。
 
-- 最終bundleに含まれるdependencyと、そのversion・追加のthird-party noticeを照合する。
-- Minify後も必要なcopyright・permission noticeを保持するか、配布物にlicense fileを同梱する。
-- このnoticeをREADMEから参照するだけで終えず、配布するsite / artifactからもlicense本文へ到達できる形にする。
-- MPLやCC-BY materialを実際に配布する場合は、その素材に適用されるsource提供・attribution等の条件を別途確認する。
+`npm run audit:dist`（Pagesでは`npm run audit:dist -- --pages`）はnoticeの一致、asset URL、許可した配布file、source map・秘密情報の代表的patternを検査します。Licenseのemailは原文の一部として保持します。これらの検査で、未知の秘密情報や法的権利の有無すべてを判定できるわけではありません。
 
-現時点では最終browser bundleのnotice対応を検証済みとは扱いません。Hostingへの同梱方法とbuild結果の確認は、Pages対応時（Phase 20C）に行います。
+今回のbundle moduleはReact、React DOM、Scheduler、React Router、Color.jsと上記生成helperです。React Router DOM、cookie、set-cookie-parserはproduction依存一覧としてnoticeに残します。開発toolの実行code、TypeScript、Lightning CSS、caniuse-liteは配布moduleに含まれていません。依存更新後はmodule照合と原文照合を再実行してください。

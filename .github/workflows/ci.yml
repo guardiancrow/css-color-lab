@@ -38,5 +38,9 @@ jobs:
         run: npm test
       - name: Build
         run: npm run build
+      - name: Audit distribution
+        run: npm run audit:dist
       - name: Build for Pages (no deployment)
         run: npm run build:pages
+      - name: Audit Pages distribution
+        run: npm run audit:dist -- --pages

@@ -12,6 +12,7 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "build:pages": "tsc -b && vite build --mode pages",
+    "audit:dist": "node scripts/audit-dist.mjs",
     "preview": "vite preview",
     "preview:pages": "vite preview --mode pages",
     "lint": "eslint .",

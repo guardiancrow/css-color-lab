@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { App } from './App';
 
 function renderAt(path: string) {
@@ -20,6 +20,18 @@ function expectNamedInteractiveControls(container: HTMLElement) {
 }
 
 describe('application routes', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it.each(['/', '/css-color-lab/'])(
+    'links to third-party licenses at %s',
+    (base) => {
+      vi.stubEnv('BASE_URL', base);
+      renderAt('/playground');
+      expect(
+        screen.getByRole('link', { name: '第三者ライセンス' }),
+      ).toHaveAttribute('href', `${base}THIRD_PARTY_NOTICES.md`);
+    },
+  );
   it('renders the Learn page and its chapter navigation', () => {
     const { container } = renderAt('/');
 

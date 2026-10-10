@@ -27,20 +27,22 @@ npm run lint
 npm run typecheck
 npm test
 npm run build
+npm run audit:dist
 npm run build:pages
+npm run audit:dist -- --pages
 ```
 
-Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は34 test files・239 testsです。
+Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は36 test files・268 tests（Phase 20C基準は35 files・250 tests）です。
 
 `actions/checkout` v7.0.1と`actions/setup-node` v7.0.0は、公式release tagから確認したfull commit SHAで固定しています。Token権限は`contents: read`のみで、checkout後に認証情報を保持しません。Deploymentやworkflowからのcommit / pushは実行しません。
 
-ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、239 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
+ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、268 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
 
 ## GitHub Pages向けのビルドとルーティング
 
 通常の`npm run dev`と`npm run build`では、base `/`とBrowserRouterを維持します。Learnは`/`、Playgroundは`/playground`です。通常のproduction hostingでは、直接アクセスした内部routeにも`index.html`を返すSPA fallbackが必要です。
 
-`npm run build:pages`はTypeScriptのチェック後、Viteの`pages` modeでbuildします。Baseは`vite.config.ts`で`/css-color-lab/`に設定し、同じmodeを使う`AppRouter`はHashRouterを選びます。Asset URLはViteがbaseを反映して生成します。App routeには追加のbasenameを設定しません。Modeを指定しない通常ビルドは従来の構成です。
+`npm run build:pages`はTypeScriptのチェック後、Viteの`pages` modeでbuildします。Baseは`vite.config.ts`が配布検査と共通の`PAGES_BASE`から`/css-color-lab/`に設定し、同じmodeを使う`AppRouter`はHashRouterを選びます。Asset URLはViteがbaseを反映して生成します。App routeには追加のbasenameを設定しません。Modeを指定しない通常ビルドは従来の構成です。
 
 将来のProject PagesのURLは`https://guardiancrow.github.io/css-color-lab/`を想定しています。現在公開されているサイトを示すものではありません。PagesではLearnが`/css-color-lab/#/`、Playgroundが`/css-color-lab/#/playground`になります。Base URLへhashなしでアクセスした場合もLearnを表示します。Hash部分はserverへ送られないため、Playgroundの直接アクセスやreloadでも同じindexを取得できます。BrowserRouterと404.html fallbackを使う方式は、redirect処理や404応答の検証が増えるため採用していません。
 
@@ -59,7 +61,7 @@ CIでは通常buildの後にPages buildも実行します。Deployment step、Pa
 
 ### 次Phaseのdeployment設計
 
-ユーザーが公開を承認した後、SettingsのPagesでGitHub Actionsを配信元に設定し、別のdeployment workflowを追加する設計です。`master`から`npm ci`とPages buildを実行し、`dist/`だけを配信対象にします。PRからはdeployせず、初回deployは明示的な承認を条件とします。`github-pages` environmentには承認・対象branchの制約を設定し、deployment jobだけに必要な`pages: write`と`id-token: write`を付与します。
+ユーザーが公開を承認した後、SettingsのPagesでGitHub Actionsを配信元に設定し、別のdeployment workflowを追加する設計です。初回はmaster上の承認済みSHAを指定した手動実行に限定します。`github-pages` environmentのreviewer機能には契約プランとrepository visibilityの制約があります。詳細なjob権限、固定SHA、承認条件、rollbackは[Deployment設計](deployment-plan.md)を参照してください。
 
 採用候補は`actions/configure-pages`、`actions/upload-pages-artifact`、`actions/deploy-pages`です。正式採用時に公式の安定版・full SHA・各jobの権限を確認します。今回はworkflowを作成・有効化せず、Pages Settingsも変更しません。Private repositoryでもPagesサイトが公開される場合があるため、repositoryのvisibilityとは別にサイトの公開範囲を判断します。LICENSE、copyright holder、公開release version、成果物のprivacy scanを完了してから承認します。
 

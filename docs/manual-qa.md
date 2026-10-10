@@ -134,4 +134,6 @@ Learnのlarge desktopではDOM focus順がChapter Navigation → Current Color I
 
 ## Record
 
+通常build／Pages buildの両方で、画面末尾の「第三者ライセンス」へTabで移動し、Enterで文書を開きます。Baseを含むURLが正しく、HTTP 200でcopyrightとpermission本文が読めることを確認します。Build後の`npm run audit:dist`（Pagesでは`-- --pages`）も実行します。
+
 各組み合わせについてbrowser version、OS、viewport、結果、console内容、再現手順を記録します。native Modern CSSの見え方はSupport statusと分け、display gamutやOS color managementの能力を構文supportの結果から推測しません。

@@ -4595,3 +4595,9 @@ h1 {
     transition-duration: 0.01ms !important;
   }
 }
+.site-footer {
+  max-width: 148rem;
+  margin: 0 auto;
+  padding: 1rem clamp(1.25rem, 2vw, 3rem);
+  font-size: 0.875rem;
+}
