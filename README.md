@@ -89,7 +89,7 @@ Vite、React、TypeScript、React Router、Color.jsを使用しています。Te
 
 ## License / attribution
 
-Project licenseは未設定です。MIT Licenseを採用する方針ですが、copyright holderの確定後にLICENSEとpackage metadataへ反映します。この記述はMIT Licenseの付与を意味しません。第三者dependencyのlicenseは、それぞれの配布条件に従います。
+自作のソースコード・教材・ドキュメント・UIには[MIT License](LICENSE)を適用します。Copyright (c) 2026 guardiancrow。第三者ライブラリや外部由来の著作物には、それぞれの元のライセンスを適用し、[Third-party Notices](THIRD_PARTY_NOTICES.md)で別途案内します。
 
 ### References
 
@@ -102,7 +102,9 @@ W3Cのsample conversion codeを同梱した実装ではなく、変換処理は�
 
 Dependencyのcopyright・license本文と、browser bundle配布時の確認事項は[Third-party Notices](THIRD_PARTY_NOTICES.md)にまとめています。
 
-通常buildとPages buildにはこのnoticeを同梱し、画面末尾の「第三者ライセンス」から参照できます。Build後は`npm run audit:dist`、Pages用では`npm run audit:dist -- --pages`で配布物を検査します。
+通常buildとPages buildには正本のLICENSEとnoticeを同梱し、画面末尾の「MITライセンス」「第三者ライセンス」からそれぞれ参照できます。Build後は`npm run audit:dist`、Pages用では`npm run audit:dist -- --pages`で配布物を検査します。
+
+次の公開予定版は`v1.0.1`です。Package metadataは1.0.1へ更新していますが、tag・GitHub Releaseはまだ作成していません。GitHub FreeでPublic repositoryとPublic Pagesを採用する方針が確定しています。現在はPrivateを維持し、Phase 20Fの最終監査・CI成功・明示的承認を経て公開します。Deployは承認済みSHAを指定した手動実行です。
 
 ## Documentation
 

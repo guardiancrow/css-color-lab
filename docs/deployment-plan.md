@@ -6,17 +6,17 @@
 
 個人repositoryのProject Pagesを想定し、URLは`https://guardiancrow.github.io/css-color-lab/`です。Pages buildはbase `/css-color-lab/`、HashRouterを使います。Learnは`#/`、Playgroundは`#/playground`です。
 
-GitHub FreeのPagesはpublic repositoryが対象です。個人のprivate repositoryにはGitHub Proなど対応プランが必要です。契約プランは未確認です。Privateを維持する場合は、Pages対応プランを先に確認します。Publicへ変更する場合は、全履歴・PR・公開ファイルの監査と所有者の承認を先に完了します。[GitHub Pagesの利用条件](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
+所有者の決定に基づき、GitHub FreeでPublic repositoryとPublic Pagesを採用します。現在のrepositoryはPrivateを維持しています。Phase 20Fで全履歴・PR／Actions・公開ファイルの最終監査、対象SHAのCI成功、所有者の明示的承認を完了してからPublicへ変更します。GitHub FreeのPagesはpublic repositoryが対象なので、Public化をdeployより先に行います。[GitHub Pagesの利用条件](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
 
 Repositoryがprivateでも、この個人Project Pagesのサイトは公開配信として扱います。Enterprise Cloudのorganization向けアクセス制御を、個人repositoryへ適用できると想定しません。[Pagesサイトの公開範囲](https://docs.github.com/en/enterprise-cloud%40latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)
 
 ## 初回公開の前提
 
-1. 著作権者、Project LICENSE、version、repositoryとサイトの公開範囲を確定する。
+1. 確定済みのMIT、Copyright (c) 2026 guardiancrow、自作部分への適用、version 1.0.1、Public repository／Public Pagesの方針が対象SHAに反映されていることを確認する。
 2. 公開予定のcommitと全参照を監査し、そのcommitのremote CI成功を確認する。
 3. 所有者が公開対象のfull commit SHAと初回deployを承認する。
 4. 次工程でworkflowをreviewし、masterへ反映する。初回は`workflow_dispatch`だけをtriggerとし、pushやPRから起動しない。
-5. Settings → PagesでSourceをGitHub Actionsへ設定する。Private維持の場合は契約プランの条件を満たしてから設定する。
+5. 承認後にrepositoryをPublicへ変更し、Settings → PagesでSourceをGitHub Actionsへ設定する。
 6. `github-pages` environmentを設定し、deployment branchをmasterに限定する。利用可能ならrequired reviewersと自己承認禁止を設定する。
 7. 所有者がActionsからmasterを選び、承認済みSHAを入力して手動実行する。SiteのHTTP応答、routing、notice、keyboard操作を確認する。
 

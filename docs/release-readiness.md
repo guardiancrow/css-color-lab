@@ -1,6 +1,6 @@
 # 公開前の判断と検証
 
-Phase 20Dでは、ライセンス同梱、配布物検査、deployment設計を整備しています。Project LICENSEの権利者と公開判断は未確定です。公開完了を示す文書ではありません。
+Phase 20Eでは所有者の確定事項を実装しています。自作部分のMIT License、Copyright (c) 2026 guardiancrow、次の公開予定版1.0.1、GitHub FreeでPublic repositoryとPublic Pagesを採用する方針が確定しました。現在のrepositoryはPrivateで、最終監査・公開承認待ちです。公開・deployment・tag／Release作成は未実施です。
 
 ## 第三者ライセンスの配布
 
@@ -14,26 +14,23 @@ Phase 20Dでは、ライセンス同梱、配布物検査、deployment設計を�
 
 Pluginはlockfile、installed packageのversion・MIT metadata、ライセンス原文、noticeのversion表を照合します。Runtime依存8 packageとVite／Rolldownのhelperを対象にし、未確認packageやvirtual moduleが出力chunkに現れた場合は失敗します。Rolldown付属のthird-party license原文も同梱します。Tree shakingで配布されないproduction依存のnoticeも保持します。
 
-`npm run audit:dist`と`npm run audit:dist -- --pages`は、index、JS、CSS、notice、base URL、notice本文の一致、リンクURL、許可file、代表的なcredential・email・ローカルpathを検査します。Source map、hidden file、環境設定、Git資料、想定外のファイルやsymlinkは許可しません。依存更新時は両buildと検査を再実行し、新しい依存の条件を人が確認してから検査対象を更新します。Scanで未知の秘密情報や権利関係すべてを保証することはできません。
+`npm run audit:dist`と`npm run audit:dist -- --pages`は、index、JS、CSS、LICENSE、notice、base URL、正本との一致、リンクURL、許可file、代表的なcredential・email・ローカルpathを検査します。Source map、hidden file、環境設定、Git資料、想定外のファイルやsymlinkは許可しません。依存更新時は両buildと検査を再実行し、新しい依存の条件を人が確認してから検査対象を更新します。Scanで未知の秘密情報や権利関係すべてを保証することはできません。
 
 MITのcopyright／permission条件を、Apache-2.0、MPL-2.0、CC-BY-4.0の条件へ流用しません。TypeScript、Lightning CSS、caniuse-liteは今回のbrowser moduleに含まれていません。将来実際に同梱される場合は、その原文・NOTICE・source提供・attribution条件を別途確認します。[MIT原文](https://opensource.org/license/mit)
 
-## Project LICENSEの判断
+## Project LICENSEの適用
 
-Project sourceへMITを適用する意向はありますが、copyright holderは所有者が確定します。候補は実名、活動名・ハンドルネーム（例：guardiancrow）、その他の権利者表記です。Git author／committerだけを根拠に決定しません。外部由来のsourceや素材への権利、共同著作者の有無、対象年も確認します。
+所有者の決定に基づき、自作ソースコード・教材・ドキュメント・UIへMITを適用します。Rootの[LICENSE](../LICENSE)には`Copyright (c) 2026 guardiancrow`と標準のpermission・notice保持条件・免責本文を記載しています。Git identityから権利者を推測したものではありません。[OSI原文](https://opensource.org/license/mit)、[SPDX MIT](https://spdx.org/licenses/MIT.html)と照合しました。
 
-確定後、次工程でMIT原文の`LICENSE`へ承認された年・権利者表記を入れ、package metadataへ`"license": "MIT"`を追加し、READMEを更新します。それまではLICENSEもMIT metadataも追加しません。第三者noticeはProject自体へlicenseを付与するものではありません。
+Package metadataは`"license": "MIT"`です。第三者ライブラリや外部由来の著作物には元のライセンスが適用され、Project LICENSEで置き換えません。Third-party noticeは別の文書として維持します。
+
+Vite pluginがrootのLICENSEを正本として両buildへ出力します。配布物では正本と内容が完全一致することを検査し、正本のMIT本文・年・権利者は承認済み本文のSHA-256で照合します（改行と端の空白のみ正規化）。「MITライセンス」のURLは通常`/LICENSE`、Pagesでは`/css-color-lab/LICENSE`です。
 
 ## Release version
 
-| 候補                          | 利点・注意点                                                                                                     |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
-| 1.0.0を維持し後続commitを公開 | アプリ完成版のversionを維持できる。既存v1.0.0 tagと公開siteのsourceが一致しないため、公開SHAを明示する必要がある |
-| 1.0.1として公開               | 配布notice・hosting対応の修正を完成版から区別し、package、tag、site、Releaseのsourceを揃えやすい                 |
+次の公開予定版は1.0.1に確定し、package.jsonとlockfileのroot metadataを更新しました。依存versionは変更していません。既存v1.0.0はアプリ完成時点、1.0.1はライセンス配布・公開準備を反映した版として区別します。
 
-公開準備後の版を識別しやすいため1.0.1を推奨候補としますが、今回versionは変更しません。配布修正を互換性のあるbug fixと扱うならpatch releaseと整合します。公開仕様の機能追加と定義する場合はversion方針を再評価します。[Semantic Versioning](https://semver.org/)
-
-既存の`v1.0.0-rc.1`と`v1.0.0`は保存します。1.0.0を維持する場合も既存tagを後続commitへ移動しません。新規tag／GitHub Releaseは所有者の最終判断後に作成します。`private: true`はnpm publish抑制のため維持します。
+既存の`v1.0.0-rc.1`と`v1.0.0`は保存します。`v1.0.1` tag／GitHub Releaseは今回作成せず、最終監査と公開後QAの承認に合わせて後続工程で作成します。`private: true`はnpm publish抑制のため維持します。
 
 ## Dependabotと承認順序
 
@@ -41,10 +38,12 @@ Project sourceへMITを適用する意向はありますが、copyright holder�
 
 1. 今回の差分・検証結果をreviewし、所有者がcommit／private repositoryへpushする。
 2. 対象commitのremote CI成功を確認する。
-3. 権利者表記・年・MIT適用対象を確定し、LICENSEとmetadataを反映して再検証する。
-4. Release versionと公開SHAを確定し、全公開対象refs、PR履歴、source、配布物を再監査する。
-5. Repositoryをpublicにするか、privateを維持して対応プランを使うかを判断する。個人Pagesのsiteは公開配信として承認する。
+3. Phase 20Fで全公開対象refs、PR／Actions履歴、source、配布物を最終監査し、公開対象SHAを確定する。
+4. 最終監査・CI成功後、所有者が初回公開を明示的に承認する。
+5. 承認後にrepositoryをPublicへ変更する。GitHub FreeでPublic Pagesを配信する。
 6. [Deployment設計](deployment-plan.md)に沿ってworkflowとSettingsをreviewし、初回公開を明示的に承認して手動deployする。
 7. 公開siteを確認し、承認されたversionのtag／Releaseを作成する。
 
-Public化がFree Pagesの前提となる場合は、deployより先にPublic化を承認・実施します。Private維持の場合は対応プランを確認します。いずれもPRや通常pushだけで初回公開しません。
+Public化をdeployより先に承認・実施します。Deployは承認済みSHAを指定した手動実行に限り、PRや通常pushだけで初回公開しません。
+
+所有者の確認では、Phase 20Dのmaster CI #38025027169はSuccessです。失敗した#38025249836はDependabot PR #2で、Vite 8.3.3とnoticeの8.2.1の不一致を意図どおり検出した結果です。Phase 20Eへ依存更新を取り込まず、照合を弱めません。Phase 20Eのremote CI結果はcommit／push後に別途確認します。

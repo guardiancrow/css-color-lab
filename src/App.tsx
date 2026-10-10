@@ -49,6 +49,10 @@ export function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
         <footer className="site-footer">
+          <a className="text-link" href={`${import.meta.env.BASE_URL}LICENSE`}>
+            MITライセンス
+          </a>{' '}
+          ·{' '}
           <a
             className="text-link"
             href={`${import.meta.env.BASE_URL}THIRD_PARTY_NOTICES.md`}

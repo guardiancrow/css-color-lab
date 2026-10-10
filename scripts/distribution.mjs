@@ -1,7 +1,9 @@
 import { readFileSync, readdirSync, lstatSync } from 'node:fs';
 import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
 export const PAGES_BASE = '/css-color-lab/';
 export const NOTICE = 'THIRD_PARTY_NOTICES.md';
+export const PROJECT_LICENSE = 'LICENSE';
 const groups = {
   'React / React DOM / Scheduler': [
     'react/LICENSE',
@@ -25,6 +27,17 @@ const virtualModules = new Set([
   '\0vite/preload-helper.js',
 ]);
 const normalize = (value) => value.replace(/\r\n/g, '\n').trim();
+export function verifyProjectLicense(root) {
+  const license = readFileSync(resolve(root, PROJECT_LICENSE), 'utf8');
+  // MIT本文をOSI／SPDXと照合し、所有者が承認した年・表記を含めて固定する。
+  const digest = createHash('sha256').update(normalize(license)).digest('hex');
+  if (
+    digest !==
+    '1f30eb805e5ac3fd01fdae007d382db3e76a26ad19666b4cf4111e79667a4800'
+  )
+    throw new Error('Project MIT license differs from approved text');
+  return license;
+}
 export function verifyNotices(
   root,
   notice = readFileSync(resolve(root, NOTICE), 'utf8'),
@@ -113,11 +126,17 @@ export function distributionPlugin() {
         fileName: NOTICE,
         source: verifyNotices(root),
       });
+      this.emitFile({
+        type: 'asset',
+        fileName: PROJECT_LICENSE,
+        source: verifyProjectLicense(root),
+      });
     },
   };
 }
 export function auditDistribution(directory, base, root = resolve('.')) {
   const notice = verifyNotices(root);
+  const license = verifyProjectLicense(root);
   const files = [];
   const walk = (relative) => {
     for (const entry of readdirSync(resolve(directory, relative))) {
@@ -131,7 +150,7 @@ export function auditDistribution(directory, base, root = resolve('.')) {
       } else {
         if (
           !stat.isFile() ||
-          !/^(index\.html|THIRD_PARTY_NOTICES\.md|assets\/[\w-]+\.(js|css))$/.test(
+          !/^(index\.html|LICENSE|THIRD_PARTY_NOTICES\.md|assets\/[\w-]+\.(js|css))$/.test(
             name,
           )
         )
@@ -143,6 +162,8 @@ export function auditDistribution(directory, base, root = resolve('.')) {
   walk('');
   if (readFileSync(resolve(directory, NOTICE), 'utf8') !== notice)
     throw new Error('Distribution notice differs');
+  if (readFileSync(resolve(directory, PROJECT_LICENSE), 'utf8') !== license)
+    throw new Error('Distribution project license differs');
   const html = readFileSync(resolve(directory, 'index.html'), 'utf8');
   const urls = [...html.matchAll(/(?:src|href)="([^"]+)"/g)]
     .map((match) => match[1])
@@ -162,6 +183,8 @@ export function auditDistribution(directory, base, root = resolve('.')) {
     .join('\n');
   if (!scripts.includes(`${base}${NOTICE}`))
     throw new Error('Missing site notice URL');
+  if (!scripts.includes(`${base}${PROJECT_LICENSE}`))
+    throw new Error('Missing site project license URL');
   const allowedEmails = new Set(
     [...notice.matchAll(/[\w.+-]+@[\w.-]+\.[A-Za-z]{2,}/g)].map(
       (match) => match[0],

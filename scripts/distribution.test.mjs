@@ -12,6 +12,8 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   auditDistribution,
   NOTICE,
+  PROJECT_LICENSE,
+  verifyProjectLicense,
   verifyModule,
   verifyNotices,
 } from './distribution.mjs';
@@ -31,17 +33,21 @@ function fixture(base = '/') {
   );
   writeFileSync(
     join(directory, 'assets/app.js'),
-    `const notice="${base}${NOTICE}";`,
+    `const notice="${base}${NOTICE}"; const license="${base}${PROJECT_LICENSE}";`,
   );
   writeFileSync(join(directory, 'assets/app.css'), 'body{color:red}');
   writeFileSync(join(directory, NOTICE), readFileSync(NOTICE));
+  writeFileSync(
+    join(directory, PROJECT_LICENSE),
+    readFileSync(PROJECT_LICENSE),
+  );
   return directory;
 }
 describe('distribution audit', () => {
   it.each(['/', '/css-color-lab/'])(
     'accepts complete artifacts at %s',
     (base) => {
-      expect(auditDistribution(fixture(base), base)).toHaveLength(4);
+      expect(auditDistribution(fixture(base), base)).toHaveLength(5);
     },
   );
   it('rejects a modified license permission', () => {
@@ -66,7 +72,7 @@ describe('distribution audit', () => {
       'Distribution notice differs',
     );
   });
-  it.each(['.env', 'assets/app.js.map', 'LICENSE', 'audit.json'])(
+  it.each(['.env', 'assets/app.js.map', 'LICENSE.bak', 'audit.json'])(
     'rejects unexpected file %s',
     (file) => {
       const directory = fixture();
@@ -96,7 +102,7 @@ describe('distribution audit', () => {
     const directory = fixture();
     writeFileSync(
       join(directory, 'assets/app.js'),
-      `const notice="/${NOTICE}"; /* ${content} */`,
+      `const notice="/${NOTICE}"; const license="/${PROJECT_LICENSE}"; /* ${content} */`,
     );
     expect(() => auditDistribution(directory, '/')).toThrow();
   });
@@ -106,4 +112,44 @@ describe('distribution audit', () => {
       expect(() => verifyModule(id)).toThrow('Unreviewed');
     },
   );
+  it('rejects a missing project license', () => {
+    const directory = fixture();
+    rmSync(join(directory, PROJECT_LICENSE));
+    expect(() => auditDistribution(directory, '/')).toThrow(/LICENSE/);
+  });
+  it('rejects a changed distributed project license', () => {
+    const directory = fixture();
+    writeFileSync(join(directory, PROJECT_LICENSE), 'changed license');
+    expect(() => auditDistribution(directory, '/')).toThrow(
+      'Distribution project license differs',
+    );
+  });
+  it.each(['/', '/css-color-lab/'])(
+    'rejects missing project license link at %s',
+    (base) => {
+      const directory = fixture(base);
+      writeFileSync(
+        join(directory, 'assets/app.js'),
+        `const notice="${base}${NOTICE}";`,
+      );
+      expect(() => auditDistribution(directory, base)).toThrow(
+        'Missing site project license URL',
+      );
+    },
+  );
+  it.each([
+    ['Copyright (c) 2026 guardiancrow', 'Copyright (c) 2025 guardiancrow'],
+    ['Copyright (c) 2026 guardiancrow', 'Copyright (c) 2026 another-holder'],
+    ['Permission is hereby granted', 'Permission removed'],
+    ['THE SOFTWARE IS PROVIDED', 'WARRANTY REMOVED'],
+  ])('rejects altered canonical license: %s', (before, after) => {
+    const directory = fixture();
+    writeFileSync(
+      join(directory, PROJECT_LICENSE),
+      readFileSync(PROJECT_LICENSE, 'utf8').replace(before, after),
+    );
+    expect(() => verifyProjectLicense(directory)).toThrow(
+      'Project MIT license differs',
+    );
+  });
 });

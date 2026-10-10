@@ -16,6 +16,8 @@ CSS Color Labの開発履歴と実装詳細です。利用方法は[README](../R
 
 `v1.0.0-rc.1`は最終QAの基準、`v1.0.0`は完成版を示すtagです。公開用の文書・metadata・hosting整備は、このアプリ完成時点の履歴と区別します。詳細はGit履歴に残っています。
 
+Phase 20Eでは所有者の決定に基づき、自作ソースコード・教材・ドキュメント・UIへMITを適用し、Copyright (c) 2026 guardiancrowと次の公開予定版1.0.1を反映しました。既存tagは保存し、v1.0.1 tag／Releaseはまだ作成していません。公開方式はGitHub FreeでPublic repositoryとPublic Pages、承認済みSHAによる手動deployです。現在はPrivateを維持し、最終監査・CI成功後の明示的承認を待ちます。
+
 ## GitHub Actionsによる品質検証
 
 `.github/workflows/ci.yml`は、`master`へのpush、`master`を対象とするPull Request、手動実行で品質を検証します。`ubuntu-latest`上でNode.js `^24.15.0`に一致する24系を使用し、次の順序で実行します。
@@ -32,11 +34,13 @@ npm run build:pages
 npm run audit:dist -- --pages
 ```
 
-Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は36 test files・268 tests（Phase 20C基準は35 files・250 tests）です。
+Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は36 test files・276 tests（Phase 20D基準は36 files・268 tests）です。
 
 `actions/checkout` v7.0.1と`actions/setup-node` v7.0.0は、公式release tagから確認したfull commit SHAで固定しています。Token権限は`contents: read`のみで、checkout後に認証情報を保持しません。Deploymentやworkflowからのcommit / pushは実行しません。
 
-ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、268 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
+ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、276 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
+
+Build pluginはrootのLICENSEとThird-party Noticesを正本から同梱します。Project LICENSEの承認済みMIT本文・年・権利者をSHA-256で照合し、配布物では正本との完全一致、両リンクのbase URLを検査します。第三者noticeの原文・version・module照合は従来どおり維持します。依存更新でnoticeが古くなればCIは失敗するため、依存と原文を再監査してnoticeを更新してください。
 
 ## GitHub Pages向けのビルドとルーティング
 
@@ -63,7 +67,7 @@ CIでは通常buildの後にPages buildも実行します。Deployment step、Pa
 
 ユーザーが公開を承認した後、SettingsのPagesでGitHub Actionsを配信元に設定し、別のdeployment workflowを追加する設計です。初回はmaster上の承認済みSHAを指定した手動実行に限定します。`github-pages` environmentのreviewer機能には契約プランとrepository visibilityの制約があります。詳細なjob権限、固定SHA、承認条件、rollbackは[Deployment設計](deployment-plan.md)を参照してください。
 
-採用候補は`actions/configure-pages`、`actions/upload-pages-artifact`、`actions/deploy-pages`です。正式採用時に公式の安定版・full SHA・各jobの権限を確認します。今回はworkflowを作成・有効化せず、Pages Settingsも変更しません。Private repositoryでもPagesサイトが公開される場合があるため、repositoryのvisibilityとは別にサイトの公開範囲を判断します。LICENSE、copyright holder、公開release version、成果物のprivacy scanを完了してから承認します。
+採用候補は`actions/configure-pages`、`actions/upload-pages-artifact`、`actions/deploy-pages`です。正式採用時に公式の安定版・full SHA・各jobの権限を確認します。今回はworkflowを作成・有効化せず、Pages Settingsも変更しません。License・copyright holder・公開予定version・公開方式は確定済みです。Phase 20Fの最終privacy auditとCI成功後、所有者の明示的承認を受けてPublic化・deployへ進みます。
 
 参照: [Viteのbase設定](https://vite.dev/guide/build#public-base-path)、[HashRouter](https://reactrouter.com/api/declarative-routers/HashRouter)、[GitHub Pagesの公開範囲](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)。
 
@@ -77,7 +81,7 @@ CIでは通常buildの後にPages buildも実行します。Deployment step、Pa
 
 Push後はInsightsのDependency graphにあるDependabot画面で両ecosystemの設定と実行ログを確認し、更新がある場合はPRの作成とCI実行も確認してください。利用可能な更新がなければ、PRが0件でも設定失敗とは限りません。SettingsではrepositoryがPrivate、default branchが`master`、Actionsが有効であることを確認し、workflow permissionsは読み取りを基本とします。Auto-mergeは有効化しません。Private repositoryのActions利用枠と課金設定も確認してください。
 
-公開前の未決事項は[Public Release Checklist](public-release-checklist.md)にまとめています。
+公開前に残る監査と承認条件は[Public Release Checklist](public-release-checklist.md)にまとめています。
 
 ### 設定の参照資料
 

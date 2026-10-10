@@ -30,6 +30,9 @@ describe('application routes', () => {
       expect(
         screen.getByRole('link', { name: '第三者ライセンス' }),
       ).toHaveAttribute('href', `${base}THIRD_PARTY_NOTICES.md`);
+      expect(
+        screen.getByRole('link', { name: 'MITライセンス' }),
+      ).toHaveAttribute('href', `${base}LICENSE`);
     },
   );
   it('renders the Learn page and its chapter navigation', () => {
