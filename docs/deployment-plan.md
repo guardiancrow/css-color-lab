@@ -1,12 +1,12 @@
 # GitHub Pages公開設計
 
-Phase 20G-Aで[手動deployment workflow](../.github/workflows/pages.yml)を実装しました。RepositoryはPrivateのまま、workflowは未実行です。Pages設定、environment作成、artifact upload、deploymentはまだ行っていません。初回公開には所有者の明示的な承認が必要です。
+2026-10-10時点でRepositoryはPublic、GitHub Pagesは公開済みで、Firefox・Edgeの実サイトQAを完了しています。[手動deployment workflow](../.github/workflows/pages.yml)はPhase 20G-Aで実装しました。以下の「初回公開の前提」は初回公開前の設計記録です。以後の更新も承認済みfull SHAの手動デプロイで行い、正式リリースの確認順序は[Public Release Checklist](public-release-checklist.md)に従います。
 
 ## 公開範囲と契約プラン
 
 個人repositoryのProject Pagesを想定し、URLは`https://guardiancrow.github.io/css-color-lab/`です。Pages buildはbase `/css-color-lab/`、HashRouterを使います。Learnは`#/`、Playgroundは`#/playground`です。
 
-所有者の決定に基づき、GitHub FreeでPublic repositoryとPublic Pagesを採用します。現在のrepositoryはPrivateを維持しています。Phase 20Fで全履歴・PR／Actions・公開ファイルの最終監査、対象SHAのCI成功、所有者の明示的承認を完了してからPublicへ変更します。GitHub FreeのPagesはpublic repositoryが対象なので、Public化をdeployより先に行います。[GitHub Pagesの利用条件](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
+所有者の決定に基づき、GitHub FreeでPublic repositoryとPublic Pagesを採用しています。初回公開では履歴・PR／Actions・公開ファイルの監査、対象SHAのCI成功、所有者の明示的承認を経てPublicへ変更し、その後deployしました。[GitHub Pagesの利用条件](https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages)
 
 Repositoryがprivateでも、この個人Project Pagesのサイトは公開配信として扱います。Enterprise Cloudのorganization向けアクセス制御を、個人repositoryへ適用できると想定しません。[Pagesサイトの公開範囲](https://docs.github.com/en/enterprise-cloud%40latest/pages/getting-started-with-github-pages/changing-the-visibility-of-your-github-pages-site)
 

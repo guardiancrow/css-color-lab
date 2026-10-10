@@ -1,6 +1,8 @@
 # 公開前の判断と検証
 
-Phase 20Eでは所有者の確定事項を実装しています。自作部分のMIT License、Copyright (c) 2026 guardiancrow、次の公開予定版1.0.1、GitHub FreeでPublic repositoryとPublic Pagesを採用する方針が確定しました。現在のrepositoryはPrivateで、最終監査・公開承認待ちです。公開・deployment・tag／Release作成は未実施です。
+2026-10-10時点でRepositoryはPublic、GitHub Pagesは公開済みで、Firefox・Edgeの実サイトQAを完了しています。この文書はPhase 20Eのライセンス・version判断と、その後の初回公開前の承認手順の記録です。以下のPrivate状態や未実施の記述は当時の状態を示します。正式リリースの確認順序は[Public Release Checklist](public-release-checklist.md)を参照してください。
+
+Phase 20Eでは所有者の確定事項を実装しました。自作部分のMIT License、Copyright (c) 2026 guardiancrow、公開準備を反映する版1.0.1、GitHub FreeでPublic repositoryとPublic Pagesを採用する方針が確定しました。当時のrepositoryはPrivateで、公開・deployment・tag／Release作成は未実施でした。
 
 ## 第三者ライセンスの配布
 

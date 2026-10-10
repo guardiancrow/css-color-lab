@@ -104,7 +104,9 @@ Dependencyのcopyright・license本文と、browser bundle配布時の確認事�
 
 通常buildとPages buildには正本のLICENSEとnoticeを同梱し、画面末尾の「MITライセンス」「第三者ライセンス」からそれぞれ参照できます。Build後は`npm run audit:dist`、Pages用では`npm run audit:dist -- --pages`で配布物を検査します。
 
-次の公開予定版は`v1.0.1`です。Package metadataは1.0.1へ更新していますが、tag・GitHub Releaseはまだ作成していません。GitHub FreeでPublic repositoryとPublic Pagesを採用する方針が確定しています。現在はPrivateを維持し、手動deployment workflowの実装・静的検証まで進めています。Workflow追加後の新SHAの再監査・CI成功・所有者の明示的承認を経て公開します。Deployは承認済みSHAを指定した手動実行です。Pages設定・workflow実行・配信はまだ行っていません。
+公開サイト：[CSS Color Lab](https://guardiancrow.github.io/css-color-lab/)。RepositoryはPublicで、GitHub Pagesで配信しています。初回公開後のFirefox・Edgeでの実サイトQAを完了しています。
+
+`v1.0.0`はアプリ本体の完成時点、`v1.0.1`は初回一般公開、ライセンス・配信整備と公開時の修正を反映した版です。PagesはGitHub Actionsで承認済みのfull commit SHAを指定して手動デプロイします。通常のpushだけでは配信を更新しません。正式リリースの記録は[Tags](https://github.com/guardiancrow/css-color-lab/tags)と[Releases](https://github.com/guardiancrow/css-color-lab/releases)を参照してください。
 
 ## Documentation
 

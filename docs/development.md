@@ -2,6 +2,8 @@
 
 CSS Color Labの開発履歴と実装詳細です。利用方法は[README](../README.md)、設計判断は[Color Architecture](color-architecture.md)を参照してください。Phase番号は開発当時の区切りを示します。
 
+2026-10-10時点でRepositoryはPublic、[GitHub Pages](https://guardiancrow.github.io/css-color-lab/)は公開済みで、Firefox・Edgeの実サイトQAを完了しています。初回公開前のPhase説明は当時の記録として保存しています。
+
 ## Development / release history
 
 | Phase | 主な変更                                                                         |
@@ -16,7 +18,9 @@ CSS Color Labの開発履歴と実装詳細です。利用方法は[README](../R
 
 `v1.0.0-rc.1`は最終QAの基準、`v1.0.0`は完成版を示すtagです。公開用の文書・metadata・hosting整備は、このアプリ完成時点の履歴と区別します。詳細はGit履歴に残っています。
 
-Phase 20Eでは所有者の決定に基づき、自作ソースコード・教材・ドキュメント・UIへMITを適用し、Copyright (c) 2026 guardiancrowと次の公開予定版1.0.1を反映しました。既存tagは保存し、v1.0.1 tag／Releaseはまだ作成していません。公開方式はGitHub FreeでPublic repositoryとPublic Pages、承認済みSHAによる手動deployです。現在はPrivateを維持し、最終監査・CI成功後の明示的承認を待ちます。
+Phase 20Eでは所有者の決定に基づき、自作ソースコード・教材・ドキュメント・UIへMITを適用し、Copyright (c) 2026 guardiancrowと公開予定版1.0.1を反映しました。既存tagを保存し、このPhaseではv1.0.1 tag／Releaseを作成しませんでした。公開方式はGitHub FreeでPublic repositoryとPublic Pages、承認済みSHAによる手動deployです。当時はPrivateを維持し、最終監査・CI成功後の明示的承認を待つ状態でした。
+
+その後、手動Pages workflowと配布物監査を整備し、開発用依存関係の既知の脆弱性をpatch更新で修正しました。初回公開後には空fragmentでの不要なDOM検索を防ぎ、Firefoxの`Empty string passed to getElementById()`警告を解消しました。v1.0.1はこれらの公開・ライセンス・配信整備を反映する版です。
 
 ## GitHub Actionsによる品質検証
 
@@ -34,11 +38,11 @@ npm run build:pages
 npm run audit:dist -- --pages
 ```
 
-Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は36 test files・276 tests（Phase 20D基準は36 files・268 tests）です。
+Installには既存の`package-lock.json`を使います。npm cacheはlockfileをキーにしてdownload済みpackageを再利用し、`node_modules`は毎回`npm ci`で作成します。いずれかの検証が失敗した場合、jobは失敗として終了します。品質の基準は36 test files・281 tests（Phase 20E基準は276 tests、Phase 20D基準は268 tests）です。
 
 `actions/checkout` v7.0.1と`actions/setup-node` v7.0.0は、公式release tagから確認したfull commit SHAで固定しています。Token権限は`contents: read`のみで、checkout後に認証情報を保持しません。Deploymentやworkflowからのcommit / pushは実行しません。
 
-ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、276 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
+ローカル検証とGitHub上のCI実行は別に確認します。設定をpushした後、repositoryのActionsタブで対象commitの`CI`を開き、`Quality checks`の各step、Node.jsの取得version、281 tests以上の成功、build結果を確認してください。Pull Requestでも同じcheckが実行されることを確認します。手動実行はActionsタブの`Run workflow`から行えます。
 
 Build pluginはrootのLICENSEとThird-party Noticesを正本から同梱します。Project LICENSEの承認済みMIT本文・年・権利者をSHA-256で照合し、配布物では正本との完全一致、両リンクのbase URLを検査します。第三者noticeの原文・version・module照合は従来どおり維持します。依存更新でnoticeが古くなればCIは失敗するため、依存と原文を再監査してnoticeを更新してください。
 
@@ -48,7 +52,7 @@ Build pluginはrootのLICENSEとThird-party Noticesを正本から同梱しま�
 
 `npm run build:pages`はTypeScriptのチェック後、Viteの`pages` modeでbuildします。Baseは`vite.config.ts`が配布検査と共通の`PAGES_BASE`から`/css-color-lab/`に設定し、同じmodeを使う`AppRouter`はHashRouterを選びます。Asset URLはViteがbaseを反映して生成します。App routeには追加のbasenameを設定しません。Modeを指定しない通常ビルドは従来の構成です。
 
-将来のProject PagesのURLは`https://guardiancrow.github.io/css-color-lab/`を想定しています。現在公開されているサイトを示すものではありません。PagesではLearnが`/css-color-lab/#/`、Playgroundが`/css-color-lab/#/playground`になります。Base URLへhashなしでアクセスした場合もLearnを表示します。Hash部分はserverへ送られないため、Playgroundの直接アクセスやreloadでも同じindexを取得できます。BrowserRouterと404.html fallbackを使う方式は、redirect処理や404応答の検証が増えるため採用していません。
+公開中のProject PagesのURLは`https://guardiancrow.github.io/css-color-lab/`です。PagesではLearnが`/css-color-lab/#/`、Playgroundが`/css-color-lab/#/playground`になります。Base URLへhashなしでアクセスした場合もLearnを表示します。Hash部分はserverへ送られないため、Playgroundの直接アクセスやreloadでも同じindexを取得できます。BrowserRouterと404.html fallbackを使う方式は、redirect処理や404応答の検証が増えるため採用していません。
 
 章・sectionリンクは、通常構成では従来のHTML fragmentを維持します。HashRouterでは`#/playground#modern-css`のようにrouteとfragmentを両方含むURLを生成し、router内のfragmentに対応する要素へscrollします。Skip linkも`#/playground#main-content`としてrouteを維持し、本文へfocusを移動します。Browserの戻る・進むと、fragmentを含むURLからの復帰も確認対象です。
 
@@ -63,7 +67,7 @@ npm run preview:pages -- --host 127.0.0.1
 
 CIでは通常buildの後にPages buildも実行します。Deployment step、Pages artifactのupload、`pages: write`、`id-token: write`は追加しません。ローカルのbuildやCI成功はPages deploymentの成功を意味しません。
 
-### 次Phaseのdeployment設計
+### 初回公開前のdeployment設計（記録）
 
 ユーザーが公開を承認した後、SettingsのPagesでGitHub Actionsを配信元に設定し、別のdeployment workflowを追加する設計です。初回はmaster上の承認済みSHAを指定した手動実行に限定します。`github-pages` environmentのreviewer機能には契約プランとrepository visibilityの制約があります。詳細なjob権限、固定SHA、承認条件、rollbackは[Deployment設計](deployment-plan.md)を参照してください。
 
@@ -73,15 +77,15 @@ CIでは通常buildの後にPages buildも実行します。Deployment step、Pa
 
 ## Dependabotによる依存更新
 
-`.github/dependabot.yml`は、repository rootのnpm dependenciesとGitHub Actionsを毎週確認し、`master`向けの更新PRを提案します。Version updateのopen PR上限はecosystemごとに5件です。npmのminor / patch更新はruntimeと開発toolに分けてgroup化し、major更新とActions更新は個別にreviewします。Minor / patchでも互換性の問題が起こり得るため、自動マージは使用しません。
+`.github/dependabot.yml`は、repository rootのnpm dependenciesとGitHub Actionsを毎週確認し、`master`向けの更新PRを提案します。Version updateのopen PR上限はnpmが0件、GitHub Actionsが5件です。npm通常更新は停止中で、security updatesとは別に管理します。npmのminor / patch更新はruntimeと開発toolに分けてgroup化し、major更新とActions更新は個別にreviewします。Minor / patchでも互換性の問題が起こり得るため、自動マージは使用しません。
 
 更新PRではrelease notes、breaking changes、`package.json`とlockfileの差分、推移依存、Node.js要件を確認してください。Runtime dependenciesを変更する場合は[Third-party Notices](../THIRD_PARTY_NOTICES.md)のversion・license・本文も照合します。ローカルでは`npm ci`と上記の品質検証を実行し、browserでの確認には[Manual QA](manual-qa.md)を使います。Actions更新では公式releaseとSHAの対応を確認します。CIの成功と人間によるreview・承認を終えてからmergeします。
 
 このYAMLは定期的なversion updatesを設定します。脆弱性を対象とするDependabot alerts / security updatesは別のrepository設定です。Private repositoryでもdependency graphとDependabot alertsを有効にしたうえで、security updatesを有効化できます。SettingsのAdvanced Security（UIによってはCode security）で各項目を確認してください。今回の設定には`target-branch`を指定しているため、YAMLのgroup設定をsecurity updatesのgroup化にも適用できるとは扱いません。Security updatesはdefault branchを対象とし、version updates用のPR上限とは別に管理されます。
 
-Push後はInsightsのDependency graphにあるDependabot画面で両ecosystemの設定と実行ログを確認し、更新がある場合はPRの作成とCI実行も確認してください。利用可能な更新がなければ、PRが0件でも設定失敗とは限りません。SettingsではrepositoryがPrivate、default branchが`master`、Actionsが有効であることを確認し、workflow permissionsは読み取りを基本とします。Auto-mergeは有効化しません。Private repositoryのActions利用枠と課金設定も確認してください。
+Push後はInsightsのDependency graphにあるDependabot画面で両ecosystemの設定と実行ログを確認し、更新がある場合はPRの作成とCI実行も確認してください。利用可能な更新がなければ、PRが0件でも設定失敗とは限りません。SettingsではrepositoryがPublic、default branchが`master`、Actionsが有効であることを確認し、workflow permissionsは読み取りを基本とします。Auto-mergeは有効化しません。Actions利用枠と課金設定も確認してください。
 
-公開前に残る監査と承認条件は[Public Release Checklist](public-release-checklist.md)にまとめています。
+正式リリースの監査と承認条件は[Public Release Checklist](public-release-checklist.md)にまとめています。
 
 ### 設定の参照資料
 
